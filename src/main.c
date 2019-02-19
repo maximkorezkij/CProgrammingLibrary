@@ -1,29 +1,14 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-
-struct Book {
-    char title[50];
-    char author[50];
-    int isbn_nr;
-    int nob;
-};
-
-typedef struct Book book;
-
-struct Lib {
-    book **Books
-};
-
-typedef struct Lib lib;
-
+#include "main.h"
 
 book *newBook() {
     book newBook;
 
-    printf("\n Wie ist der Titel?\n");
-    scanf("%s", newBook.title);
-    printf("\nWer ist der Author?\n");
+    printf("\n Wie ist der Titel?\n");  //Titel und Author können nicht mit Leerzeichen eingegeben werden
+    scanf("%s", newBook.title);         // besser mit fgets( , , stdin) -> evtl funktion für string
+    printf("\nWer ist der Author?\n");  //Prüfen auf Fehleingabe fehlt
     scanf("%s", newBook.author);
     printf("\nWas ist die ISBN?\n");
     scanf("%d",&newBook.isbn_nr);
@@ -39,63 +24,50 @@ book *newBook() {
     return bookPtr;
 }
 
-//void addBook(lib lib1) {
-//    newBook();
-//
-//}
-//
-//void saveBooks
-//
-//void printBook(struct Books *book) {
-//
-//    printf( "Book title : %s\n", book->title);
-//    printf( "Book author : %s\n", book->author);
-//    printf( "Book isbn number : %d\n", book->isbn_nr);
-//    printf( "Number of Books available : %d\n", book->nob);
-//}
-
-void mainmenu() {
-    printf("Willkommen");
-    printf("Was wollen Sie tun ? \n"
-           "(1) : Buch hnizufügen\n");
-
-    int i;
-    scanf("%d", &i);
-    switch(i)
-    {
-        case 1:
-            break;
-    }
+void addBook() {
+    lib1.registered++;
+    printf("%d",lib1.registered);
+    lib1.Books = realloc(lib1.Books, sizeof(book*) * lib1.registered);
+    lib1.Books[lib1.registered - 1] = newBook();
 }
+
+void saveBooks() {
+    FILE *fp;
+    fp = fopen("test.txt", "wb");
+    fwrite(&lib1.registered, sizeof(int),1,fp);
+    for(int i=0; i < lib1.registered; i++) {
+        fwrite(&lib1.Books[i]->title,strlen(lib1.Books[i]->title),1, fp);
+        fwrite(&lib1.Books[i]->author,strlen(lib1.Books[i]->author),1, fp);
+        fwrite(&lib1.Books[i]->isbn_nr,sizeof(int),1, fp);
+        fwrite(&lib1.Books[i]->nob,sizeof(int),1, fp);
+    }
+    fclose(fp);
+
+};
+
+
+//void mainmenu() {
+//    printf("Willkommen");
+//    printf("Was wollen Sie tun ? \n"
+//           "(1) : Buch hnizufügen\n");
+//
+//    int i;
+//    scanf("%d", &i);
+//    switch(i)
+//    {
+//        case 1:
+//            break;
+//    }
+//}
+
 
 
 int main() {
+    //loadBooks als gegensatz zu saveBooks
 
-    mainmenu();
-    lib lib1;
-    book *book1 = newBook();
-    printf("Titel : %s",book1->title);
+    addBook(lib1);      //fügt ein Buch hinzu
+    saveBooks(lib1);    //speichert alle Bücher in einer binärdatei -> beim exit
 
-//    FILE *fp;
-//    int c;
-//    fp = fopen("test.txt", "w+");
-//    fwrite(&book1,sizeof(struct Books),1,fp);
-//    fread(&book1, sizeof(struct Books),1,fp);
-//    fclose(fp);
-//
-//    fp = fopen("test.txt", "r+");
-//    if(fp == NULL) {
-//        perror("Problem with opening file");
-//    }
-//    else {
-//        while (1) {
-//            c = fgetc(fp);
-//            if (feof(fp))
-//                break;
-//            printf("%c", c);
-//        }
-//    }
-//    fclose(fp);
     return 0;
 }
 
