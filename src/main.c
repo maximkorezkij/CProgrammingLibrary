@@ -45,6 +45,23 @@ void saveBooks() {
 
 };
 
+void loadBooks() {
+    FILE *fp;
+    fp = fopen("test.txt","rb");
+    fseek(fp, 0, SEEK_SET);
+    fread(&lib1.registered, sizeof(int),1,fp);
+    lib1.Books = calloc(lib1.registered, sizeof(book *));
+    for (int i=0; i < lib1.registered; i++) {
+        lib1.Books[i] = malloc(sizeof(book));
+        fread(&lib1.Books[i]->title, sizeof(char),1,fp);
+        fread(&lib1.Books[i]->author, sizeof(char),1,fp);
+        fread(&lib1.Books[i]->isbn_nr, sizeof(int),1,fp);
+        fread(&lib1.Books[i]->nob, sizeof(int),1,fp);
+    }
+    fclose(fp);
+
+}
+
 
 //void mainmenu() {
 //    printf("Willkommen");
@@ -64,9 +81,15 @@ void saveBooks() {
 
 int main() {
     //loadBooks als gegensatz zu saveBooks
+//    loadBooks();
+//    char str = lib1.Books[0]->title;
+//    printf("%s",str);
 
-    addBook(lib1);      //fügt ein Buch hinzu
-    saveBooks(lib1);    //speichert alle Bücher in einer binärdatei -> beim exit
+    addBook();//fügt ein Buch hinzu
+//    char str2 = lib1.Books[1]->title;
+//    printf("%s",str2);
+
+    saveBooks();    //speichert alle Bücher in einer binärdatei -> beim exit
 
     return 0;
 }
