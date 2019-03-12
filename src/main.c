@@ -66,57 +66,69 @@ book *newBook(char *newtitle, char *newauthor, char *newisbn, int newnob) {
 }
 
 int isNumber() {
-    char var[10];    // This is the variable to store input.
-    int i = 0;
-    int varisnum = 0;    // Is var all numbers?  1 for yes, 0 for no.
+    char var[10];    //our number of books
+    int i = 0;       //help
+    int varisnum = 0;    //varisnum:  1 for yes, 0 for no -> function from
 
-    scanf("%s", var);
+    fgets(var,10,stdin);    //get string
 
     if ( strlen(var) > 9 ) {
         printf("Eingabe zu lang. Maximal 10-stellige Zahlen\n");
         return isNumber();
     }
-    while ( isalnum(var[ i ]) != 0 ) {    // Loop until it a character is not alpha-numeric.
-        if ( isdigit(var[ i ]) != 0 ) {    // Is var[i] a numeric digit?
+    if ( var[0] == '\n' || var[0] == ' ') {
+        printf("Eingabe ist ungültig. Bitte geben Sie eine Zahl ein.\n");
+    }
+    while ( isalnum(var[ i ]) != 0 ) {    //loop until notnumeric character appears
+        if ( isdigit(var[ i ]) != 0 ) {
             varisnum = 1;
         }else {
             varisnum = 0;
-            break;    // If we encounter a non-numeric character, there is no need to keep looping, so just break out.
+            break;    //non-numeric character -> break
         }
-        i++;    // Move counter to the next element.
+        i++;
     }
 
     if ( varisnum == 0 ) {
-        printf("Eingabe ist ungültig. Bitte geben Sie eine Zahl ein.\n");
-        return isNumber();
+        return isNumber();      //start again
     }else {
-        int num = atoi(var);
-        return num;
+        int num = atoi(var);    //convert valid number string into int
+        return num;             //return int
     }
 }
 
 const char *isbnNumber(char *isbn) {
-    fgets(isbn, MAX, stdin);
-    stringCut(isbn);
+    fgets(isbn, MAX, stdin);    //get ISBN string
+    stringCut(isbn);            //cut \n from string
     if ( validISBN(isbn) == false ) {
         printf("Diese ISBN-Nr ist ungueltig. Versuchen Sie es erneut:\n");
-        return isbnNumber(isbn);
+        return isbnNumber(isbn);    //start again
     }else {
-        return isbn;
+        return isbn;        //return valid isbn as string
     }
-};
+}
+const char *isString(char *string) {
+    fgets(string, MAX, stdin);  //get string
+    if (string[0] == '\n' || string[0] == ' ' || string[0] == '\0') {   //validators
+        printf("Eingabe ist ungültig. Versuchen Sie es erneut.\n");
+        return isString(string);    //start again
+    }
+    else {
+        return string;      //return valid string
+    }
+}
 
 void addBook() {
     lib1.registered++;
     lib1.Books = realloc(lib1.Books, sizeof(book *) * lib1.registered);
     //titel
-    char title[MAX] = {};
     printf("Wie ist der Titel des Buches ?\n(max.100 Zeichen)\n");
-    fgets(title, MAX, stdin);
+    char title[MAX] = {};
+    isString(title);    //returns title string if valid
     //author
-    char author[MAX] = {};
     printf("\nWer ist der Author des Buches ?\n(max.100 Zeichen)\n");
-    fgets(author, MAX, stdin);
+    char author[MAX] = {};
+    isString(author);   //return author string if valid
     //isbn
     printf("\nWas ist die ISBN-Nr ?\n(muss gueltig sein)\n");
     char isbn[MAX] = {};
@@ -226,7 +238,27 @@ void show(FILE *ptr) {
 //            break;
 //    }
 //}
-
+void showByIsbn() {
+    char filter[10] = {};
+    int count;
+    printf("\nFiltern nach ISBN:\n");
+    isString(filter);   //filter with valid string
+    for ( int i = 0; i < lib1.registered; i++ ) {
+        if (strncasecmp(filter,lib1.Books[i]->isbn_nr,strlen(filter)) == 0) {
+            //Titel
+            printf("\nTitel :\t\t%s", lib1.Books[ i ]->title);
+            //Author
+            printf("\nAuthor :\t%s", lib1.Books[ i ]->author);
+            //ISBN
+            printf("\nISBN :\t\t%s", lib1.Books[ i ]->isbn_nr);
+            //Number of Books
+            printf("\nExemplare :\t%d\n", lib1.Books[ i ]->nob);
+            printf("- - - - - - - - - - -");
+            count += 1;
+        }
+    }
+    printf("%d",count);
+}
 
 
 int main() {
@@ -244,6 +276,7 @@ int main() {
     s = fopen("saves.b", "rb");
     show(s);
     printf("5");
+    showByIsbn();
     return 0;
 }
 
