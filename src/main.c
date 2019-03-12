@@ -1,152 +1,215 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdbool.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <ctype.h>
 #include "../inc/main.h"
 
-book *newBook() {
+const char *stringCut(char *buffer) {
+    buffer[ strcspn(buffer, "\n") ] = 0;
+    return buffer;
+}
+
+bool validISBN(char *isbn) {
+    // length must be 10
+    int n = strlen(isbn);
+    if ( n != 10 )
+        return false;
+    // sum of first 9 digits
+    int sum = 0;
+    for ( int i = 0; i < 9; i++ ) {
+        int digit = isbn[ i ] - '0';
+        if ( 0 > digit || 9 < digit )
+            return false;
+        sum += (digit * (10 - i));
+    }
+    // Checking last digit
+    char last = isbn[ 9 ];
+    if ( last != 'X' && (last < '0' || last > '9'))
+        return false;
+    // If last digit is 'X', add 10 to sum, else add its value.
+    sum += ((last == 'X') ? 10 : (last - '0'));
+    // Return true if sum is divisible by 11
+    return (sum % 11 == 0);
+}
+
+book *newBook(char *newtitle, char *newauthor, char *newisbn, int newnob) {
     book newBook;
-    int buffersize = 50;
-    char buffer[buffersize];
 
-    printf("\n Wie ist der Titel?\n");
-//    while (buffer[strlen(fgets(buffer,buffersize,stdin)) - 1] != '\n') {
-//    }
-//    strcpy(newBook.title, buffer);
-    gets(buffer);
-    newBook.title = malloc(sizeof(buffer));
-    strcpy(newBook.title,buffer);
+    newBook.title = malloc(sizeof(newtitle));
+    strcpy(newBook.title, newtitle);
 
-    printf("\nWer ist der Author?\n");
-    gets(buffer);
-    newBook.author = malloc(sizeof(buffer));
-    strcpy(newBook.author,buffer);
+    newBook.author = malloc(sizeof(newauthor));
+    strcpy(newBook.author, newauthor);
 
-    printf("\nWas ist die ISBN?\n");
-    scanf("%d",&newBook.isbn_nr);
+    newBook.isbn_nr = malloc(sizeof(newisbn));
+    strcpy(newBook.isbn_nr, newisbn);
 
-    printf("\nWie viele Exemplare?\n");
-    scanf("%d",&newBook.nob);
-    printf("---1---");
+    newBook.nob = newnob;
+
+    //rückgabe als pointer
     book *bookPtr = malloc(sizeof(book));
-    bookPtr->title = malloc(sizeof(newBook.title));
+    //title
+    bookPtr->title = malloc(strlen(newBook.title) + 1);
     strcpy(bookPtr->title, newBook.title);
-    bookPtr->author = malloc(sizeof(newBook.author));
+    //author
+    bookPtr->author = malloc(strlen(newBook.author) + 1);
     strcpy(bookPtr->author, newBook.author);
-    bookPtr->isbn_nr = newBook.isbn_nr;
+    //isbn nr
+    bookPtr->isbn_nr = malloc(strlen(newBook.isbn_nr) + 1);
+    strcpy(bookPtr->isbn_nr, newBook.isbn_nr);
+    //number of books
     bookPtr->nob = newBook.nob;
-    printf("---2---");
     return bookPtr;
 }
 
-void addBook() {
-    lib1.registered++;
-    printf("%d\n",lib1.registered);
-    lib1.Books = realloc(lib1.Books, sizeof(book*) * lib1.registered);
-    lib1.Books[lib1.registered - 1] = newBook();
-    printf("---F---");
+int isNumber() {
+    char var[10];    // This is the variable to store input.
+    int i = 0;
+    int varisnum = 0;    // Is var all numbers?  1 for yes, 0 for no.
+
+    scanf("%s", var);
+
+    if ( strlen(var) > 9 ) {
+        printf("Eingabe zu lang. Maximal 10-stellige Zahlen\n");
+        return isNumber();
+    }
+    while ( isalnum(var[ i ]) != 0 ) {    // Loop until it a character is not alpha-numeric.
+        if ( isdigit(var[ i ]) != 0 ) {    // Is var[i] a numeric digit?
+            varisnum = 1;
+        }else {
+            varisnum = 0;
+            break;    // If we encounter a non-numeric character, there is no need to keep looping, so just break out.
+        }
+        i++;    // Move counter to the next element.
+    }
+
+    if ( varisnum == 0 ) {
+        printf("Eingabe ist ungültig. Bitte geben Sie eine Zahl ein.\n");
+        return isNumber();
+    }else {
+        int num = atoi(var);
+        return num;
+    }
 }
 
-void saveBooks() {
-    FILE *save;
-    size_t length=0;
-    save = fopen("saves.b", "wb");
-    fwrite(&lib1.registered, sizeof(int),1,save);
-    printf("---1---");
-    for(int i=0; i < lib1.registered; i++) {
-        //save title
-        length = strlen(lib1.Books[i]->title)+1;
-        fwrite(&length,sizeof(size_t),1,save);
-        fwrite(lib1.Books[i]->title,length,1, save);
-        printf("---title---");
-        //save author
-        length = strlen(lib1.Books[i]->author)+1;
-        fwrite(&length,sizeof(size_t),1,save);
-        fwrite(lib1.Books[i]->author,length,1, save);
-        printf("---author---");
-        //save isbn_nr
-        fwrite(&lib1.Books[i]->isbn_nr,sizeof(int),1, save);
-        printf("---isbn---");
-        //save number of books
-        fwrite(&lib1.Books[i]->nob,sizeof(int),1, save);
-        printf("---nob---");
+const char *isbnNumber(char *isbn) {
+    fgets(isbn, MAX, stdin);
+    stringCut(isbn);
+    if ( validISBN(isbn) == false ) {
+        printf("Diese ISBN-Nr ist ungueltig. Versuchen Sie es erneut:\n");
+        return isbnNumber(isbn);
+    }else {
+        return isbn;
     }
-    fclose(save);
-
 };
 
-void loadBooks() {
-    FILE *load;
-    size_t length;
-    load = fopen("saves.b","rb");
-    if(load == NULL) {
-        fclose(load);
-        printf("Nothing to load from file\n");
+void addBook() {
+    lib1.registered++;
+    lib1.Books = realloc(lib1.Books, sizeof(book *) * lib1.registered);
+    //titel
+    char title[MAX] = {};
+    printf("Wie ist der Titel des Buches ?\n(max.100 Zeichen)\n");
+    fgets(title, MAX, stdin);
+    //author
+    char author[MAX] = {};
+    printf("\nWer ist der Author des Buches ?\n(max.100 Zeichen)\n");
+    fgets(author, MAX, stdin);
+    //isbn
+    printf("\nWas ist die ISBN-Nr ?\n(muss gueltig sein)\n");
+    char isbn[MAX] = {};
+    isbnNumber(isbn);
+    //number of books
+    printf("\nWie viele Exemplare gibt es?\n(Nur Zahlen)\n");
+    int nob = isNumber();
+    //remove \n from strings
+    stringCut(author);
+    stringCut(title);
+
+    lib1.Books[ lib1.registered - 1 ] = newBook(title, author, isbn, nob);
+}
+
+void saveBooks(FILE *ptr) {
+    size_t length = 0;
+    ptr = fopen("saves.b", "wb");
+    fseek(ptr, 0, SEEK_SET);
+    fwrite(&lib1.registered, sizeof(int), 1, ptr);
+    for ( int i = 0; i < lib1.registered; i++ ) {
+        //save number of books
+        fwrite(&lib1.Books[ i ]->nob, sizeof(int), 1, ptr);
+        //save isbn_nr
+        length = strlen(lib1.Books[ i ]->isbn_nr) + 1;
+        fwrite(&length, sizeof(size_t), 1, ptr);
+        fwrite(lib1.Books[ i ]->isbn_nr, length, 1, ptr);
+        //save title
+        length = strlen(lib1.Books[ i ]->title) + 1;
+        fwrite(&length, sizeof(size_t), 1, ptr);
+        fwrite(lib1.Books[ i ]->title, length, 1, ptr);
+        //save author
+        length = strlen(lib1.Books[ i ]->author) + 1;
+        fwrite(&length, sizeof(size_t), 1, ptr);
+        fwrite(lib1.Books[ i ]->author, length, 1, ptr);
     }
-    else {
-        fseek(load, 0, SEEK_SET);
-        fread(&lib1.registered, sizeof(int), 1, load);
+    fclose(ptr);
+}
+
+off_t fsize(const char *filename) {     //funktion die checkt ob ein file leer ist
+    struct stat st;
+
+    if ( stat(filename, &st) == 0 )
+        return st.st_size;
+
+    return -1;
+}
+
+void loadBooks(FILE *ptr) {
+    size_t length;
+    if ( ptr == NULL || !fsize("saves.b")) {
+        fclose(ptr);
+        printf("Keine Datei zum Laden einer vorhandenen Bibliothek.\n");
+    }else {
+        fseek(ptr, 0, SEEK_SET);
+        fread(&lib1.registered, sizeof(int), 1, ptr);
         lib1.Books = calloc(lib1.registered, sizeof(book *));
-        for (int i = 0; i < lib1.registered; i++) {
+        for ( int i = 0; i < lib1.registered; i++ ) {
+
             lib1.Books[ i ] = malloc(sizeof(book));
-            //load title
-            fread(&length, sizeof(size_t), 1, load);
-            lib1.Books[ i ]->title = malloc(length);
-            //load author
-            fread(&length, sizeof(size_t), 1, load);
-            lib1.Books[ i ]->author = malloc(length);
-            fread(&lib1.Books[ i ]->author, length, 1, load);
-            //load isbn_nr
-            fread(&lib1.Books[ i ]->isbn_nr, sizeof(int), 1, load);
             //load number of books
-            fread(&lib1.Books[ i ]->nob, sizeof(int), 1, load);
+            fread(&lib1.Books[ i ]->nob, sizeof(int), 1, ptr);
+            //load isbn_nr
+            fread(&length, sizeof(size_t), 1, ptr);
+            lib1.Books[ i ]->isbn_nr = malloc(length);
+            fread(lib1.Books[ i ]->isbn_nr, length, 1, ptr);
+            //load title
+            fread(&length, sizeof(size_t), 1, ptr);
+            lib1.Books[ i ]->title = malloc(length);
+            fread(lib1.Books[ i ]->title, length, 1, ptr);
+            //load author
+            fread(&length, sizeof(size_t), 1, ptr);
+            lib1.Books[ i ]->author = malloc(length);
+            fread(lib1.Books[ i ]->author, length, 1, ptr);
         }
-        fclose(load);
+        fclose(ptr);
     }
 }
 
-void show() {
-    size_t length;
-    FILE *fptr;
-    printf("---1---");
-    if ((fptr = fopen("saves.b", "rb")) == NULL) {
-        printf("Error! opening file");
-
-        // Program exits if the file pointer returns NULL.
-        exit(1);
-    }
-
-    fseek(fptr, 0, SEEK_SET);
-    fread(&lib1.registered, sizeof(int), 1, fptr);
-    printf("\nAnzahl Bücher: \t%d",lib1.registered);
-    lib1.Books = calloc(lib1.registered, sizeof(book *));
-    printf("---2---");
-    for (int i = 0; i < lib1.registered; i++) {
-        //Speicherallokation
-        lib1.Books[ i ] = malloc(sizeof(book));
-        printf("---s---");
+void show(FILE *ptr) {
+//    FILE *fptr;
+    loadBooks(ptr);
+    printf("\nAnzahl Bücher : \t%d\n", lib1.registered);
+    printf("- - - - - - - - - - -");
+    for ( int i = 0; i < lib1.registered; i++ ) {
         //Titel
-        fread(&length, sizeof(size_t), 1, fptr);
-        printf("\nLänge des Titel:\t%d",(int)length);
-        lib1.Books[ i ]->title = malloc(length);
-        fread(&lib1.Books[i]->title,length,1,fptr);
-        printf("\nTitel:\t%s",lib1.Books[i]->title);
-        printf("---t---");
+        printf("\nTitel :\t\t%s", lib1.Books[ i ]->title);
         //Author
-        fread(&length, sizeof(size_t), 1, fptr);
-        printf("\nLänge des Authors:\t%d",(int) length);
-        lib1.Books[ i ]->author = malloc(length);
-        fread(&lib1.Books[i]->author,length,1,fptr);
-        printf("\nAuthor:\t%s",lib1.Books[i]->author);
-        printf("---a---");
+        printf("\nAuthor :\t%s", lib1.Books[ i ]->author);
         //ISBN
-        fread(&lib1.Books[ i ]->isbn_nr, sizeof(int), 1, fptr);
-        printf("\nISBN:\t%d", lib1.Books[i]->isbn_nr);
-        printf("---i---");
+        printf("\nISBN :\t\t%s", lib1.Books[ i ]->isbn_nr);
         //Number of Books
-        fread(&lib1.Books[ i ]->nob, sizeof(int), 1, fptr);
-        printf("\nExemplare:\t%d", lib1.Books[i]->nob);
-        printf("---n---");
-        fclose(fptr);
+        printf("\nExemplare :\t%d\n", lib1.Books[ i ]->nob);
+        printf("- - - - - - - - - - -");
     }
 }
 
@@ -168,17 +231,19 @@ void show() {
 
 int main() {
     //loadBooks als gegensatz zu saveBooks
-    loadBooks();
-    printf("--1/4--");
-//    char a;
-//    a = lib1.Books[0]->title;
-//    printf("%s",a);
+    FILE *load;
+    load = fopen("saves.b", "rb");
+    printf("1\n");
+    loadBooks(load);
+    printf("2\n");
     addBook();//fügt ein Buch hinzu
-    printf("--2/4--");
-    saveBooks();    //speichert alle Bücher in einer binärdatei -> beim exit
-    printf("--3/4--");
-    show();
-    printf("--4/4--");
+    printf("3\n");
+    saveBooks(load);//speichert alle Bücher in einer binärdatei -> beim exit
+    printf("4\n");
+    FILE *s;
+    s = fopen("saves.b", "rb");
+    show(s);
+    printf("5");
     return 0;
 }
 
