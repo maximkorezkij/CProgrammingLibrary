@@ -1,7 +1,9 @@
+#define MAX 100
+
 typedef struct Book {       //ausleihliste fehlt noch
-    char title[50];
-    char author[50];
-    int isbn_nr;
+    char *title;
+    char *author;
+    char *isbn_nr;
     int nob;
 }book;
 
