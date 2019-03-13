@@ -225,19 +225,48 @@ void show(FILE *ptr) {
     }
 }
 
-//void mainmenu() {
-//    printf("Willkommen");
-//    printf("Was wollen Sie tun ? \n"
-//           "(1) : Buch hnizufügen\n");
-//
-//    int i;
-//    scanf("%d", &i);
-//    switch(i)
-//    {
-//        case 1:
-//            break;
-//    }
+//ramón
+void mainMenu(){
+    
+    while (1){
+        
+        printf("(1) Buch anlegen\n");
+        printf("(2) Buch loeschen\n");
+        printf("(3) Buch suchen\n");
+        printf("(4) Exit\n");
+
+        printf("Auswahl: ");
+        char e = getchar();
+
+        switch (e){
+            case '1':
+                addBook();
+                break;
+            case '2':
+                //deleteBook();
+                break;
+            case '3':
+                showByIsbn();
+                break;
+            case '4':
+                saveBooks();
+                return 0;
+            default:
+                printf("Falsche Eingabe\n");
+                system("cls");
+                break;
+        }
+    }
+}
+
+//int main() {
+    //mainMenu();
 //}
+
+
+//end-ramón
+
+
 void showByIsbn() {
     char filter[10] = {};
     int count;
