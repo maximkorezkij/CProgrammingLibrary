@@ -5,7 +5,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <ctype.h>
-#include "../inc/main.h"
+#include "../include/main.h"
 
 const char *stringCut(char *buffer) {
     buffer[ strcspn(buffer, "\n") ] = 0;
@@ -260,6 +260,32 @@ void showByIsbn() {
     printf("%d",count);
 }
 
+void rentBook() {
+    book *bPtr = ;//gesuchtes buch
+    //Buch aufgerufen und angezeigt
+    char var;
+    printf("\nBuch ausleihen? \nJa[1] \nNein[2]");
+    fgets(var, 1, stdin); //Einlesen von antwort
+    if (var=='1'){
+        printf("\n Verfügbarkeit wird geprüft.");
+        if(bPtr->nob > 0){
+            printf("\n Buch verfügbar. Ein Exemplar wird ausgeliehen.");
+            bPtr->nob -= 1;
+        }
+        else{
+            printf("\n Keine Exemplare mehr vorhanden");
+        }
+    }
+    else if (var=='2');
+    else {
+        printf("\nungültige Eingabe.");
+        rentBook();
+    }
+}
+
+void returnBook(){
+    
+}
 
 int main() {
     //loadBooks als gegensatz zu saveBooks
