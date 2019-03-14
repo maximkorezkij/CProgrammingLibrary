@@ -49,6 +49,8 @@ book *newBook(char *newtitle, char *newauthor, char *newisbn, int newnob) {
 
     newBook.nob = newnob;
 
+    newBook.r_list;
+
     //rückgabe als pointer
     book *bookPtr = malloc(sizeof(book));
     //title
@@ -62,6 +64,8 @@ book *newBook(char *newtitle, char *newauthor, char *newisbn, int newnob) {
     strcpy(bookPtr->isbn_nr, newBook.isbn_nr);
     //number of books
     bookPtr->nob = newBook.nob;
+    //ausleiherliste
+    bookPtr->r_list;
     return bookPtr;
 }
 
@@ -292,17 +296,32 @@ void showByIsbn() {
 void rentBook() {
     book *bPtr = ;//gesuchtes buch
     //Buch aufgerufen und angezeigt
-    char var;
+    char var; //Antwortsvariable
+    char name[MAX] = {};
+    int h = 0; //Hilfsvariable
+    bool b = true; //Hilfsvariable
     printf("\nBuch ausleihen? \nJa[1] \nNein[2]");
     fgets(var, 1, stdin); //Einlesen von antwort
     if (var=='1'){
         printf("\n Verfügbarkeit wird geprüft.");
         if(bPtr->nob > 0){
-            printf("\n Buch verfügbar. Ein Exemplar wird ausgeliehen.");
-            bPtr->nob -= 1;
+            printf("\nBuch verfügbar. ");
+            printf("\nName eingeben (Nachname, Vorname)");
+            isString(name);
+            bPtr->nob -= 1; //Exemplarzahl um 1 reduziert
+            while(b)
+            {
+                if(bPtr->r_list[h][0] == ' ' || bPtr->r_list[h][0] =='\0'){
+                    bPtr->r_list[h][0] = name; //Name wird in Liste eingetragen
+                    printf("\nName wurde in Ausleihliste eingetragen. Vielen Dank.");
+                    b = false;
+                }
+                h++;
+            }
+            mainMenu(); //zurück zum Menü
         }
         else{
-            printf("\n Keine Exemplare mehr vorhanden");
+            printf("\n Keine Exemplare mehr vorhanden.");
         }
     }
     else if (var=='2');
