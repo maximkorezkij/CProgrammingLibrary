@@ -7,14 +7,17 @@ const char *isString(char *string);
 const char *isbnNumber(char *isbn);
 bool validISBN(char *isbn);
 book *newBook(char *newtitle, char *newauthor, char *newisbn, int newnob);
-void addBook();
+
 void saveBooks();
 void loadBooks();
 void show();
 void showByIsbn();
 void showByTitle();
-void rentBook();
 void moveBooks(int i);
 void addBookSorted();
 void mainMenu();
+void rentBook();
+void deleteMenu();
+void searchMenu();
+void goOn();
 #endif //PROJECT_FUNC_H
