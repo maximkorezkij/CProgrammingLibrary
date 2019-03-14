@@ -5,8 +5,8 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <ctype.h>
-#include "../inc/main.h"
-#include "../inc/func.h"
+#include "../include/main.h"
+#include "../include/func.h"
 
 const char *stringCut(char *buffer) {
     buffer[ strcspn(buffer, "\n") ] = 0;
@@ -52,7 +52,7 @@ book *newBook(char *newtitle, char *newauthor, char *newisbn, int newnob) {
     strcpy(bookPtr->isbn_nr, newisbn);
     //number of books
     bookPtr->nob = newnob;
-    bookPtr->r_lsit;
+    bookPtr->r_list;
     return bookPtr;
 }
 
@@ -284,6 +284,8 @@ void addBookSorted() {
     //number of books
     printf("\nWie viele Exemplare gibt es?\n(Nur Zahlen)\n");
     int nob = isNumber();
+    //Ausleiherliste
+    char r_list[][MAX] = {};
     //remove \n from strings
     stringCut(author);
     stringCut(title);
