@@ -13,6 +13,7 @@ void loadBooks();
 void show();
 void showByIsbn();
 void showByTitle();
+void rentBook();
 void moveBooks(int i);
 void addBookSorted();
 void mainMenu();
