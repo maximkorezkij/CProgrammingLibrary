@@ -1,9 +1,14 @@
-#include "../include/main.h"
-#include "../include/func.h"
+#ifndef PROJECTS_FUNC_C
+#define PROJECTS_FUNC_C
+#include "../inc/main.h"
+#include "../inc/func.h"
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#define Max 100
+#endif
+
 
 book *newBook(char *newtitle, char *newauthor, char *newisbn, int newnob) {
     book newBook;
@@ -20,7 +25,7 @@ book *newBook(char *newtitle, char *newauthor, char *newisbn, int newnob) {
     strcpy(bookPtr->isbn_nr, newisbn);
     //number of books
     bookPtr->nob = newnob;
-    bookPtr->r_list;
+    //bookPtr->r_list;
     return bookPtr;
 }
 
@@ -82,39 +87,39 @@ void loadBooks() {
     }
 }
 
-void show() {
-    printf("\nAnzahl Bücher : \t%d\n", lib1.registered);
+void show(lib help) {
+    printf("\nAnzahl Bücher : \t%d\n", help.registered);
     printf("- - - - - - - - - - -");
-    for ( int i = 0; i < lib1.registered; i++ ) {
+    for ( int i = 0; i < help.registered; i++ ) {
         //Titel
-        printf("\nTitel :\t\t%s", lib1.Books[ i ]->title);
+        printf("\nTitel :\t\t%s", help.Books[ i ]->title);
         //Author
-        printf("\nAuthor :\t%s", lib1.Books[ i ]->author);
+        printf("\nAuthor :\t%s", help.Books[ i ]->author);
         //ISBN
-        printf("\nISBN :\t\t%s", lib1.Books[ i ]->isbn_nr);
+        printf("\nISBN :\t\t%s", help.Books[ i ]->isbn_nr);
         //Number of Books
-        printf("\nExemplare :\t%d\n", lib1.Books[ i ]->nob);
+        printf("\nExemplare :\t%d\n", help.Books[ i ]->nob);
         printf("- - - - - - - - - - -");
     }
 }
 
-void showByIsbn() {
+void showByIsbn(lib help) {
     char filter[10] = {};
     int count = 0;      //zeigt an wie viele Treffer es gab
     printf("\n\nFiltern nach ISBN:\n\n");
     isString(filter);   //filter wird durch isString ein valider String mitgegeben -> möglich : ein ISBN filter
     stringCut(filter);  //entfernt '\n' vom String damit der compare richtig läuft
     printf("- - - - - - - - - - -");
-    for ( int i = 0; i < lib1.registered; i++ ) {
-        if (strncasecmp(filter,lib1.Books[i]->isbn_nr,strlen(filter)) == 0) {
+    for ( int i = 0; i < help.registered; i++ ) {
+        if (strncasecmp(filter,help.Books[i]->isbn_nr,strlen(filter)) == 0) {
             //Titel
-            printf("\nTitel :\t\t%s", lib1.Books[ i ]->title);
+            printf("\nTitel :\t\t%s", help.Books[ i ]->title);
             //Author
-            printf("\nAuthor :\t%s", lib1.Books[ i ]->author);
+            printf("\nAuthor :\t%s", help.Books[ i ]->author);
             //ISBN
-            printf("\nISBN :\t\t%s", lib1.Books[ i ]->isbn_nr);
+            printf("\nISBN :\t\t%s", help.Books[ i ]->isbn_nr);
             //Number of Books
-            printf("\nExemplare :\t%d\n", lib1.Books[ i ]->nob);
+            printf("\nExemplare :\t%d\n", help.Books[ i ]->nob);
             printf("- - - - - - - - - - -");
             count += 1;
         }
@@ -125,23 +130,23 @@ void showByIsbn() {
         printf("\nEs gibt kein Buch mit dieser ISBN-NR.\n");
 }
 
-void showByTitle() {
-    char filter[MAX] = {};
+void showByTitle(lib help) {
+    char filter[Max] = {};
     int count = 0;      //zeigt an wie viele Treffer es gab
     printf("\n\nFiltern nach Titel:\n\n");
     isString(filter);   //filter wird durch isString ein valider String mitgegeben -> möglich : ein ISBN filter
     stringCut(filter);  //entfernt '\n' vom String damit der compare richtig läuft
     printf("- - - - - - - - - - -");
-    for ( int i = 0; i < lib1.registered; i++ ) {
-        if (strncasecmp(filter,lib1.Books[i]->title,strlen(filter)) == 0) {
+    for ( int i = 0; i < help.registered; i++ ) {
+        if (strncasecmp(filter,help.Books[i]->title,strlen(filter)) == 0) {
             //Titel
-            printf("\nTitel :\t\t%s", lib1.Books[ i ]->title);
+            printf("\nTitel :\t\t%s", help.Books[ i ]->title);
             //Author
-            printf("\nAuthor :\t%s", lib1.Books[ i ]->author);
+            printf("\nAuthor :\t%s", help.Books[ i ]->author);
             //ISBN
-            printf("\nISBN :\t\t%s", lib1.Books[ i ]->isbn_nr);
+            printf("\nISBN :\t\t%s", help.Books[ i ]->isbn_nr);
             //Number of Books
-            printf("\nExemplare :\t%d\n", lib1.Books[ i ]->nob);
+            printf("\nExemplare :\t%d\n", help.Books[ i ]->nob);
             printf("- - - - - - - - - - -");
             count += 1;
         }
@@ -177,15 +182,15 @@ void addBookSorted() {
     lib1.Books = realloc(lib1.Books, sizeof(book *) * lib1.registered);
     //titel
     printf("\nWie ist der Titel des Buches ?\n(max.100 Zeichen)\n");
-    char title[MAX] = {};
+    char title[Max] = {};
     isString(title);    //returns title string if valid
     //author
     printf("\nWer ist der Author des Buches ?\n(max.100 Zeichen)\n");
-    char author[MAX] = {};
+    char author[Max] = {};
     isString(author);   //return author string if valid
     //isbn
     printf("\nWas ist die ISBN-Nr ?\n(muss gueltig sein)\n");
-    char isbn[MAX] = {};
+    char isbn[Max] = {};
     isbnNumber(isbn);
     //number of books
     printf("\nWie viele Exemplare gibt es?\n(Nur Zahlen)\n");
@@ -200,8 +205,8 @@ void addBookSorted() {
     }
     if ( lib1.registered > 1 ) {        //bei mehreren Büchern vergleicht man
         for ( int j = i; j < lib1.registered - 1; j ++ ) {
-            if ( strncasecmp(title, lib1.Books[ j ]->title, MAX) == 0 ) {       //eingegebener Titel = titel aus einem Buch
-                if ( strncasecmp(author, lib1.Books[ j ]->author, MAX) == 0 ) {    //eingegebener Author = author aus einem buch
+            if ( strncasecmp(title, lib1.Books[ j ]->title, Max) == 0 ) {       //eingegebener Titel = titel aus einem Buch
+                if ( strncasecmp(author, lib1.Books[ j ]->author, Max) == 0 ) {    //eingegebener Author = author aus einem buch
                     if ( strcasecmp(isbn, lib1.Books[ j ]->isbn_nr) == 0 ) {            //eingegebene isbn = isbn aus einem Buch
                         printf("Dieses Buch existiert schon. Probieren Sie es erneut:\n");  //fehler weil 2 identische bücher
                         lib1.registered --;
@@ -217,23 +222,23 @@ void addBookSorted() {
                         break;
                     }
                 }
-                if ( strncasecmp(author, lib1.Books[ j ]->author,MAX) > 0 ) {
+                if ( strncasecmp(author, lib1.Books[ j ]->author,Max) > 0 ) {
                     if ( i == lib1.registered - 1 )
                         break;
                     else
                         i ++;
                 }
-                if ( strncasecmp(author, lib1.Books[ j ]->author, MAX) < 0 ) {
+                if ( strncasecmp(author, lib1.Books[ j ]->author, Max) < 0 ) {
                     break;
                 }
             }
-            if ( strncasecmp(title, lib1.Books[ j ]->title, MAX) > 0 ) {
+            if ( strncasecmp(title, lib1.Books[ j ]->title, Max) > 0 ) {
                 if ( i == lib1.registered - 1 )
                     break;
                 else
                     i ++;
             }
-            if ( strncasecmp(title, lib1.Books[ j ]->title, MAX) < 0 ) {
+            if ( strncasecmp(title, lib1.Books[ j ]->title, Max) < 0 ) {
                 break;
             }
         }
@@ -242,31 +247,77 @@ void addBookSorted() {
     }
     printf("\n Das Buch wurde hinzugefügt.");
 }
-void rentBook() {
-    book *bPtr =;//gesuchtes buch
-    //Buch aufgerufen und angezeigt
-    char var; //Antwortsvariable
-    char name[MAX] = {};
-    int h = 0; //Hilfsvariable
-    bool b = true; //Hilfsvariable
-    printf("\nBuch ausleihen? \nJa[1] \nNein[2]");
-    fgets(var, 1, stdin); //Einlesen von antwort
-    if ( var == '1' ) {
-        printf("\n Verfügbarkeit wird geprüft.");
-        if ( bPtr->nob > 0 ) {
-            printf("\nBuch verfügbar. ");
-            printf("\nName eingeben (Nachname, Vorname)");
-            isString(name);
-            bPtr->nob -= 1; //Exemplarzahl um 1 reduziert
-            while ( b ) {
-                if ( bPtr->r_list[ h ][ 0 ] == ' ' || bPtr->r_list[ h ][ 0 ] == '\0' ) {
-                    bPtr->r_list[ h ][ 0 ] = name; //Name wird in Liste eingetragen
-                    printf("\nName wurde in Ausleihliste eingetragen. Vielen Dank.");
-                    b = false;
-                }
-                h ++;
-            }
-            mainMenu(); //zurück zum Menü
+//void rentBook() {
+//    book *bPtr =;//gesuchtes buch
+//    //Buch aufgerufen und angezeigt
+//    char var; //Antwortsvariable
+//    char name[MAX] = {};
+//    int h = 0; //Hilfsvariable
+//    bool b = true; //Hilfsvariable
+//    printf("\nBuch ausleihen? \nJa[1] \nNein[2]");
+//    fgets(var, 1, stdin); //Einlesen von antwort
+//    if ( var == '1' ) {
+//        printf("\n Verfügbarkeit wird geprüft.");
+//        if ( bPtr->nob > 0 ) {
+//            printf("\nBuch verfügbar. ");
+//            printf("\nName eingeben (Nachname, Vorname)");
+//            isString(name);
+//            bPtr->nob -= 1; //Exemplarzahl um 1 reduziert
+//            while ( b ) {
+//                if ( bPtr->r_list[ h ][ 0 ] == ' ' || bPtr->r_list[ h ][ 0 ] == '\0' ) {
+//                    bPtr->r_list[ h ][ 0 ] = name; //Name wird in Liste eingetragen
+//                    printf("\nName wurde in Ausleihliste eingetragen. Vielen Dank.");
+//                    b = false;
+//                }
+//                h ++;
+//            }
+//            mainMenu(); //zurück zum Menü
+//        }
+//    }
+//}
+
+void searchByTitle(lib help) {
+    char filter[Max] = {};
+    int count = 0;      //zeigt an wie viele Treffer es gab
+    lib tmplib = {};
+    book *tmpPtr = malloc(sizeof(book));
+    printf("\n\nFiltern nach Titel:\n\n");
+    isString(filter);   //filter wird durch isString ein valider String mitgegeben -> möglich : ein ISBN filter
+    stringCut(filter);  //entfernt '\n' vom String damit der compare richtig läuft
+    printf("- - - - - - - - - - -");
+    //bei zu vielen ergebnissen -> keine ausgabe
+    for (int i = 0;i < help.registered;i++ ) {
+        if(strncasecmp(filter, help.Books[i]->title,strlen(filter)) == 0) {
+        //title
+        tmpPtr->title = malloc(strlen(help.Books[ i ]->title) + 1);
+        strcpy(tmpPtr->title, help.Books[i]->title);
+        //author
+        tmpPtr->author = malloc(strlen(help.Books[ i ]->author) + 1);
+        strcpy(tmpPtr->author, help.Books[i]->author);
+        //isbn nr
+        tmpPtr->isbn_nr = malloc(strlen(help.Books[ i ]->isbn_nr) + 1);
+        strcpy(tmpPtr->isbn_nr, help.Books[i]->isbn_nr);
+        //number of books
+        tmpPtr->nob = help.Books[ i ]->nob;
+        tmpPtr->r_list;
+        tmplib.Books[i] =tmpPtr;
+        tmplib.registered++;
         }
     }
+    for (int j = 0;j < tmplib.registered;j++) {
+        printf("\nBuch Nr. %d ", j);
+        //Titel
+        printf("\nTitel :\t\t%s", tmplib.Books[j]->title);
+        //Author
+        printf("\nAuthor :\t%s", tmplib.Books[j]->author);
+        //ISBN
+        printf("\nISBN :\t\t%s", tmplib.Books[j]->isbn_nr);
+        //Number of Books
+        printf("\nExemplare :\t%d\n", tmplib.Books[j]->nob);
+        printf("- - - - - - - - - - -");
+    }
+    printf("Welches Buch wollen Sie auswählen?\n");
+    int h;
+    h = isNumber();
+    bookMenu( tmplib.Books[h-1]);
 }

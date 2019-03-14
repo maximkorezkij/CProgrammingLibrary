@@ -1,11 +1,13 @@
+#ifndef PROJECTS_HELP_C
+#define PROJECTS_HELP_C
 #include <stdlib.h>
 #include <stdbool.h>
 #include <ctype.h>
 #include <string.h>
 #include <stdio.h>
 #include <sys/stat.h>
-
-#define MAX 100
+#define Max 100
+#endif
 const char *stringCut(char *buffer) {
     buffer[ strcspn(buffer, "\n") ] = 0;
     return buffer;
@@ -68,7 +70,7 @@ int isNumber() {
 
 
 const char *isbnNumber(char *isbn) {
-    fgets(isbn, MAX, stdin);    //get ISBN string
+    fgets(isbn, Max, stdin);    //get ISBN string
     stringCut(isbn);            //cut \n from string
     if ( validISBN(isbn) == false ) {
         printf("Diese ISBN-Nr ist ungueltig. Versuchen Sie es erneut:\n");
@@ -79,7 +81,7 @@ const char *isbnNumber(char *isbn) {
 }
 
 const char *isString(char *string) {
-    fgets(string, MAX, stdin);  //get string
+    fgets(string, Max, stdin);  //get string
     if (string[0] == '\n' || string[0] == ' ' || string[0] == '\0') {   //validators
         printf("Eingabe ist ungültig. Versuchen Sie es erneut.\n");
         return isString(string);    //start again
