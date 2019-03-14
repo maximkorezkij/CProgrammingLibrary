@@ -38,7 +38,7 @@ bool validISBN(char *isbn) {
 
 book *newBook(char *newtitle, char *newauthor, char *newisbn, int newnob) {
     book newBook;
-    
+    newBook.r_list;
     //rückgabe als pointer
     book *bookPtr = malloc(sizeof(book));
     //title
@@ -52,6 +52,7 @@ book *newBook(char *newtitle, char *newauthor, char *newisbn, int newnob) {
     strcpy(bookPtr->isbn_nr, newisbn);
     //number of books
     bookPtr->nob = newnob;
+    bookPtr->r_lsit;
     return bookPtr;
 }
 
@@ -191,19 +192,6 @@ void show() {
     }
 }
 
-//void mainmenu() {
-//    printf("Willkommen");
-//    printf("Was wollen Sie tun ? \n"
-//           "(1) : Buch hnizufügen\n");
-//
-//    int i;
-//    scanf("%d", &i);
-//    switch(i)
-//    {
-//        case 1:
-//            break;
-//    }
-//}
 void showByIsbn() {
     char filter[10] = {};
     int count = 0;      //zeigt an wie viele Treffer es gab
@@ -347,19 +335,102 @@ void addBookSorted() {
         lib1.Books[ i ] = newBook(title, author, isbn, nob);    //belegt den richtigen Platz mit dem Buch
     }
 }
+void rentBook() {
+    book *bPtr =;//gesuchtes buch
+    //Buch aufgerufen und angezeigt
+    char var; //Antwortsvariable
+    char name[MAX] = {};
+    int h = 0; //Hilfsvariable
+    bool b = true; //Hilfsvariable
+    printf("\nBuch ausleihen? \nJa[1] \nNein[2]");
+    fgets(var, 1, stdin); //Einlesen von antwort
+    if ( var == '1' ) {
+        printf("\n Verfügbarkeit wird geprüft.");
+        if ( bPtr->nob > 0 ) {
+            printf("\nBuch verfügbar. ");
+            printf("\nName eingeben (Nachname, Vorname)");
+            isString(name);
+            bPtr->nob -= 1; //Exemplarzahl um 1 reduziert
+            while ( b ) {
+                if ( bPtr->r_list[ h ][ 0 ] == ' ' || bPtr->r_list[ h ][ 0 ] == '\0' ) {
+                    bPtr->r_list[ h ][ 0 ] = name; //Name wird in Liste eingetragen
+                    printf("\nName wurde in Ausleihliste eingetragen. Vielen Dank.");
+                    b = false;
+                }
+                h ++;
+            }
+            mainMenu(); //zurück zum Menü
+        }
+    }
+}
 
-//int main() {
-//    loadBooks();
-//    addBookSorted();
-//    addBookSorted();
-//    show();
-//    addBookSorted();
-//    show();
-//    addBookSorted();
-//    saveBooks();//speichert alle Bücher in einer binärdatei -> beim exit
-//    loadBooks();    //pointer in funtktionen
-//    show();
-////    showByIsbn();
-////    showByTitle();
-//    return 0;
-//}
+struct Buch{
+    char Name[200];
+};
+struct Buch testbuch;
+
+void mainMenu() {
+    while ( 1 ) {
+        // Hauptmenue
+        printf("\n\n                                                \n");
+        printf("             ________________| ||____               \n");
+        printf("            /__/__/__/__/__/__/__/__/\\             \n");
+        printf("           /__/__/__/__/__/__/__/__/ \\             \n");
+        printf("           #---------------------# _ |              \n");
+        printf("           # (1) Buch anlegen    #|| |              \n");
+        printf("           #---------------------#   |              \n");
+        printf("           # (2) Buch loeschen   # _ |              \n");
+        printf("           #---------------------#|| |  ( `´`´),    \n");
+        printf("           # (3) Buch suchen     #   | ( `   ´  )   \n");
+        printf("           #---------------------# _ |  ( `, /. )   \n");
+        printf("           # (4) Verlassen       #|| |   \   /      \n");
+        printf("           #-----------__--------#  /     | |       \n");
+        printf("           #  |_|_|   | _|   |_| # /      | |       \n");
+        printf("___________#----------|__|-------#/__,,_,// \\_,,,,_\n");
+        printf("____________________________________________________\n");
+        printf(" # Ihre Eingabe bitte: ");
+
+        printf("\n\n\n");
+
+//    while (1){
+//        system("cls");
+//        printf("(1) Buch anlegen\n");
+//        printf("(2) Buch loeschen\n");
+//        printf("(3) Buch suchen\n");
+//        printf("(4) Exit\n");
+//
+        printf("Auswahl: ");
+        char e = getchar();
+
+        switch (e) {
+            case '1':
+                printf("Gebe Name ein: \n");
+                char str[80];
+                scanf("%s", str);
+                strcpy(testbuch.Name, str);
+                system("PAUSE");
+                break;
+            case '2':
+                printf("weg damit\n");
+                strcpy(testbuch.Name, "");
+                system("PAUSE");
+                break;
+            case '3':
+                printf("Hab das buch gefunden\n");
+                printf(testbuch.Name);
+                printf("\n");
+                system("PAUSE");
+                break;
+            case '4':
+                return 0;
+            default:
+                printf("Falsche Eingabe\n");
+                system("cls");
+                break;
+        }
+    }
+}
+
+int main() {
+    mainMenu();
+}
