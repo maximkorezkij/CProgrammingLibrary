@@ -161,6 +161,7 @@ void mainMenu() {
                 goOn();
                 break;
             case 6:
+                bye();
                 exit(0);
                 break;
             default:
@@ -168,6 +169,21 @@ void mainMenu() {
                 break;
         }
     }
+}
+
+void bye() {
+
+    printf(" _                    _               \n");
+    printf("| |__    ___    ___  | | __ ___       \n");
+    printf("|  _ \\  / _ \\  / _ \\ | |/ // __|   \n");
+    printf("| |_) || (_) || (_) ||   < \\__ \\    \n");
+    printf("|____/  \\___/  \\___/ |_|\__\\\\___/ \n");
+    //Ausgabe "books" in ASCII Art
+
+    printf("\n");
+    printf("Danke fuer Ihren Besuch!");
+    printf("\n\n");
+
 }
 
 void bookMenu(book *help) {
