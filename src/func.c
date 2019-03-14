@@ -247,34 +247,34 @@ void addBookSorted() {
     }
     printf("\n Das Buch wurde hinzugefügt.");
 }
-//void rentBook() {
-//    book *bPtr =;//gesuchtes buch
-//    //Buch aufgerufen und angezeigt
-//    char var; //Antwortsvariable
-//    char name[MAX] = {};
-//    int h = 0; //Hilfsvariable
-//    bool b = true; //Hilfsvariable
-//    printf("\nBuch ausleihen? \nJa[1] \nNein[2]");
-//    fgets(var, 1, stdin); //Einlesen von antwort
-//    if ( var == '1' ) {
-//        printf("\n Verfügbarkeit wird geprüft.");
-//        if ( bPtr->nob > 0 ) {
-//            printf("\nBuch verfügbar. ");
-//            printf("\nName eingeben (Nachname, Vorname)");
-//            isString(name);
-//            bPtr->nob -= 1; //Exemplarzahl um 1 reduziert
-//            while ( b ) {
-//                if ( bPtr->r_list[ h ][ 0 ] == ' ' || bPtr->r_list[ h ][ 0 ] == '\0' ) {
-//                    bPtr->r_list[ h ][ 0 ] = name; //Name wird in Liste eingetragen
-//                    printf("\nName wurde in Ausleihliste eingetragen. Vielen Dank.");
-//                    b = false;
-//                }
-//                h ++;
-//            }
-//            mainMenu(); //zurück zum Menü
-//        }
-//    }
-//}
+
+void rentBook(book *helpPtr) {
+    //Buch aufgerufen und angezeigt
+    char *var; //Antwortsvariable
+    char name[Max] = {};
+    int h = 0; //Hilfsvariable
+    bool b = true; //Hilfsvariable
+    printf("\nBuch ausleihen? \nJa[1] \nNein[2]");
+    fgets(var, 1, stdin); //Einlesen von antwort
+    if ( var == '1' ) {
+        printf("\n Verfügbarkeit wird geprüft.");
+        if ( helpPtr->nob > 0 ) {
+            printf("\nBuch verfügbar. ");
+            printf("\nName eingeben (Nachname, Vorname)");
+            isString(name);
+            helpPtr->nob -= 1; //Exemplarzahl um 1 reduziert
+            while ( b ) {
+                if ( helpPtr->r_list[ h ][ 0 ] == ' ' || helpPtr->r_list[ h ][ 0 ] == '\0' ) {
+                    helpPtr->r_list[ h ][ 0 ] = name; //Name wird in Liste eingetragen
+                    printf("\nName wurde in Ausleihliste eingetragen. Vielen Dank.");
+                    b = false;
+                }
+                h ++;
+            }
+            bookMenu(); //zurück zum Menü
+        }
+    }
+}
 
 void searchByTitle(lib help) {
     char filter[Max] = {};
