@@ -424,7 +424,8 @@ void mainMenu() {
                 system("PAUSE");
                 break;
             case '4':
-                return 0;
+                //return 0;    //mainMenu ist vom typ void und gibt nichts zurück
+                break;
             default:
                 printf("Falsche Eingabe\n");
                 system("cls");
