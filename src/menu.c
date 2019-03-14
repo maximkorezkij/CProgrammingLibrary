@@ -161,7 +161,7 @@ void bookMenu(book *help) {
 
         switch (e) {
             case 1:
-                rentBook(help);
+                //rentBook
                 mainMenu();
                 break;
             case 2:
