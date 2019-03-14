@@ -15,4 +15,5 @@ void showByIsbn();
 void showByTitle();
 void moveBooks(int i);
 void addBookSorted();
+void mainMenu();
 #endif //PROJECT_FUNC_H
