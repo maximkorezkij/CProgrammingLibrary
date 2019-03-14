@@ -250,17 +250,17 @@ void addBookSorted() {
 
 void rentBook(book *helpPtr) {
     //Buch aufgerufen und angezeigt
-    char *var; //Antwortsvariable
-    char name[Max] = {};
+    char var; //Antwortsvariable
     int h = 0; //Hilfsvariable
     bool b = true; //Hilfsvariable
     printf("\nBuch ausleihen? \nJa[1] \nNein[2]");
-    fgets(var, 1, stdin); //Einlesen von antwort
+    var = (char) getchar(); //Einlesen von antwort
     if ( var == '1' ) {
         printf("\n Verfügbarkeit wird geprüft.");
         if ( helpPtr->nob > 0 ) {
             printf("\nBuch verfügbar. ");
             printf("\nName eingeben (Nachname, Vorname)");
+            char name[Max] = {};
             isString(name);
             helpPtr->nob -= 1; //Exemplarzahl um 1 reduziert
             while ( b ) {
@@ -272,6 +272,35 @@ void rentBook(book *helpPtr) {
                 h ++;
             }
             bookMenu(); //zurück zum Menü
+        }
+    }
+}
+
+void deleteBook(book *helpPtr){
+    lib tmplib = {};
+    printf("\nSind Sie sicher, dass sie dieses Buch loeschen wollen? \nJa[1] \nNein[2]");
+    char e = (char) getchar();
+    if(e == '1'){
+        for(int i = 0; i<lib1.registered; i++){
+            if(lib1.Books[i]->isbn_nr == helpPtr->isbn_nr) continue; //alle bücher außer des zu löschende
+            tmplib.Books[i] = lib1.Books[i];                        //werden in eine temporäre bibliothek gespeichert
+            tmplib.registered++;
+        }
+        for(int i = 0; i<lib1.registered; i++){         //speicherplatz in haupt bibliothek wird freigegeben
+            free(lib1.Books[i]);
+        }
+        lib1 = tmplib;      //der Hauptbib wird die temporäre übergeben
+        saveBooks();
+        for(int i = 0; i<lib1.registered; i++){
+            //Titel
+            printf("\nTitel :\t\t%s", lib1.Books[ i ]->title);
+            //Author
+            printf("\nAuthor :\t%s", lib1.Books[ i ]->author);
+            //ISBN
+            printf("\nISBN :\t\t%s", lib1.Books[ i ]->isbn_nr);
+            //Number of Books
+            printf("\nExemplare :\t%d\n", lib1.Books[ i ]->nob);
+            printf("- - - - - - - - - - -");
         }
     }
 }
