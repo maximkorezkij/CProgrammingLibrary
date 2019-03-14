@@ -230,30 +230,102 @@ void show(FILE *ptr) {
 }
 
 //ramón
-void mainMenu(){
-    
-    while (1){
-        
-        printf("(1) Buch anlegen\n");
-        printf("(2) Buch loeschen\n");
-        printf("(3) Buch suchen\n");
-        printf("(4) Exit\n");
+//void mainMenu(){
+//    
+//    while (1){
+//        
+//        printf("(1) Buch anlegen\n");
+//        printf("(2) Buch loeschen\n");
+//        printf("(3) Buch suchen\n");
+//        printf("(4) Exit\n");
+//
+//        printf("Auswahl: ");
+//        char e = getchar();
+//
+//        switch (e){
+//            case '1':
+//                addBook();
+//                break;
+//            case '2':
+//                //deleteBook();
+//                break;
+//            case '3':
+//                showByIsbn();
+//                break;
+//            case '4':
+//                saveBooks();
+//                return 0;
+//            default:
+//                printf("Falsche Eingabe\n");
+//                system("cls");
+//                break;
+//        }
+//    }
+//}
 
+//int main() {
+    //mainMenu();
+//}
+
+struct Buch{
+char Name[200];
+};
+struct Buch testbuch;
+
+void mainMenu(){
+    while(1)
+    {
+        // Hauptmenue
+        printf("\n\n                                                \n");
+        printf("             ________________| ||____               \n");
+        printf("            /__/__/__/__/__/__/__/__/\\             \n");
+        printf("           /__/__/__/__/__/__/__/__/ \\             \n");
+        printf("           #---------------------# _ |              \n");
+        printf("           # (1) Buch anlegen    #|| |              \n");
+        printf("           #---------------------#   |              \n");
+        printf("           # (2) Buch loeschen   # _ |              \n");
+        printf("           #---------------------#|| |  ( `´`´),    \n");
+        printf("           # (3) Buch suchen     #   | ( `   ´  )   \n");
+        printf("           #---------------------# _ |  ( `, /. )   \n");
+        printf("           # (4) Verlassen       #|| |   \   /      \n");
+        printf("           #-----------__--------#  /     | |       \n");
+        printf("           #  |_|_|   | _|   |_| # /      | |       \n");
+        printf("___________#----------|__|-------#/__,,_,// \\_,,,,_\n");
+        printf("____________________________________________________\n");
+        printf(" # Ihre Eingabe bitte: ");
+
+        printf("\n\n\n");
+
+//    while (1){
+//        system("cls");
+//        printf("(1) Buch anlegen\n");
+//        printf("(2) Buch loeschen\n");
+//        printf("(3) Buch suchen\n");
+//        printf("(4) Exit\n");
+//
         printf("Auswahl: ");
         char e = getchar();
 
         switch (e){
             case '1':
-                addBook();
+                printf("Gebe Name ein: \n");
+                char str[80];
+                scanf("%s", str);
+                strcpy(testbuch.Name,str);
+                system("PAUSE");
                 break;
             case '2':
-                //deleteBook();
+                printf("weg damit\n");
+                strcpy(testbuch.Name,"");
+                system("PAUSE");
                 break;
             case '3':
-                showByIsbn();
+                printf("Hab das buch gefunden\n");
+                printf(testbuch.Name);
+                printf("\n");
+                system("PAUSE");
                 break;
             case '4':
-                saveBooks();
                 return 0;
             default:
                 printf("Falsche Eingabe\n");
@@ -261,10 +333,11 @@ void mainMenu(){
                 break;
         }
     }
+
 }
 
 //int main() {
-    //mainMenu();
+//    mainMenu();
 //}
 
 
