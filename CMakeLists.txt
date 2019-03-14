@@ -7,5 +7,5 @@ include_directories(./include)
 include_directories(./src)
 
 add_executable(Project
-        inc/main.h inc/func.h
+        include/main.h include/func.h
         src/main.c src/func.c src/help.c src/menu.c )

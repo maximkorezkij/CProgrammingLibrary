@@ -1,5 +1,5 @@
-#include "../inc/main.h"
-#include "../inc/func.h"
+#include "../include/main.h"
+#include "../include/func.h"
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>

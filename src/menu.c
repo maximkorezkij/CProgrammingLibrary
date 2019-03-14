@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "../inc/func.h"
+#include "../include/func.h"
 
 void deleteMenu() {
     printf("Welches buch wollen Sie löschen?\n");
