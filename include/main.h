@@ -1,11 +1,12 @@
-#define MAX 100
-
+#ifndef PROJECT_MAIN_H
+#define PROJECT_MAIN_H
+#define Max 100
 typedef struct Book {       //ausleihliste fehlt noch
     char *title;
     char *author;
     char *isbn_nr;
     int nob;
-    char r_list[][MAX];
+    char r_list[][Max];
 }book;
 
 typedef struct Lib {
@@ -13,4 +14,5 @@ typedef struct Lib {
     int registered;
 }lib;
 
-lib lib1 = {};
+extern lib lib1;
+#endif
