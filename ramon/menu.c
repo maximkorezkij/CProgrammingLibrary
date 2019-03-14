@@ -186,6 +186,23 @@ void bye() {
 
 }
 
+void bookArt(){
+
+                printf("\n");
+                printf("    ,   ,  \n");
+                printf("   /////|  \n");
+                printf("  ///// |  \n");
+                printf(" |~~~|  |  \n");
+                printf(" |===|  |  \n");
+                printf(" |   |  |  \n");
+                printf(" |   |  |  \n");
+                printf(" |   | /   \n");
+                printf(" |===|/    \n");
+                printf(" '---'     \n\n");
+                //Ausgabe eines Buches in ASCII ART
+}
+
+
 void bookMenu(book *help) {
     //Titel
     printf("\nTitel :\t\t%s", help->title);
