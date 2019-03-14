@@ -286,12 +286,12 @@ void searchByTitle(lib help) {
     stringCut(filter);  //entfernt '\n' vom String damit der compare richtig läuft
     printf("- - - - - - - - - - -");
     //bei zu vielen ergebnissen -> keine ausgabe
-    for (int i = 0;i < help.registered;i++ ) {
+    for (int i = 0;i < help.registered;i++ ) {                                  //Bücher mit gleichen Titel rausfiltern
         if(strncasecmp(filter, help.Books[i]->title,strlen(filter)) == 0) {
         //title
-        tmpPtr->title = malloc(strlen(help.Books[ i ]->title) + 1);
-        strcpy(tmpPtr->title, help.Books[i]->title);
-        //author
+        tmpPtr->title = malloc(strlen(help.Books[ i ]->title) + 1);             //alle bücher werden in temporären Pointer
+        strcpy(tmpPtr->title, help.Books[i]->title);                            //gespeichert und später in die temporäre
+        //author                                                                //library eingefügt
         tmpPtr->author = malloc(strlen(help.Books[ i ]->author) + 1);
         strcpy(tmpPtr->author, help.Books[i]->author);
         //isbn nr
@@ -299,25 +299,62 @@ void searchByTitle(lib help) {
         strcpy(tmpPtr->isbn_nr, help.Books[i]->isbn_nr);
         //number of books
         tmpPtr->nob = help.Books[ i ]->nob;
-        tmpPtr->r_list;
-        tmplib.Books[i] =tmpPtr;
+        //tmpPtr->r_list;
         tmplib.registered++;
+        tmplib.Books = realloc(tmplib.Books, sizeof(book *) * tmplib.registered);
+        tmplib.Books[i] = tmpPtr;
+        count++;
         }
     }
-    for (int j = 0;j < tmplib.registered;j++) {
-        printf("\nBuch Nr. %d ", j);
-        //Titel
-        printf("\nTitel :\t\t%s", tmplib.Books[j]->title);
-        //Author
-        printf("\nAuthor :\t%s", tmplib.Books[j]->author);
-        //ISBN
-        printf("\nISBN :\t\t%s", tmplib.Books[j]->isbn_nr);
-        //Number of Books
-        printf("\nExemplare :\t%d\n", tmplib.Books[j]->nob);
-        printf("- - - - - - - - - - -");
+    if (count == 0) {
+        printf("Dieses Buch haben wir nicht.\n");
+        printf("Wollen Sie ein anderes suchen?\n");
+        printf("\t(1) Ja\n");
+        printf("\t(2) Nein\n");
+        int e;
+        e = isNumber();
+        while(1) {
+            switch(e) {
+                case 1:
+                    searchByTitle(lib1);
+                    break;
+                case 2:
+                    return;
+                default:
+                    printf("Eingabe ungültig\n");
+                    break;
+            }
+        }
     }
-    printf("Welches Buch wollen Sie auswählen?\n");
-    int h;
-    h = isNumber();
-    bookMenu( tmplib.Books[h-1]);
+    if( count > 0 ) {
+        for ( int j = 0; j < tmplib.registered; j ++ ) {                 //print alle zutreffenden Bücher
+            printf("\nBuch Nr. %d ", j+1);
+            //Titel
+            printf("\nTitel :\t\t%s", tmplib.Books[ j ]->title);
+            //Author
+            printf("\nAuthor :\t%s", tmplib.Books[ j ]->author);
+            //ISBN
+            printf("\nISBN :\t\t%s", tmplib.Books[ j ]->isbn_nr);
+            //Number of Books
+            printf("\nExemplare :\t%d\n", tmplib.Books[ j ]->nob);
+            printf("- - - - - - - - - - -");
+        }
+        printf("Welches Buch wollen Sie auswählen?\n");             //welches der passenden Bücher wird ausgewählt
+        int h;
+        h = isNumber();
+        book *helpPtr = malloc(sizeof(book));                       //helpPtr in dem das ausgewählte Buch kommt
+        //title
+        helpPtr->title = malloc(strlen(help.Books[ h - 1 ]->title) + 1);
+        strcpy(helpPtr->title, help.Books[ h - 1 ]->title);
+        //author
+        helpPtr->author = malloc(strlen(help.Books[ h - 1 ]->author) + 1);
+        strcpy(helpPtr->author, help.Books[ h - 1 ]->author);
+        //isbn nr
+        helpPtr->isbn_nr = malloc(strlen(help.Books[ h - 1 ]->isbn_nr) + 1);
+        strcpy(helpPtr->isbn_nr, help.Books[ h - 1 ]->isbn_nr);
+        //number of books
+        helpPtr->nob = help.Books[ h - 1 ]->nob;
+        //tmpPtr->r_list;
+        bookMenu(helpPtr);                  //helpptr sollte in ein Menü übergeben werden
+    }
 }

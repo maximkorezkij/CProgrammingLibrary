@@ -22,6 +22,8 @@ void mainMenu();
 //void rentBook();
 void deleteMenu();
 void searchMenu();
+void showMenu();
 void goOn();
-void bookMenu();
+void bookMenu(book *helpPtr);
+void searchByTitle(lib help);
 #endif //PROJECT_FUNC_H

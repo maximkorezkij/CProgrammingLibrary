@@ -24,8 +24,7 @@ void deleteMenu() {
             //nach isbn filtern
             break;
         case 3:
-            mainMenu();
-            break;
+            return;
         default:
             printf("Falsche Eingabe\n");
             system("cls");              //system cls funktioniert nur auf windows
@@ -33,7 +32,7 @@ void deleteMenu() {
     }
 }
 
-void searchMenu() {
+void showMenu() {
     printf("Wie wollen Sie suchen ?\n");
     printf("\t(1) Nach dem Titel suchen\n");
     printf("\t(2) Nach der ISBN-Nr suchen\n");
@@ -58,6 +57,31 @@ void searchMenu() {
             break;
     }
 }
+void searchMenu() {
+    printf("Wie wollen Sie suchen ?\n");
+    printf("\t(1) Nach dem Titel suchen\n");
+    printf("\t(2) Nach der ISBN-Nr suchen\n");
+    printf("\t(3) Verlassen\n");
+    printf("\nAuswahl: ");
+    int e;
+    e = isNumber();
+    switch (e) {
+        case 1:
+            searchByTitle(lib1);
+            goOn();
+            break;
+        case 2:
+            //searchByIsbn(lib1);
+            goOn();
+            break;
+        case 3:
+            return;
+        default:
+            printf("Falsche Eingabe\n");
+            break;
+    }
+}
+
 
 void goOn() {
     printf("\n\nWollen sie weitermachen?\n");
@@ -68,7 +92,7 @@ void goOn() {
     e = isNumber();
     switch (e) {
         case 1:
-            mainMenu();
+            return;
             break;
         case 2:
             exit(0);
@@ -85,9 +109,9 @@ void mainMenu() {
         printf("            /__/__/__/__/__/__/__/__/\\             \n");
         printf("           /__/__/__/__/__/__/__/__/ \\             \n");
         printf("           #---------------------# _ |              \n");
-        printf("           # (1) Buch ausleihen  #|| |              \n");
+        printf("           # (1) Buch hinzufügen #|| |              \n");
         printf("           #---------------------#   |              \n");
-        printf("           # (2) Buch hinzufügen # _ |              \n");
+        printf("           # (2) Buch ausleihen  # _ |              \n");
         printf("           #---------------------#|| |  ( `´`´),    \n");
         printf("           # (3) Buch löschen    #|| |              \n");
         printf("           #---------------------#   |              \n");
@@ -110,22 +134,26 @@ void mainMenu() {
 
         switch (e) {
             case 1:
+                printf("\n\n");
+                printf("Sie wollen ein Buch hinzufügen.\n");
+                addBookSorted();
+                saveBooks();
+                loadBooks();
+                goOn();
+                break;
+            case 2:
                 searchMenu();
                 //rentBook -> Mai füg das richtig ein pls
                 goOn();
                 break;
-            case 2:
-                printf("\n\n");
-                printf("Sie wollen ein Buch hinzufügen.\n");
-                addBookSorted();
-                goOn();
-                break;
             case 3:
                 deleteMenu();
+                saveBooks();
+                loadBooks();
                 goOn();
                 break;
             case 4:
-                searchMenu();
+                showMenu();
                 goOn();
                 break;
             case 5:
@@ -156,23 +184,22 @@ void bookMenu(book *help) {
     printf("\t(1) Buch ausleihen");
     printf("\t(2) Buch löschen");
     printf("\t(3) Zurück zum Hauptmenü");
-    while ( 1 ) {
+    while (1) {
         char e = (char) getchar();
 
         switch (e) {
             case 1:
                 //rentBook
-                mainMenu();
+                goOn();
                 break;
             case 2:
                 //deleteBook
-                mainMenu();
+                goOn();
                 break;
             case 3:
-                mainMenu();
-                break;
+                return;
             default:
-                printf("Falsche Eingabe\n\n");
+                printf("Eingabe ungültig\n");
                 break;
         }
     }
