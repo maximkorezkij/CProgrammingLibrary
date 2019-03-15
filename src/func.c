@@ -287,37 +287,47 @@ void rentBook(book *helpPtr) {
     }
 }
 
-//void returnBook(book *helpPtr){
-//    if(helpPtr->r_list[0][0] == '\n' || helpPtr->r_list[0][0] == ' ' || helpPtr->r_list[0][0] == '\0'){ //Überprüft, ob überhaupt was in der Ausleiherliste ist
-//        printf("Buch wurde in dieser Bibliothek noch nie ausgeliehen.");
-//    }
-//    else{
-//        char h_list[][Max] = {}; //Hilfsliste
-//        printf("\nNamen des Ausleihers eingeben (Nachname, Vorname)");
-//        char e = (char) getchar();
-//        for(int i = 0; i< sizeof(helpPtr->r_list); i++){      //Untersucht jeden eingetragenen in der liste
-//            if(stricmp(e, helpPtr->r_list[i])){         //String wird rausgefiltert
-//                continue;
-//            }
-//            for(int j = 0; j < sizeof(helpPtr->r_list[i]), j++){         //Listenelemente, die nicht übereinstimmen werden in eine Hilfsliste gelegt
-//                h_list[i][j] = helpPtr->r_list[i][j];
-//            }
-//        }
-//        if(sizeof(h_list) == sizeof(helpPtr->r_list)){
-//            printf("Kein Eintrag zu eingegebenen Ausleiher gefunden");
-//        }
-//        else{
-//            printf("Buch erfolgreich zuruekgegeben");
-//            for(int i = 0; i<sizeof(h_list); i++){
-//                for(int j = 0; j < sizeof(helpPtr->r_list[i]); j++){         //Listenelemente aus der Hilfslliste wieder in die ursprüngliche übertragen
-//                    h_list[i][j] = helpPtr->r_list[i][j];
-//                }
-//                h ++;
-//            }
-//            mainMenu(); //zurück zum Menü
-//        }
-//    }
-//}
+void returnBook(book *helpPtr){
+    if(helpPtr->r_list[0][0] == ' ' || helpPtr->r_list[0][0] == '\0'){ //Überprüft, ob überhaupt was in der Ausleiherliste ist
+        printf("\nKein Exemplar momentan verliehen.");
+    }
+    else{
+        char h_list[][Max] = {}; //Hilfsliste
+        int length = 0; //Hilfsvariable, die Länge der ursprünglichen Liste speichert
+        while(true){
+            if(helpPtr->r_list[length][0] == ' ' || helpPtr->r_list[length][0] == '\0')break;
+            length++;
+        }
+        printf("\nNamen des Ausleihers eingeben (Nachname, Vorname)\n");
+        char e = (char) getchar();
+        printf("\nListe wird durchsucht...");
+        for(int i = 0; i<length; i++){      //Untersucht jeden eingetragenen in der liste
+            if(strcasecmp(e, helpPtr->r_list[i]) == 0){         //String wird rausgefiltert
+                continue;
+            }
+            for(int j = 0; j < sizeof(helpPtr->r_list[i]); j++){         //Listenelemente, die nicht übereinstimmen werden in eine Hilfsliste gelegt
+                h_list[i][j] = helpPtr->r_list[i][j];
+            }
+        }
+        int h_length = 0; //Hilfsvariable, die Länge der Hilfsliste speichert
+        while(true){
+            if(h_list[h_length][0] == ' ' || h_list[length][0] == '\0')break;
+            h_length++;
+        }
+        if(h_length != length-1){
+            printf("\nKein Eintrag zu eingegebenen Ausleiher gefunden");
+        }
+        else{
+            printf("\nBuch erfolgreich zuruekgegeben");
+            for(int i = 0; i<sizeof(h_list); i++){
+                for(int j = 0; j < sizeof(helpPtr->r_list[i]); j++){         //Listenelemente aus der Hilfslliste wieder in die ursprüngliche übertragen
+                    h_list[i][j] = helpPtr->r_list[i][j];
+                }
+            }
+            mainMenu(); //zurück zum Menü
+        }
+    }
+}
 
 void searchByTitle(lib help) {
     char filter[Max] = {};

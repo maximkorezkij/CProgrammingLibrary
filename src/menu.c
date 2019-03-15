@@ -162,7 +162,7 @@ void bookMenu(book *help) {
                 goOn();
                 break;
             case 2:
-                //returnBook
+                returnBook(help);
                 goOn();
                 break;
             case 3:

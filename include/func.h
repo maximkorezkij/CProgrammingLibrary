@@ -20,6 +20,7 @@ void moveBooks(int i);
 void addBookSorted();
 void mainMenu();
 void rentBook(book *helpPtr);
+void returnBook(book *helpPtr);
 void searchMenu();
 //void showMenu();
 void goOn();
