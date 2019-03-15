@@ -293,7 +293,7 @@ void deleteBook(book *helpPtr){
         saveBooks();
         for(int i = 0; i<lib1.registered; i++){
             //Titel
-            printf("\nTitel :\t\t%s", lib1.Books[ i ]->title);
+            printf("\nTitel :\t\t%s", lib1.Books[ i ]->title);  //Test
             //Author
             printf("\nAuthor :\t%s", lib1.Books[ i ]->author);
             //ISBN
@@ -304,6 +304,32 @@ void deleteBook(book *helpPtr){
         }
     }
 }
+
+//void returnBook(book *helpPtr){
+//    if(helpPtr->r_list[0][0] == '\n' || helpPtr->r_list[0][0] == ' ' || helpPtr->r_list[0][0] == '\0'){ //Überprüft, ob überhaupt was in der Ausleiherliste ist
+//        printf("Buch wurde in dieser Bibliothek noch nie ausgeliehen.");
+//    }
+//    else{
+//        char h_list[][Max] = {}; //Hilfsliste
+//        printf("\nNamen des Ausleihers eingeben (Nachname, Vorname)");
+//        char e = (char) getchar();
+//        for(int i = 0; i<helpPtr->r_list.length; i++){      //Untersucht jeden eingetragenen in der liste
+//            if(stricmp(e, helpPtr->r_list[i])){         //String wird rausgefiltert
+//                continue;
+//            }
+//            h_list[i] = helpPtr->r_list[i];          //Listenelemente, die nicht übereinstimmen werden in eine Hilfsliste gelegt
+//        }
+//        if(h_list.length == helpPtr->r_list.length){
+//            printf("Kein Eintrag zu eingegebenen Ausleiher gefunden");
+//        }
+//        else{
+//            printf("Buch erfolgreich zuruekgegeben");
+//            for(int i = 0; i<h_list.lenght, i++){
+//                helpPtr->r_list[i] = h_list[i];
+//            }
+//        }
+//    }
+//}
 
 void searchByTitle(lib help) {
     char filter[Max] = {};
