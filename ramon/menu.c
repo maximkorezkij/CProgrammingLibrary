@@ -202,6 +202,15 @@ void bookArt(){
                 //Ausgabe eines Buches in ASCII ART
 }
 
+void glasses(){
+    printf("        _,--,            _     \n");
+    printf("   __,-'____| ___      /' |    \n");
+    printf(" /'   `\\,--,/'   `\\  /'   |  \n");
+    printf("(       )  (       )'          \n");
+    printf(" \\_   _/'  `\\_   _/          \n");
+    printf("   '''        '''              \n");
+    //displays a glasses in ASCII Art
+}
 
 void bookMenu(book *help) {
     //Titel
