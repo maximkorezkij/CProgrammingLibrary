@@ -51,6 +51,7 @@ void saveBooks() {
         length = strlen(lib1.Books[ i ]->author) + 1;
         fwrite(&length, sizeof(size_t), 1, ptr);
         fwrite(lib1.Books[ i ]->author, length, 1, ptr);
+        //save r_list
     }
     fclose(ptr);
 }
@@ -248,28 +249,41 @@ void rentBook(book *helpPtr) {
     char var; //Antwortsvariable
     int h = 0; //Hilfsvariable
     bool b = true; //Hilfsvariable
-    printf("\nBuch ausleihen? \n\t(1) Ja  \n\t(2) Nein");           //mach lieber eine switch anweisung wie bei deleteRequest und deleteBook
-    var = (char) getchar(); //  benutz lieber int und die funktino isNumber
-    if ( var == '1' ) {     //if var == 1 -> was iist bei dem rest ?
-        printf("\n Verfügbarkeit wird geprüft.");
-        if ( helpPtr->nob > 0 ) {       //wenn es keine exemplare mehr gibt ?
-            printf("\nBuch verfügbar. ");
-            printf("\nName eingeben (Nachname, Vorname)");
-            char name[Max] = {};
-            isString(name);
-            helpPtr->nob -= 1; //Exemplarzahl um 1 reduziert
-            while ( b ) {           //bin mir nicht sicher ob das tut was es soll
-                if ( helpPtr->r_list[ h ][ 0 ] == ' ' || helpPtr->r_list[ h ][ 0 ] == '\0' ) {
-                    for(int i = 0; i < sizeof(name); i++){
-                        helpPtr->r_list[h][i] = name[i];  //Name wird in Liste eingetragen
+    char name[Max] = {};
+    printf("\nBuch ausleihen? \n\t(1) Ja  \n\t(2) Nein");
+    var = (char) getchar();       //isNumber braucht 10 digits für eine korrekte Eingabe
+    switch(var) {
+        case '1':
+            printf("\n Verfügbarkeit wird geprüft.");
+            if (helpPtr->nob > 0) {       //wenn Exemplare vorhanden sind
+                printf("\nBuch verfügbar. ");
+                printf("\nName eingeben (Nachname, Vorname)");
+                isString(name);
+                helpPtr->nob -= 1; //Exemplarzahl um 1 reduziert
+                while (b) {           //klappert liste ab bis der name hinzugefügt worden ist
+                    if (helpPtr->r_list[h][0] == ' ' || helpPtr->r_list[h][0] == '\0') {
+                        for (int i = 0; i < sizeof(name); i++) {
+                            helpPtr->r_list[h][i] = name[i];  //Name wird in Liste eingetragen
+                        }
+                        printf("\nName wurde in Ausleihliste eingetragen. Vielen Dank.");
+                        b = false; //name wurde eingetragen und die schleife wird verlassen
                     }
-                    printf("\nName wurde in Ausleihliste eingetragen. Vielen Dank.");
-                    b = false;
+                    h++;
                 }
-                h ++;
+                printf("\nAusleiherliste :\t\t%s", helpPtr->r_list);  //liste muss noch ordnungsgemäß abgespeichert werden
+                bookMenu(helpPtr); //zurück zum Menü -> lieber ins main menu aber das können wir ändern
             }
-            bookMenu(helpPtr); //zurück zum Menü -> lieber ins main menu aber das können wir ändern
-        }
+            else{
+                printf("\nKeine Exemplare momentan vorhanden.\n");
+                bookMenu(helpPtr);
+            }
+            break;
+        case '2':
+            mainMenu();
+            break;
+        default:
+            printf("Ungültige Eingabe");
+            rentBook(helpPtr);
     }
 }
 
