@@ -269,7 +269,7 @@ void rentBook(book *helpPtr) {
                 }
                 h ++;
             }
-            bookMenu(); //zurück zum Menü
+            bookMenu(helpPtr); //zurück zum Menü
         }
     }
 }
