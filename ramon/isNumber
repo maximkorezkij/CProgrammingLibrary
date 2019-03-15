@@ -1,0 +1,33 @@
+int isNumber() {
+    char var[10];    //our number of books
+    int i = 0;       //help
+    int varisnum = 0;    //varisnum:  1 for yes, 0 for no -> function from
+
+    fgets(var,10,stdin);    //get string
+
+    if ( strlen(var) > 9 ) {     //größer 9 weil Nullterminiert                       //added comment
+        printf("Eingabe zu lang. Maximal 10-stellige Zahlen\n");
+        return isNumber();
+    }
+    if ( var[0] == '\n' || var[0] == ' ') {
+        printf("Eingabe ist ungueltig. Bitte geben Sie eine Zahl ein.\n");
+        return isNumber();                                                            //added line
+    }
+    while ( isalnum(var[ i ]) != 0 ) {    //loop until notnumeric character appears
+        if ( isdigit(var[ i ]) != 0 ) {
+            varisnum = 1;
+        }else {
+            varisnum = 0;
+            break;    //non-numeric character -> break
+        }
+        i++;
+    }
+
+    if ( varisnum == 0 ) {
+        printf("Eingabe ist ungueltig. Bitte geben Sie eine Zahl ein.\n");             //added line
+        return isNumber();      //start again
+    }else {
+        int num = atoi(var);    //convert valid number string into int
+        return num;             //return int
+    }
+}
