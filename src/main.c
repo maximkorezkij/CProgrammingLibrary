@@ -4,5 +4,6 @@
 int main() {
     loadBooks();
     mainMenu();
+    saveBooks();
     return 0;
 }

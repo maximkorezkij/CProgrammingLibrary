@@ -24,6 +24,7 @@ void deleteMenu();
 void searchMenu();
 void showMenu();
 void goOn();
+void deleteBook(book *delete);
 void bookMenu(book *helpPtr);
 void searchByTitle(lib help);
 void askForBook(char *title, char *author,char *isbn, int nob);

@@ -6,6 +6,7 @@ typedef struct Book {       //ausleihliste fehlt noch
     char *author;
     char *isbn_nr;
     int nob;
+    int id;
     char r_list[][Max];
 }book;
 

@@ -25,6 +25,8 @@ book *newBook(char *newtitle, char *newauthor, char *newisbn, int newnob) {
     strcpy(bookPtr->isbn_nr, newisbn);
     //number of books
     bookPtr->nob = newnob;
+    //id
+    bookPtr->id = lib1.registered - 1;
     //bookPtr->r_list;
     return bookPtr;
 }
@@ -36,6 +38,8 @@ void saveBooks() {
     fseek(ptr, 0, SEEK_SET);
     fwrite(&lib1.registered, sizeof(int), 1, ptr);
     for ( int i = 0; i < lib1.registered; i++ ) {
+        //save id
+        fwrite(&lib1.Books[i]->id, sizeof(int),1,ptr);
         //save number of books
         fwrite(&lib1.Books[ i ]->nob, sizeof(int), 1, ptr);
         //save isbn_nr
@@ -66,8 +70,9 @@ void loadBooks() {
         fread(&lib1.registered, sizeof(int), 1, ptr);
         lib1.Books = calloc(lib1.registered, sizeof(book *));
         for ( int i = 0; i < lib1.registered; i++ ) {
-
             lib1.Books[ i ] = malloc(sizeof(book));
+            //load id
+            fread(&lib1.Books[i]->id, sizeof(int),1,ptr);
             //load number of books
             fread(&lib1.Books[ i ]->nob, sizeof(int), 1, ptr);
             //load isbn_nr
@@ -181,10 +186,10 @@ void addBookSorted() {
     char title[Max] = {};
     char author[Max] = {};
     char isbn[Max] = {};
-    int nob;
+    int nob = 0;
     lib1.registered ++;
     lib1.Books = realloc(lib1.Books, sizeof(book *) * lib1.registered);
-    askForBook(&title, &author, &isbn, &nob);
+    askForBook(title, author, isbn, nob);
 
     int i = 0;      //enthält die richtige Stelle für das neue Buch
     if( lib1.registered == 1 ) {                 //bei einem Buch muss man nicht sortieren
@@ -370,4 +375,26 @@ void askForBook(char *title,char *author,char *isbn, int nob) {
     //remove \n from strings
     stringCut(author);
     stringCut(title);
+}
+
+void deleteBook(book *delete) {
+    book *bookPtr1; //hilfspointer
+    book *bookPtr2; //hilfspointer
+    if( lib1.registered == 1 ) {        //bei einem Buch löscht es das erste
+        free(lib1.Books[ 0 ]);
+        lib1.registered --;
+        lib1.Books = realloc(lib1.Books, 0);
+    }
+    if( lib1.registered > 1 ) {         //bei mehreren Bücher
+        int i = delete->id;
+        bookPtr1 = lib1.Books[ i ];     //bookPtr1 = das Element das gelöscht werden soll
+        for ( int j = i; j < lib1.registered - 2; j ++ ) {      //die Pointer von den Büchern wandern vor
+            bookPtr2 = lib1.Books[ j + 1 ];                     //bis sie das letzte in das vorletzte feld
+            lib1.Books[ j ] = bookPtr2;                         //schieben
+        }
+        free(bookPtr1);                     //das zu löschende Element wird gefreed
+        free(lib1.Books[lib1.registered-1]);    //das letzte nicht mehr belegte Feld wird gefreed
+        lib1.registered--;                      // Ein buch weniger
+        lib1.Books = realloc(lib1.Books, sizeof(book *) * lib1.registered);     //Speicher der lib anpassen
+    }
 }

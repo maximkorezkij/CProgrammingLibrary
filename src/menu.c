@@ -93,10 +93,8 @@ void goOn() {
     switch (e) {
         case 1:
             return;
-            break;
         case 2:
             exit(0);
-            break;
         default:
             printf("Eingabe ungültig\n");
             break;
@@ -112,7 +110,7 @@ void mainMenu() {
         printf("           # (1) Buch hinzufügen #|| |              \n");
         printf("           #---------------------#   |              \n");
         printf("           # (2) Buch ausleihen  # _ |              \n");
-        printf("           #---------------------#|| |  ( `´`´),    \n");
+        printf("           #---------------------#|| |              \n");
         printf("           # (3) Buch löschen    #|| |              \n");
         printf("           #---------------------#   |              \n");
         printf("           # (4) Buch suchen     # _ |              \n");
@@ -161,7 +159,6 @@ void mainMenu() {
                 break;
             case 6:
                 exit(0);
-                break;
             default:
                 printf("Falsche Eingabe\n");
                 break;
