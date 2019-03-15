@@ -313,20 +313,25 @@ void deleteBook(book *helpPtr){
 //        char h_list[][Max] = {}; //Hilfsliste
 //        printf("\nNamen des Ausleihers eingeben (Nachname, Vorname)");
 //        char e = (char) getchar();
-//        for(int i = 0; i<helpPtr->r_list.length; i++){      //Untersucht jeden eingetragenen in der liste
+//        for(int i = 0; i< sizeof(helpPtr->r_list); i++){      //Untersucht jeden eingetragenen in der liste
 //            if(stricmp(e, helpPtr->r_list[i])){         //String wird rausgefiltert
 //                continue;
 //            }
-//            h_list[i] = helpPtr->r_list[i];          //Listenelemente, die nicht übereinstimmen werden in eine Hilfsliste gelegt
+//            for(int j = 0; j < sizeof(helpPtr->r_list[i]), j++){         //Listenelemente, die nicht übereinstimmen werden in eine Hilfsliste gelegt
+//                h_list[i][j] = helpPtr->r_list[i][j];
+//            }
 //        }
-//        if(h_list.length == helpPtr->r_list.length){
+//        if(sizeof(h_list) == sizeof(helpPtr->r_list)){
 //            printf("Kein Eintrag zu eingegebenen Ausleiher gefunden");
 //        }
 //        else{
 //            printf("Buch erfolgreich zuruekgegeben");
-//            for(int i = 0; i<h_list.lenght, i++){
-//                helpPtr->r_list[i] = h_list[i];
+//            for(int i = 0; i<sizeof(h_list); i++){
+//                for(int j = 0; j < sizeof(helpPtr->r_list[i]); j++){         //Listenelemente aus der Hilfslliste wieder in die ursprüngliche übertragen
+//                    h_list[i][j] = helpPtr->r_list[i][j];
+//                }
 //            }
+//
 //        }
 //    }
 //}
