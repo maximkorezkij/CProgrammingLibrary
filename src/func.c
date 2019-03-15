@@ -243,27 +243,61 @@ void addBookSorted() {
     }
     printf("\n Das Buch wurde hinzugefügt.");
 }
-//void rentBook() {
-//    book *bPtr =;//gesuchtes buch
-//    //Buch aufgerufen und angezeigt
-//    char var; //Antwortsvariable
-//    char name[MAX] = {};
-//    int h = 0; //Hilfsvariable
-//    bool b = true; //Hilfsvariable
-//    printf("\nBuch ausleihen? \nJa[1] \nNein[2]");
-//    fgets(var, 1, stdin); //Einlesen von antwort
-//    if ( var == '1' ) {
-//        printf("\n Verfügbarkeit wird geprüft.");
-//        if ( bPtr->nob > 0 ) {
-//            printf("\nBuch verfügbar. ");
-//            printf("\nName eingeben (Nachname, Vorname)");
-//            isString(name);
-//            bPtr->nob -= 1; //Exemplarzahl um 1 reduziert
-//            while ( b ) {
-//                if ( bPtr->r_list[ h ][ 0 ] == ' ' || bPtr->r_list[ h ][ 0 ] == '\0' ) {
-//                    bPtr->r_list[ h ][ 0 ] = name; //Name wird in Liste eingetragen
-//                    printf("\nName wurde in Ausleihliste eingetragen. Vielen Dank.");
-//                    b = false;
+
+void rentBook(book *helpPtr) {
+    //Buch bereits aufgerufen und angezeigt
+    char var; //Antwortsvariable
+    int h = 0; //Hilfsvariable
+    bool b = true; //Hilfsvariable
+    printf("\nBuch ausleihen? \nJa[1] \nNein[2]");
+    var = (char) getchar(); //Einlesen von antwort
+    if ( var == '1' ) {
+        printf("\n Verfügbarkeit wird geprüft.");
+        if ( helpPtr->nob > 0 ) {
+            printf("\nBuch verfügbar. ");
+            printf("\nName eingeben (Nachname, Vorname)");
+            char name[Max] = {};
+            isString(name);
+            helpPtr->nob -= 1; //Exemplarzahl um 1 reduziert
+            while ( b ) {
+                if ( helpPtr->r_list[ h ][ 0 ] == ' ' || helpPtr->r_list[ h ][ 0 ] == '\0' ) {
+                    for(int i = 0; i < sizeof(name); i++){
+                        helpPtr->r_list[h][i] = name[i];  //Name wird in Liste eingetragen
+                    }
+                    printf("\nName wurde in Ausleihliste eingetragen. Vielen Dank.");
+                    b = false;
+                }
+                h ++;
+            }
+            bookMenu(); //zurück zum Menü
+        }
+    }
+}
+
+//void returnBook(book *helpPtr){
+//    if(helpPtr->r_list[0][0] == '\n' || helpPtr->r_list[0][0] == ' ' || helpPtr->r_list[0][0] == '\0'){ //Überprüft, ob überhaupt was in der Ausleiherliste ist
+//        printf("Buch wurde in dieser Bibliothek noch nie ausgeliehen.");
+//    }
+//    else{
+//        char h_list[][Max] = {}; //Hilfsliste
+//        printf("\nNamen des Ausleihers eingeben (Nachname, Vorname)");
+//        char e = (char) getchar();
+//        for(int i = 0; i< sizeof(helpPtr->r_list); i++){      //Untersucht jeden eingetragenen in der liste
+//            if(stricmp(e, helpPtr->r_list[i])){         //String wird rausgefiltert
+//                continue;
+//            }
+//            for(int j = 0; j < sizeof(helpPtr->r_list[i]), j++){         //Listenelemente, die nicht übereinstimmen werden in eine Hilfsliste gelegt
+//                h_list[i][j] = helpPtr->r_list[i][j];
+//            }
+//        }
+//        if(sizeof(h_list) == sizeof(helpPtr->r_list)){
+//            printf("Kein Eintrag zu eingegebenen Ausleiher gefunden");
+//        }
+//        else{
+//            printf("Buch erfolgreich zuruekgegeben");
+//            for(int i = 0; i<sizeof(h_list); i++){
+//                for(int j = 0; j < sizeof(helpPtr->r_list[i]); j++){         //Listenelemente aus der Hilfslliste wieder in die ursprüngliche übertragen
+//                    h_list[i][j] = helpPtr->r_list[i][j];
 //                }
 //                h ++;
 //            }
