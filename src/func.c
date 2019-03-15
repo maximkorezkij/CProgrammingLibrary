@@ -1,7 +1,7 @@
 #ifndef PROJECTS_FUNC_C
 #define PROJECTS_FUNC_C
-#include "../inc/main.h"
-#include "../inc/func.h"
+#include "../include/main.h"
+#include "../include/func.h"
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -178,160 +178,93 @@ void moveBooks(int i) {
 }
 
 void addBookSorted() {
+    char title[Max] = {};
+    char author[Max] = {};
+    char isbn[Max] = {};
+    int nob;
     lib1.registered ++;
     lib1.Books = realloc(lib1.Books, sizeof(book *) * lib1.registered);
-    //titel
-    printf("\nWie ist der Titel des Buches ?\n(max.100 Zeichen)\n");
-    char title[Max] = {};
-    isString(title);    //returns title string if valid
-    //author
-    printf("\nWer ist der Author des Buches ?\n(max.100 Zeichen)\n");
-    char author[Max] = {};
-    isString(author);   //return author string if valid
-    //isbn
-    printf("\nWas ist die ISBN-Nr ?\n(muss gueltig sein)\n");
-    char isbn[Max] = {};
-    isbnNumber(isbn);
-    //number of books
-    printf("\nWie viele Exemplare gibt es?\n(Nur Zahlen)\n");
-    int nob = isNumber();
-    //remove \n from strings
-    stringCut(author);
-    stringCut(title);
+    askForBook(&title, &author, &isbn, &nob);
 
     int i = 0;      //enthält die richtige Stelle für das neue Buch
-    if ( lib1.registered == 1 ) {                 //bei einem Buch muss man nicht sortieren
+    if( lib1.registered == 1 ) {                 //bei einem Buch muss man nicht sortieren
         lib1.Books[ i ] = newBook(title, author, isbn, nob);
     }
-    if ( lib1.registered > 1 ) {        //bei mehreren Büchern vergleicht man
+    if( lib1.registered > 1 ) {        //bei mehreren Büchern vergleicht man
         for ( int j = i; j < lib1.registered - 1; j ++ ) {
-            if ( strncasecmp(title, lib1.Books[ j ]->title, Max) == 0 ) {       //eingegebener Titel = titel aus einem Buch
-                if ( strncasecmp(author, lib1.Books[ j ]->author, Max) == 0 ) {    //eingegebener Author = author aus einem buch
-                    if ( strcasecmp(isbn, lib1.Books[ j ]->isbn_nr) == 0 ) {            //eingegebene isbn = isbn aus einem Buch
+            if( strncasecmp(title, lib1.Books[ j ]->title, Max) ==
+                    0 ) {       //eingegebener Titel = titel aus einem Buch
+                if( strncasecmp(author, lib1.Books[ j ]->author, Max) ==
+                        0 ) {    //eingegebener Author = author aus einem buch
+                    if( strcasecmp(isbn, lib1.Books[ j ]->isbn_nr) ==
+                            0 ) {            //eingegebene isbn = isbn aus einem Buch
                         printf("Dieses Buch existiert schon. Probieren Sie es erneut:\n");  //fehler weil 2 identische bücher
                         lib1.registered --;
                         addBookSorted();
                     }
-                    if ( strcasecmp(isbn, lib1.Books[ j ]->isbn_nr) > 0 ) {         //schauen ob eingegebene isbn nach(alphabetisch) vorhandener isbn kommt
-                        if ( i == lib1.registered - 1 )
+                    if( strcasecmp(isbn, lib1.Books[ j ]->isbn_nr) >
+                            0 ) {         //schauen ob eingegebene isbn nach(alphabetisch) vorhandener isbn kommt
+                        if( i == lib1.registered - 1 )
                             break;
                         else
                             i ++;
                     }
-                    if ( strcasecmp(isbn, lib1.Books[ j ]->isbn_nr) < 0 ) {         //schauen ob eingegebene isbn vor vorhanderer isbn kommt
+                    if( strcasecmp(isbn, lib1.Books[ j ]->isbn_nr) <
+                            0 ) {         //schauen ob eingegebene isbn vor vorhanderer isbn kommt
                         break;
                     }
                 }
-                if ( strncasecmp(author, lib1.Books[ j ]->author,Max) > 0 ) {
-                    if ( i == lib1.registered - 1 )
+                if( strncasecmp(author, lib1.Books[ j ]->author, Max) > 0 ) {
+                    if( i == lib1.registered - 1 )
                         break;
                     else
                         i ++;
                 }
-                if ( strncasecmp(author, lib1.Books[ j ]->author, Max) < 0 ) {
+                if( strncasecmp(author, lib1.Books[ j ]->author, Max) < 0 ) {
                     break;
                 }
             }
-            if ( strncasecmp(title, lib1.Books[ j ]->title, Max) > 0 ) {
-                if ( i == lib1.registered - 1 )
+            if( strncasecmp(title, lib1.Books[ j ]->title, Max) > 0 ) {
+                if( i == lib1.registered - 1 )
                     break;
                 else
                     i ++;
             }
-            if ( strncasecmp(title, lib1.Books[ j ]->title, Max) < 0 ) {
+            if( strncasecmp(title, lib1.Books[ j ]->title, Max) < 0 ) {
                 break;
             }
         }
-        moveBooks(i);       //schiebt alle Bücher weiter, sodass das neue buch seinen richtig sortierten Platz einnehmen kann
+        moveBooks(
+                i);       //schiebt alle Bücher weiter, sodass das neue buch seinen richtig sortierten Platz einnehmen kann
         lib1.Books[ i ] = newBook(title, author, isbn, nob);    //belegt den richtigen Platz mit dem Buch
     }
     printf("\n Das Buch wurde hinzugefügt.");
 }
-
-void rentBook(book *helpPtr) {
-    //Buch aufgerufen und angezeigt
-    char var; //Antwortsvariable
-    int h = 0; //Hilfsvariable
-    bool b = true; //Hilfsvariable
-    printf("\nBuch ausleihen? \nJa[1] \nNein[2]");
-    var = (char) getchar(); //Einlesen von antwort
-    if ( var == '1' ) {
-        printf("\n Verfügbarkeit wird geprüft.");
-        if ( helpPtr->nob > 0 ) {
-            printf("\nBuch verfügbar. ");
-            printf("\nName eingeben (Nachname, Vorname)");
-            char name[Max] = {};
-            isString(name);
-            helpPtr->nob -= 1; //Exemplarzahl um 1 reduziert
-            while ( b ) {
-                if ( helpPtr->r_list[ h ][ 0 ] == ' ' || helpPtr->r_list[ h ][ 0 ] == '\0' ) {
-                    helpPtr->r_list[ h ][ 0 ] = name; //Name wird in Liste eingetragen
-                    printf("\nName wurde in Ausleihliste eingetragen. Vielen Dank.");
-                    b = false;
-                }
-                h ++;
-            }
-            bookMenu(); //zurück zum Menü
-        }
-    }
-}
-
-void deleteBook(book *helpPtr){
-    lib tmplib = {};
-    printf("\nSind Sie sicher, dass sie dieses Buch loeschen wollen? \nJa[1] \nNein[2]");
-    char e = (char) getchar();
-    if(e == '1'){
-        for(int i = 0; i<lib1.registered; i++){
-            if(lib1.Books[i]->isbn_nr == helpPtr->isbn_nr) continue; //alle bücher außer des zu löschende
-            tmplib.Books[i] = lib1.Books[i];                        //werden in eine temporäre bibliothek gespeichert
-            tmplib.registered++;
-        }
-        for(int i = 0; i<lib1.registered; i++){         //speicherplatz in haupt bibliothek wird freigegeben
-            free(lib1.Books[i]);
-        }
-        lib1 = tmplib;      //der Hauptbib wird die temporäre übergeben
-        saveBooks();
-        for(int i = 0; i<lib1.registered; i++){
-            //Titel
-            printf("\nTitel :\t\t%s", lib1.Books[ i ]->title);  //Test
-            //Author
-            printf("\nAuthor :\t%s", lib1.Books[ i ]->author);
-            //ISBN
-            printf("\nISBN :\t\t%s", lib1.Books[ i ]->isbn_nr);
-            //Number of Books
-            printf("\nExemplare :\t%d\n", lib1.Books[ i ]->nob);
-            printf("- - - - - - - - - - -");
-        }
-    }
-}
-
-//void returnBook(book *helpPtr){
-//    if(helpPtr->r_list[0][0] == '\n' || helpPtr->r_list[0][0] == ' ' || helpPtr->r_list[0][0] == '\0'){ //Überprüft, ob überhaupt was in der Ausleiherliste ist
-//        printf("Buch wurde in dieser Bibliothek noch nie ausgeliehen.");
-//    }
-//    else{
-//        char h_list[][Max] = {}; //Hilfsliste
-//        printf("\nNamen des Ausleihers eingeben (Nachname, Vorname)");
-//        char e = (char) getchar();
-//        for(int i = 0; i< sizeof(helpPtr->r_list); i++){      //Untersucht jeden eingetragenen in der liste
-//            if(stricmp(e, helpPtr->r_list[i])){         //String wird rausgefiltert
-//                continue;
-//            }
-//            for(int j = 0; j < sizeof(helpPtr->r_list[i]), j++){         //Listenelemente, die nicht übereinstimmen werden in eine Hilfsliste gelegt
-//                h_list[i][j] = helpPtr->r_list[i][j];
-//            }
-//        }
-//        if(sizeof(h_list) == sizeof(helpPtr->r_list)){
-//            printf("Kein Eintrag zu eingegebenen Ausleiher gefunden");
-//        }
-//        else{
-//            printf("Buch erfolgreich zuruekgegeben");
-//            for(int i = 0; i<sizeof(h_list); i++){
-//                for(int j = 0; j < sizeof(helpPtr->r_list[i]); j++){         //Listenelemente aus der Hilfslliste wieder in die ursprüngliche übertragen
-//                    h_list[i][j] = helpPtr->r_list[i][j];
+//void rentBook() {
+//    book *bPtr =;//gesuchtes buch
+//    //Buch aufgerufen und angezeigt
+//    char var; //Antwortsvariable
+//    char name[MAX] = {};
+//    int h = 0; //Hilfsvariable
+//    bool b = true; //Hilfsvariable
+//    printf("\nBuch ausleihen? \nJa[1] \nNein[2]");
+//    fgets(var, 1, stdin); //Einlesen von antwort
+//    if ( var == '1' ) {
+//        printf("\n Verfügbarkeit wird geprüft.");
+//        if ( bPtr->nob > 0 ) {
+//            printf("\nBuch verfügbar. ");
+//            printf("\nName eingeben (Nachname, Vorname)");
+//            isString(name);
+//            bPtr->nob -= 1; //Exemplarzahl um 1 reduziert
+//            while ( b ) {
+//                if ( bPtr->r_list[ h ][ 0 ] == ' ' || bPtr->r_list[ h ][ 0 ] == '\0' ) {
+//                    bPtr->r_list[ h ][ 0 ] = name; //Name wird in Liste eingetragen
+//                    printf("\nName wurde in Ausleihliste eingetragen. Vielen Dank.");
+//                    b = false;
 //                }
+//                h ++;
 //            }
-//
+//            mainMenu(); //zurück zum Menü
 //        }
 //    }
 //}
@@ -339,6 +272,7 @@ void deleteBook(book *helpPtr){
 void searchByTitle(lib help) {
     char filter[Max] = {};
     int count = 0;      //zeigt an wie viele Treffer es gab
+    int j = 0;
     lib tmplib = {};
     book *tmpPtr = malloc(sizeof(book));
     printf("\n\nFiltern nach Titel:\n\n");
@@ -362,8 +296,9 @@ void searchByTitle(lib help) {
         //tmpPtr->r_list;
         tmplib.registered++;
         tmplib.Books = realloc(tmplib.Books, sizeof(book *) * tmplib.registered);
-        tmplib.Books[i] = tmpPtr;
+        tmplib.Books[j] = tmpPtr;
         count++;
+        j++;
         }
     }
     if (count == 0) {
@@ -417,4 +352,22 @@ void searchByTitle(lib help) {
         //tmpPtr->r_list;
         bookMenu(helpPtr);                  //helpptr sollte in ein Menü übergeben werden
     }
+}
+
+void askForBook(char *title,char *author,char *isbn, int nob) {
+    //titel
+    printf("\nWie ist der Titel des Buches ?\n(max.100 Zeichen)\n");
+    isString(title);    //returns title string if valid
+    //author
+    printf("\nWer ist der Author des Buches ?\n(max.100 Zeichen)\n");
+    isString(author);   //return author string if valid
+    //isbn
+    printf("\nWas ist die ISBN-Nr ?\n(muss gueltig sein)\n");
+    isbnNumber(isbn);
+    //number of books
+    printf("\nWie viele Exemplare gibt es?\n(Nur Zahlen)\n");
+    nob = isNumber();
+    //remove \n from strings
+    stringCut(author);
+    stringCut(title);
 }

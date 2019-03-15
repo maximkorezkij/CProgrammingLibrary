@@ -1,6 +1,6 @@
 #ifndef PROJECT_FUNC_H
 #define PROJECT_FUNC_H
-#include "../inc/main.h"
+#include "../include/main.h"
 #include <sys/param.h>
 #include <stdbool.h>
 
@@ -26,4 +26,5 @@ void showMenu();
 void goOn();
 void bookMenu(book *helpPtr);
 void searchByTitle(lib help);
+void askForBook(char *title, char *author,char *isbn, int nob);
 #endif //PROJECT_FUNC_H

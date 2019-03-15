@@ -3,9 +3,9 @@ project(Project C)
 
 set(CMAKE_C_STANDARD 99)
 
-include_directories(./include)
+include_directories(./inc)
 include_directories(./src)
 
 add_executable(Project
-        include/main.h include/func.h
+        inc/func.h
         src/main.c src/func.c src/help.c src/menu.c )

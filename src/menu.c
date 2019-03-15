@@ -3,8 +3,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "../inc/func.h"
-#include "../inc/main.h"
+#include "../include/func.h"
+#include "../include/main.h"
 #endif
 
 lib lib1 = {};
@@ -21,8 +21,7 @@ void deleteMenu() {
             //nach titel suchen
             break;
         case 2:
-            //searchByISBN
-            goOn();
+            //nach isbn filtern
             break;
         case 3:
             return;
@@ -145,7 +144,6 @@ void mainMenu() {
             case 2:
                 searchMenu();
                 //rentBook -> Mai füg das richtig ein pls
-                goOn();
                 break;
             case 3:
                 deleteMenu();
@@ -181,23 +179,23 @@ void bookMenu(book *help) {
     //Number of Books
     printf("\nExemplare :\t%d\n", help->nob);
     printf("- - - - - - - - - - -");
-    printf("Was wollen Sie machen?\n");
-    printf("\t(1) Buch ausleihen");
-    printf("\t(2) Buch löschen");
-    printf("\t(3) Zurück zum Hauptmenü");
+    printf("\nWas wollen Sie machen?\n");
+    printf("\t(1) Buch ausleihen\n");
+    printf("\t(2) Buch löschen\n");
+    printf("\t(3) Zurück zum Hauptmenü\n");
     while (1) {
         char e = (char) getchar();
 
         switch (e) {
-            case '1':
-                rentBook(help);
+            case 1:
+                //rentBook
                 goOn();
                 break;
-            case '2':
-                deleteBook(help);
+            case 2:
+                //deleteBook
                 goOn();
                 break;
-            case '3':
+            case 3:
                 return;
             default:
                 printf("Eingabe ungültig\n");
