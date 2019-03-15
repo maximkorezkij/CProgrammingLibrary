@@ -249,7 +249,7 @@ void addBookSorted() {
 }
 
 void rentBook(book *helpPtr) {
-    //Buch aufgerufen und angezeigt
+    //Buch bereits aufgerufen und angezeigt
     char var; //Antwortsvariable
     int h = 0; //Hilfsvariable
     bool b = true; //Hilfsvariable
@@ -265,7 +265,9 @@ void rentBook(book *helpPtr) {
             helpPtr->nob -= 1; //Exemplarzahl um 1 reduziert
             while ( b ) {
                 if ( helpPtr->r_list[ h ][ 0 ] == ' ' || helpPtr->r_list[ h ][ 0 ] == '\0' ) {
-                    helpPtr->r_list[ h ][ 0 ] = name; //Name wird in Liste eingetragen
+                    for(int i = 0; i < strln(name); i++){
+                        helpPtr->r_list[h][i] = name[i];  //Name wird in Liste eingetragen
+                    }
                     printf("\nName wurde in Ausleihliste eingetragen. Vielen Dank.");
                     b = false;
                 }
