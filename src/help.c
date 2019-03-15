@@ -56,7 +56,7 @@ const char *isbnNumber(char *isbn) {
 const char *isString(char *string) {
     fgets(string, Max, stdin);  //get string
     if (string[0] == '\n' || string[0] == ' ' || string[0] == '\0') {   //validators
-        printf("Eingabe ist ungültig. Versuchen Sie es erneut.\n");
+        printf("Eingabe ist ungueltig. Versuchen Sie es erneut.\n");
         return isString(string);    //start again
     }
     else {

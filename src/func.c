@@ -91,7 +91,7 @@ void loadBooks() {
 }
 
 void show(lib help) {
-    printf("\nAnzahl Bücher : \t%d\n", help.registered);
+    printf("\nAnzahl Buecher : \t%d\n", help.registered);
     printf("- - - - - - - - - - -");
     for ( int i = 0; i < help.registered; i++ ) {
         //Titel
@@ -241,7 +241,7 @@ void addBookSorted() {
                 i);       //schiebt alle Bücher weiter, sodass das neue buch seinen richtig sortierten Platz einnehmen kann
         lib1.Books[ i ] = newBook(title, author, isbn, nob);    //belegt den richtigen Platz mit dem Buch
     }
-    printf("\n Das Buch wurde hinzugefügt.");
+    printf("\n Das Buch wurde hinzugefuegt.");
 }
 
 void rentBook(book *helpPtr) {
@@ -254,9 +254,9 @@ void rentBook(book *helpPtr) {
     var = (char) getchar();       //isNumber braucht 10 digits für eine korrekte Eingabe
     switch(var) {
         case '1':
-            printf("\n Verfügbarkeit wird geprüft.");
+            printf("\n Verfügbarkeit wird geprueft.");
             if (helpPtr->nob > 0) {       //wenn Exemplare vorhanden sind
-                printf("\nBuch verfügbar. ");
+                printf("\nBuch verfuegbar. ");
                 printf("\nName eingeben (Nachname, Vorname)");
                 isString(name);
                 helpPtr->nob -= 1; //Exemplarzahl um 1 reduziert
@@ -282,7 +282,7 @@ void rentBook(book *helpPtr) {
             mainMenu();
             break;
         default:
-            printf("Ungültige Eingabe");
+            printf("Ungueltige Eingabe");
             rentBook(helpPtr);
     }
 }
@@ -365,7 +365,7 @@ void searchByTitle(lib help) {
             printf("Exemplare :\t%d\n", tmplib.Books[k]->nob);
             printf("- - - - - - - - - - -\n");
         }
-        printf("Welches Buch wollen Sie auswählen?\nAuswahl: \n");             //welches der passenden Bücher wird ausgewählt
+        printf("Welches Buch wollen Sie auswaehlen?\nAuswahl: \n");             //welches der passenden Bücher wird ausgewählt
         int h;
         h = isNumber();
         bookMenu(tmplib.Books[h-1]);
@@ -408,7 +408,7 @@ void searchByIsbn(lib help) {
             printf("Exemplare :\t%d\n", tmplib.Books[k]->nob);
             printf("- - - - - - - - - - -\n");
         }
-        printf("Welches Buch wollen Sie auswählen?\nAuswahl: \n");             //welches der passenden Bücher wird ausgewählt
+        printf("Welches Buch wollen Sie auswaehlen?\nAuswahl: \n");             //welches der passenden Bücher wird ausgewählt
         int h;
         h = isNumber();
         bookMenu(tmplib.Books[h-1]);
@@ -456,7 +456,7 @@ void deleteBook(book *delete) {
         lib1.registered--;                      // Ein buch weniger
         lib1.Books = realloc(lib1.Books, sizeof(book *) * lib1.registered);     //Speicher der lib anpassen
     }
-    printf("Das Buch wurde erfolgreich gelöscht.\n\n");
+    printf("Das Buch wurde erfolgreich geloescht.\n\n");
 }
 
 void searchAgain() {
