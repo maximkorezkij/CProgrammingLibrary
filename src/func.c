@@ -265,7 +265,7 @@ void rentBook(book *helpPtr) {
             helpPtr->nob -= 1; //Exemplarzahl um 1 reduziert
             while ( b ) {
                 if ( helpPtr->r_list[ h ][ 0 ] == ' ' || helpPtr->r_list[ h ][ 0 ] == '\0' ) {
-                    for(int i = 0; i < strln(name); i++){
+                    for(int i = 0; i < sizeof(name); i++){
                         helpPtr->r_list[h][i] = name[i];  //Name wird in Liste eingetragen
                     }
                     printf("\nName wurde in Ausleihliste eingetragen. Vielen Dank.");
