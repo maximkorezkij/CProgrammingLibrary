@@ -25,8 +25,6 @@ book *newBook(char *newtitle, char *newauthor, char *newisbn, int newnob) {
     strcpy(bookPtr->isbn_nr, newisbn);
     //number of books
     bookPtr->nob = newnob;
-    //id
-    bookPtr->id = lib1.registered - 1;
     //bookPtr->r_list;
     return bookPtr;
 }
@@ -39,7 +37,7 @@ void saveBooks() {
     fwrite(&lib1.registered, sizeof(int), 1, ptr);
     for ( int i = 0; i < lib1.registered; i++ ) {
         //save id
-        fwrite(&lib1.Books[i]->id, sizeof(int),1,ptr);
+        fwrite(&i,sizeof(int),1,ptr);
         //save number of books
         fwrite(&lib1.Books[ i ]->nob, sizeof(int), 1, ptr);
         //save isbn_nr
@@ -186,10 +184,10 @@ void addBookSorted() {
     char title[Max] = {};
     char author[Max] = {};
     char isbn[Max] = {};
-    int nob = 0;
+    int nob ;
     lib1.registered ++;
     lib1.Books = realloc(lib1.Books, sizeof(book *) * lib1.registered);
-    askForBook(title, author, isbn, nob);
+    askForBook(title, author, isbn, &nob);
 
     int i = 0;      //enthält die richtige Stelle für das neue Buch
     if( lib1.registered == 1 ) {                 //bei einem Buch muss man nicht sortieren
@@ -280,28 +278,17 @@ void searchByTitle(lib help) {
     int j = 0;
     lib tmplib = {};
     book *tmpPtr = malloc(sizeof(book));
-    printf("\n\nFiltern nach Titel:\n\n");
+    printf("\n\nFiltern nach Titel:\n");
+    printf("Auswahl: \n");
     isString(filter);   //filter wird durch isString ein valider String mitgegeben -> möglich : ein ISBN filter
     stringCut(filter);  //entfernt '\n' vom String damit der compare richtig läuft
-    printf("- - - - - - - - - - -");
+    printf("- - - - - - - - - - -\n");
     //bei zu vielen ergebnissen -> keine ausgabe
     for (int i = 0;i < help.registered;i++ ) {                                  //Bücher mit gleichen Titel rausfiltern
         if(strncasecmp(filter, help.Books[i]->title,strlen(filter)) == 0) {
-        //title
-        tmpPtr->title = malloc(strlen(help.Books[ i ]->title) + 1);             //alle bücher werden in temporären Pointer
-        strcpy(tmpPtr->title, help.Books[i]->title);                            //gespeichert und später in die temporäre
-        //author                                                                //library eingefügt
-        tmpPtr->author = malloc(strlen(help.Books[ i ]->author) + 1);
-        strcpy(tmpPtr->author, help.Books[i]->author);
-        //isbn nr
-        tmpPtr->isbn_nr = malloc(strlen(help.Books[ i ]->isbn_nr) + 1);
-        strcpy(tmpPtr->isbn_nr, help.Books[i]->isbn_nr);
-        //number of books
-        tmpPtr->nob = help.Books[ i ]->nob;
-        //tmpPtr->r_list;
         tmplib.registered++;
         tmplib.Books = realloc(tmplib.Books, sizeof(book *) * tmplib.registered);
-        tmplib.Books[j] = tmpPtr;
+        tmplib.Books[j] = help.Books[i];
         count++;
         j++;
         }
@@ -327,19 +314,19 @@ void searchByTitle(lib help) {
         }
     }
     if( count > 0 ) {
-        for ( int j = 0; j < tmplib.registered; j ++ ) {                 //print alle zutreffenden Bücher
-            printf("\nBuch Nr. %d ", j+1);
+        for ( int k = 0; k < tmplib.registered; k ++ ) {                 //print alle zutreffenden Bücher
+            printf("Buch Nr. (%d) \n", k+1);
             //Titel
-            printf("\nTitel :\t\t%s", tmplib.Books[ j ]->title);
+            printf("Titel :\t\t%s\n", tmplib.Books[k]->title);
             //Author
-            printf("\nAuthor :\t%s", tmplib.Books[ j ]->author);
+            printf("Author :\t%s\n", tmplib.Books[k]->author);
             //ISBN
-            printf("\nISBN :\t\t%s", tmplib.Books[ j ]->isbn_nr);
+            printf("ISBN :\t\t%s\n", tmplib.Books[k]->isbn_nr);
             //Number of Books
-            printf("\nExemplare :\t%d\n", tmplib.Books[ j ]->nob);
-            printf("- - - - - - - - - - -");
+            printf("Exemplare :\t%d\n", tmplib.Books[k]->nob);
+            printf("- - - - - - - - - - -\n");
         }
-        printf("Welches Buch wollen Sie auswählen?\n");             //welches der passenden Bücher wird ausgewählt
+        printf("Welches Buch wollen Sie auswählen?\nAuswahl: \n");             //welches der passenden Bücher wird ausgewählt
         int h;
         h = isNumber();
         book *helpPtr = malloc(sizeof(book));                       //helpPtr in dem das ausgewählte Buch kommt
@@ -359,7 +346,7 @@ void searchByTitle(lib help) {
     }
 }
 
-void askForBook(char *title,char *author,char *isbn, int nob) {
+void askForBook(char *title,char *author,char *isbn, int *nob) {
     //titel
     printf("\nWie ist der Titel des Buches ?\n(max.100 Zeichen)\n");
     isString(title);    //returns title string if valid
@@ -392,9 +379,11 @@ void deleteBook(book *delete) {
             bookPtr2 = lib1.Books[ j + 1 ];                     //bis sie das letzte in das vorletzte feld
             lib1.Books[ j ] = bookPtr2;                         //schieben
         }
+        bookPtr2 = lib1.Books[lib1.registered-1];
+        lib1.Books[lib1.registered-2] = bookPtr2;
         free(bookPtr1);                     //das zu löschende Element wird gefreed
-        free(lib1.Books[lib1.registered-1]);    //das letzte nicht mehr belegte Feld wird gefreed
         lib1.registered--;                      // Ein buch weniger
         lib1.Books = realloc(lib1.Books, sizeof(book *) * lib1.registered);     //Speicher der lib anpassen
     }
+    printf("Das Buch wurde erfolgreich gelöscht.\n\n");
 }

@@ -20,12 +20,13 @@ void moveBooks(int i);
 void addBookSorted();
 void mainMenu();
 //void rentBook();
-void deleteMenu();
 void searchMenu();
 void showMenu();
 void goOn();
+void bye();
 void deleteBook(book *delete);
 void bookMenu(book *helpPtr);
 void searchByTitle(lib help);
-void askForBook(char *title, char *author,char *isbn, int nob);
+void deleteRequest(book *delete);
+void askForBook(char *title, char *author,char *isbn, int *nob);
 #endif //PROJECT_FUNC_H

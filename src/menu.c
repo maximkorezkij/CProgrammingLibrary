@@ -8,86 +8,67 @@
 #endif
 
 lib lib1 = {};
-void deleteMenu() {
-    printf("Welches buch wollen Sie löschen?\n");
-    printf("\t(1) Nach dem Titel suchen\n");
-    printf("\t(2) Nach der ISBN-Nr filtern\n");
-    printf("\t(3) Verlassen\n");
-    printf("\nAuswahl: ");
-    int e;
-    e = isNumber();
-    switch (e) {
-        case 1:
-            //nach titel suchen
-            break;
-        case 2:
-            //nach isbn filtern
-            break;
-        case 3:
-            return;
-        default:
-            printf("Falsche Eingabe\n");
-            system("cls");              //system cls funktioniert nur auf windows
-            break;
-    }
-}
 
 void showMenu() {
-    printf("Wie wollen Sie suchen ?\n");
+    printf("Was wollen Sie anzeigen ?\n");
     printf("\t(1) Nach dem Titel suchen\n");
     printf("\t(2) Nach der ISBN-Nr suchen\n");
-    printf("\t(3) Verlassen\n");
-    printf("\nAuswahl: ");
+    printf("\t(3) Alle anzeigen\n");
+    printf("\t(4) Verlassen\n");
+    printf("\nAuswahl: \n");
     int e;
     e = isNumber();
     switch (e) {
         case 1:
             showByTitle(lib1);
-            goOn();
             break;
         case 2:
             showByIsbn(lib1);
-            goOn();
             break;
         case 3:
-            mainMenu();
+            show(lib1);
             break;
+        case 4:
+            return;
         default:
             printf("Falsche Eingabe\n");
             break;
     }
 }
 void searchMenu() {
-    printf("Wie wollen Sie suchen ?\n");
-    printf("\t(1) Nach dem Titel suchen\n");
-    printf("\t(2) Nach der ISBN-Nr suchen\n");
-    printf("\t(3) Verlassen\n");
-    printf("\nAuswahl: ");
-    int e;
-    e = isNumber();
-    switch (e) {
-        case 1:
-            searchByTitle(lib1);
-            goOn();
-            break;
-        case 2:
-            //searchByIsbn(lib1);
-            goOn();
-            break;
-        case 3:
-            return;
-        default:
-            printf("Falsche Eingabe\n");
-            break;
+    if( lib1.registered == 0 ) {
+        printf("Es gibt aktuell keine Bücher zum suchen.\n");
+        return;
+    }
+    if( lib1.registered > 0 ) {
+        printf("\t(1) Nach dem Titel suchen\n");
+        printf("\t(2) Nach der ISBN-Nr suchen\n");
+        printf("\t(3) Verlassen\n");
+        printf("\nAuswahl: \n");
+        int e;
+        e = isNumber();
+        switch (e) {
+            case 1:
+                searchByTitle(lib1);
+                break;
+            case 2:
+                //searchByIsbn(lib1);
+                break;
+            case 3:
+                return;
+            default:
+                printf("Falsche Eingabe\n");
+                break;
+        }
     }
 }
 
 
 void goOn() {
-    printf("\n\nWollen sie weitermachen?\n");
+    printf("\n\nZurück ins Hauptmenue?\n");
     printf("\t(1) Ja\n");
-    printf("\t(2) Nein\n");
-    printf("\nAuswahl: ");
+    printf("\t(2) Verlassen\n");
+    printf("\nAuswahl: \n");
     int e;
     e = isNumber();
     switch (e) {
@@ -126,7 +107,7 @@ void mainMenu() {
 
         printf("\n\n\n");
 
-        printf("Auswahl: ");
+        printf("Auswahl: \n");
         int e;
         e = isNumber();
 
@@ -140,14 +121,13 @@ void mainMenu() {
                 goOn();
                 break;
             case 2:
+                printf("Wie wollen Sie suchen ?\n");
                 searchMenu();
                 //rentBook -> Mai füg das richtig ein pls
                 break;
             case 3:
-                deleteMenu();
-                saveBooks();
-                loadBooks();
-                goOn();
+                printf("Welches Buch wollen Sie loeschen?\n");
+                searchMenu();
                 break;
             case 4:
                 showMenu();
@@ -158,6 +138,7 @@ void mainMenu() {
                 goOn();
                 break;
             case 6:
+                bye();
                 exit(0);
             default:
                 printf("Falsche Eingabe\n");
@@ -167,21 +148,26 @@ void mainMenu() {
 }
 
 void bookMenu(book *help) {
-    //Titel
-    printf("\nTitel :\t\t%s", help->title);
-    //Author
-    printf("\nAuthor :\t%s", help->author);
-    //ISBN
-    printf("\nISBN :\t\t%s", help->isbn_nr);
-    //Number of Books
-    printf("\nExemplare :\t%d\n", help->nob);
-    printf("- - - - - - - - - - -");
-    printf("\nWas wollen Sie machen?\n");
+    printf("\n");
+    printf("    ,   ,  \n");
+    printf("   /////|  \n");
+    printf("  ///// |  Titel :\t\t%s\n", help->title);
+    printf(" |~~~|  |  \n");
+    printf(" |===|  |  Author :\t\t%s\n", help->author);
+    printf(" |   |  |  \n");
+    printf(" |   |  |  ISBN :\t\t%s\n", help->isbn_nr);
+    printf(" |   | /   \n");
+    printf(" |===|/    Exemplare :\t%d\n", help->nob);
+    printf(" '---'     \n");
+    printf("- - - - - - - - - - - - - - - -\n");
+    printf("Was wollen Sie machen?\n");
     printf("\t(1) Buch ausleihen\n");
-    printf("\t(2) Buch löschen\n");
-    printf("\t(3) Zurück zum Hauptmenü\n");
+    printf("\t(2) Buch zurückgeben\n");
+    printf("\t(3) Buch löschen\n");
+    printf("\t(4) Zurück zum Hauptmenü\n");
     while (1) {
-        char e = (char) getchar();
+        int e;
+        e = isNumber();
 
         switch (e) {
             case 1:
@@ -189,14 +175,55 @@ void bookMenu(book *help) {
                 goOn();
                 break;
             case 2:
-                //deleteBook
+                //returnBook
                 goOn();
                 break;
             case 3:
+                deleteRequest(help);
+                return;
+            case 4:
                 return;
             default:
                 printf("Eingabe ungültig\n");
                 break;
         }
     }
+}
+
+void deleteRequest(book *delete) {
+    printf("\nWollen Sie das Buch wirklich löschen?\n");
+    printf("\t(1) Ja\n");
+    printf("\t(2) abbrechen\n");
+    while(1) {
+        int h;
+        h = isNumber();
+        switch(h) {
+            case 1:
+                deleteBook(delete);
+                printf("Aenderung wird gespeichert.\n Einen Moment bitte...\n");
+                saveBooks();
+                loadBooks();
+                printf("\nEs wurde erfolgreich gespeichert.\n");
+                return;
+            case 2:
+                return;
+            default:
+                printf("Eingabe ungültig\n");
+                break;
+        }
+    }
+}
+void bye() {
+
+    printf(" _                    _               \n");
+    printf("| |__    ___    ___  | | __ ___       \n");
+    printf("|  _ \\  / _ \\  / _ \\ | |/ // __|   \n");
+    printf("| |_) || (_) || (_) ||   < \\__ \\    \n");
+    printf("|____/  \\___/  \\___/ |_|\\_\\\\___/ \n");
+    //Ausgabe "books" in ASCII Art
+
+    printf("\n");
+    printf("Danke fuer Ihren Besuch!");
+    printf("\n\n");
+
 }

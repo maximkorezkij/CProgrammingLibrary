@@ -15,7 +15,7 @@ const char *stringCut(char *buffer) {
 
 bool validISBN(char *isbn) {
     // length must be 10
-    int n = strlen(isbn);
+    size_t n = strlen(isbn);
     if ( n != 10 )
         return false;
     // sum of first 9 digits
@@ -49,6 +49,7 @@ int isNumber() {
     }
     if ( var[0] == '\n' || var[0] == ' ') {
         printf("Eingabe ist ungültig. Bitte geben Sie eine Zahl ein.\n");
+        return isNumber();
     }
     while ( isalnum(var[ i ]) != 0 ) {    //loop until notnumeric character appears
         if ( isdigit(var[ i ]) != 0 ) {
@@ -61,9 +62,10 @@ int isNumber() {
     }
 
     if ( varisnum == 0 ) {
+        printf("Eingabe ist ungültig. Bitte geben Sie eine Zahl ein.\n");
         return isNumber();      //start again
     }else {
-        int num = atoi(var);    //convert valid number string into int
+        int num = (int) strtol(var, NULL, 10);    //convert valid number string into int
         return num;             //return int
     }
 }
