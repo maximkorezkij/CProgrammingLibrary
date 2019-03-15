@@ -57,7 +57,7 @@ void saveBooks() {
 
 void loadBooks() {
     FILE *ptr;
-    ptr = fopen("saves.b","rb");
+    ptr = fopen("saves.b","rb");            //kein fclose auf nen null pointer
     size_t length;
     if ( ptr == NULL || !fsize("saves.b")) {
         fclose(ptr);
@@ -79,7 +79,7 @@ void loadBooks() {
             //load title
             fread(&length, sizeof(size_t), 1, ptr);
             lib1.Books[ i ]->title = malloc(length);
-            fread(lib1.Books[ i ]->title, length, 1, ptr);
+            fread(lib1.Books[ i ]->title, length, 1, ptr); // if fread ... != length -> auf die fresse
             //load author
             fread(&length, sizeof(size_t), 1, ptr);
             lib1.Books[ i ]->author = malloc(length);

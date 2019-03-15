@@ -55,6 +55,7 @@ void searchMenu() {
             break;
         case 2:
             searchByIsbn(lib1);
+            break;
         case 3:
             return;
         default:

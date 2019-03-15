@@ -27,6 +27,8 @@ void bye();
 void deleteBook(book *delete);
 void bookMenu(book *helpPtr);
 void searchByTitle(lib help);
+void searchByIsbn(lib help);
 void deleteRequest(book *delete);
 void askForBook(char *title, char *author,char *isbn, int *nob);
+void searchAgain();
 #endif //PROJECT_FUNC_H
