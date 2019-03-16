@@ -57,22 +57,22 @@ void goOn() {
 }
 void mainMenu() {
     while ( 1 ) {
-        printf("\n\n                                                \n");
-        printf("             ________________| ||____               \n");
-        printf("            /__/__/__/__/__/__/__/__/\\\\           \n");
-        printf("           /__/__/__/__/__/__/__/__/ \\\\           \n");
-        printf("           #----------------------# _ |              \n");
-        printf("           # (1) Buch hinzufuegen #|| |              \n");
-        printf("           #----------------------#   |              \n");
-        printf("           # (2) Buch suchen      # _ |              \n");
-        printf("           #----------------------#|| |  ( `´`´),    \n");
-        printf("           # (3) Buecher anzeigen #   | ( `   ´  )   \n");
-        printf("           #----------------------# _ |  ( `, /. )   \n");
-        printf("           # (4) Verlassen        #|| |    \\   /     \n");
-        printf("           #-----------__---------#  /      | |      \n");
-        printf("           #  |_|_|   | _|   |_|  # /       | |      \n");
+        printf("\n\n                                                   \n");
+        printf("             ________________| ||____                  \n");
+        printf("            /__/__/__/__/__/__/__/__/\\                \n");
+        printf("           /__/__/__/__/__/__/__/__/  \\               \n");
+        printf("           #----------------------# _ |                \n");
+        printf("           # (1) Buch hinzufuegen #|| |                \n");
+        printf("           #----------------------#   |                \n");
+        printf("           # (2) Buch suchen      # _ |                \n");
+        printf("           #----------------------#|| |  ( `´`´),      \n");
+        printf("           # (3) Buecher anzeigen #   | ( `   ´  )     \n");
+        printf("           #----------------------# _ |  ( `, /. )     \n");
+        printf("           # (4) Verlassen        #|| |    \\   /      \n");
+        printf("           #-----------__---------#  /      | |        \n");
+        printf("           #  |_|_|   | _|   |_|  # /       | |        \n");
         printf("___________#----------|__|--------#/__,,_,,// \\\\_,,_,\n");
-        printf("             Buecher gesamt :  %d                    \n",lib1.registered);
+        printf("             Buecher gesamt :  %d                      \n",lib1.registered);
         printf("____________________________________________________\n");
 
         printf("\n\n\n");
