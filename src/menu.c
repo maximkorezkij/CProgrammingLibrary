@@ -8,34 +8,7 @@
 #endif
 
 lib lib1 = {};
-//brauchen wir diese funktion ?
 
-//void showMenu() {
-//    printf("Was wollen Sie anzeigen ?\n");
-//    printf("\t(1) Nach dem Titel suchen\n");
-//    printf("\t(2) Nach der ISBN-Nr suchen\n");
-//    printf("\t(3) Alle anzeigen\n");
-//    printf("\t(4) Verlassen\n");
-//    printf("\nAuswahl: \n");
-//    int e;
-//    e = isNumber();
-//    switch (e) {
-//        case 1:
-//            showByTitle(lib1);
-//            break;
-//        case 2:
-//            showByIsbn(lib1);
-//            break;
-//        case 3:
-//            show(lib1);
-//            break;
-//        case 4:
-//            return;
-//        default:
-//            printf("Eingabe ungueltig.\n");
-//            break;
-//    }
-//}
 void searchMenu() {
     if( lib1.registered == 0 ) {
         printf("Es gibt aktuell keine Buecher zum suchen.\n");
@@ -110,8 +83,9 @@ void mainMenu() {
 
         switch (e) {
             case 1: //buch hinzufuegen
-                printf("\n\n");
-                printf("Sie wollen ein Buch hinzufuegen.\n");
+                printf(" - - - - - - - - - - - - - - - - -\n");
+                printf("| Sie wollen ein Buch hinzufuegen |\n");
+                printf(" - - - - - - - - - - - - - - - - -\n");
                 addBookSorted();
                 saveBooks();
                 loadBooks();

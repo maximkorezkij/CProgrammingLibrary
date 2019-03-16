@@ -30,7 +30,7 @@ book *newBook(char *newtitle, char *newauthor, char *newisbn, int newnob) {
 
 void saveBooks() {
     FILE *ptr;
-    ptr = fopen("saves.b","wb");
+    ptr = fopen(data ,"wb");
     size_t length = 0;
     fseek(ptr, 0, SEEK_SET);
     fwrite(&lib1.registered, sizeof(int), 1, ptr);
@@ -58,9 +58,12 @@ void saveBooks() {
 
 void loadBooks() {
     FILE *ptr;
-    ptr = fopen("saves.b","rb");            //kein fclose auf nen null pointer
+    ptr = fopen(data,"rb");
     size_t length;
-    if ( ptr == NULL || !fsize("saves.b")) {
+    if(!fsize("saves.b")) {
+        printf("Keine Datei zum Laden einer vorhandenen Bibliothek.\n");
+    }
+    if ( ptr == NULL ) {
         fclose(ptr);
         printf("Keine Datei zum Laden einer vorhandenen Bibliothek.\n");
     }else {
@@ -76,15 +79,24 @@ void loadBooks() {
             //load isbn_nr
             fread(&length, sizeof(size_t), 1, ptr);
             lib1.Books[ i ]->isbn_nr = malloc(length);
-            fread(lib1.Books[ i ]->isbn_nr, length, 1, ptr);
+            if(fread(lib1.Books[ i ]->isbn_nr, length, 1, ptr) != 1 ) {
+                printf("Es gab ein Problem mit dem Laden der Sicherungsdatei.\nNotfalls müssen sie %s löschen.\n",data);
+                exit(0);
+            }
             //load title
             fread(&length, sizeof(size_t), 1, ptr);
             lib1.Books[ i ]->title = malloc(length);
-            fread(lib1.Books[ i ]->title, length, 1, ptr); // if fread ... != length -> auf die fresse
+            if (fread(lib1.Books[ i ]->title, length, 1, ptr) != 1 ) {
+                printf("Es gab ein Problem mit dem Laden der Sicherungsdatei.\nNotfalls müssen sie %s löschen.\n",data);
+                exit(0);
+            }
             //load author
             fread(&length, sizeof(size_t), 1, ptr);
             lib1.Books[ i ]->author = malloc(length);
-            fread(lib1.Books[ i ]->author, length, 1, ptr);
+            if (fread(lib1.Books[ i ]->author, length, 1, ptr)!= 1 ) {
+                printf("Es gab ein Problem mit dem Laden der Sicherungsdatei.\nNotfalls müssen sie %s löschen.\n",data);
+                exit(0);
+            }
         }
         fclose(ptr);
     }
@@ -105,60 +117,6 @@ void show(lib help) {
         printf("- - - - - - - - - - -");
     }
 }
-//
-//void showByIsbn(lib help) {
-//    char filter[10] = {};
-//    int count = 0;      //zeigt an wie viele Treffer es gab
-//    printf("\n\nFiltern nach ISBN:\n\n");
-//    isString(filter);   //filter wird durch isString ein valider String mitgegeben -> möglich : ein ISBN filter
-//    stringCut(filter);  //entfernt '\n' vom String damit der compare richtig läuft
-//    printf("- - - - - - - - - - -");
-//    for ( int i = 0; i < help.registered; i++ ) {
-//        if (strncasecmp(filter,help.Books[i]->isbn_nr,strlen(filter)) == 0) {
-//            //Titel
-//            printf("\nTitel :\t\t%s", help.Books[ i ]->title);
-//            //Author
-//            printf("\nAuthor :\t%s", help.Books[ i ]->author);
-//            //ISBN
-//            printf("\nISBN :\t\t%s", help.Books[ i ]->isbn_nr);
-//            //Number of Books
-//            printf("\nExemplare :\t%d\n", help.Books[ i ]->nob);
-//            printf("- - - - - - - - - - -");
-//            count += 1;
-//        }
-//    }
-//    if( count > 0 )
-//        printf("\nAnzahl der Treffer : %d\n",count);
-//    else
-//        printf("\nEs gibt kein Buch mit dieser ISBN-NR.\n");
-//}
-//
-//void showByTitle(lib help) {
-//    char filter[Max] = {};
-//    int count = 0;      //zeigt an wie viele Treffer es gab
-//    printf("\n\nFiltern nach Titel:\n\n");
-//    isString(filter);   //filter wird durch isString ein valider String mitgegeben -> möglich : ein ISBN filter
-//    stringCut(filter);  //entfernt '\n' vom String damit der compare richtig läuft
-//    printf("- - - - - - - - - - -");
-//    for ( int i = 0; i < help.registered; i++ ) {
-//        if (strncasecmp(filter,help.Books[i]->title,strlen(filter)) == 0) {
-//            //Titel
-//            printf("\nTitel :\t\t%s", help.Books[ i ]->title);
-//            //Author
-//            printf("\nAuthor :\t%s", help.Books[ i ]->author);
-//            //ISBN
-//            printf("\nISBN :\t\t%s", help.Books[ i ]->isbn_nr);
-//            //Number of Books
-//            printf("\nExemplare :\t%d\n", help.Books[ i ]->nob);
-//            printf("- - - - - - - - - - -");
-//            count += 1;
-//        }
-//    }
-//    if( count > 0 )
-//        printf("\nAnzahl der Treffer : %d\n",count);
-//    else
-//        printf("\nEs gibt kein Buch mit diesem Titel.\n");
-//}
 
 void moveBooks(int i) {
     book *bookPtr1; //hilfspointer
@@ -299,10 +257,10 @@ void returnBook(book *helpPtr){
             length++;
         }
         printf("\nNamen des Ausleihers eingeben (Nachname, Vorname)\n");
-        char e = (char) getchar();
+        char e = (char) getchar();      //das wird nur einen Buchstaben ausgeben
         printf("\nListe wird durchsucht...");
         for(int i = 0; i<length; i++){      //Untersucht jeden eingetragenen in der liste
-            if(strcasecmp(e, helpPtr->r_list[i]) == 0){         //String wird rausgefiltert
+            if(strcasecmp(e, helpPtr->r_list[i]) == 0){         //String wird rausgefiltert     //du hast keinen String-> des wird iwann schief gehen
                 continue;
             }
             for(int j = 0; j < sizeof(helpPtr->r_list[i]); j++){         //Listenelemente, die nicht übereinstimmen werden in eine Hilfsliste gelegt
