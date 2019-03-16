@@ -315,7 +315,7 @@ void searchByTitle(lib help) {
             //title
             printf("Titel :\t\t%s\n", tmplib.Books[k]->title);
             //author
-            printf("Author :\t%s\n", tmplib.Books[k]->author);
+            printf("Autor :\t%s\n", tmplib.Books[k]->author);
             //isbn_nr
             printf("ISBN :\t\t%s\n", tmplib.Books[k]->isbn_nr);
             //number of books
@@ -358,7 +358,7 @@ void searchByIsbn(lib help) {
             //title
             printf("Titel :\t\t%s\n", tmplib.Books[k]->title);
             //author
-            printf("Author :\t%s\n", tmplib.Books[k]->author);
+            printf("Autor :\t%s\n", tmplib.Books[k]->author);
             //isbn_nr
             printf("ISBN :\t\t%s\n", tmplib.Books[k]->isbn_nr);
             //number of books
@@ -377,7 +377,7 @@ void askForBook(char *title,char *author,char *isbn, int *nob) {
     printf("\nWie ist der Titel des Buches ?\n(max.100 Zeichen)\n");
     isString(title);    //returns title string if valid
     //author
-    printf("\nWer ist der Author des Buches ?\n(max.100 Zeichen)\n");
+    printf("\nWer ist der Autor des Buches ?\n(max.100 Zeichen)\n");
     isString(author);   //return author string if valid
     //isbn_nr
     printf("\nWas ist die ISBN-Nr ?\n(muss gueltig sein)\n");
