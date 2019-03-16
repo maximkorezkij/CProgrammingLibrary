@@ -25,7 +25,8 @@ book *newBook(char *newtitle, char *newauthor, char *newisbn, int newnob) {
     //number of books
     bookPtr->nob = newnob;
     //Ausleiherliste
-    //bookPtr->r_list;
+    bookPtr->r_count = 0;
+    bookPtr->r_list[bookPtr->r_count] = malloc(sizeof(char*));
     return bookPtr;
 }
 
@@ -53,6 +54,12 @@ void saveBooks() {
         fwrite(&length, sizeof(size_t), 1, ptr);
         fwrite(lib1.Books[ i ]->author, length, 1, ptr);
         //save r_list
+        fwrite(&lib1.Books[i]->r_count, sizeof(int), 1, ptr);
+        for(int j = 0; j< lib1.Books[i]->r_count; j++){
+            length = strlen(lib1.Books[i]->r_list[j]);
+            fwrite(&length, sizeof(size_t), 1, ptr);
+            fwrite(lib1.Books[i]->r_list[j], length, 1 ,ptr);
+        }
     }
     fclose(ptr);
 }
@@ -98,6 +105,18 @@ void loadBooks() {
                 printf("Es gab ein Problem mit dem Laden der Sicherungsdatei.\nNotfalls muessen sie %s loeschen.\n",data);
                 exit(0);
             }
+            //load r_List
+            fread(&lib1.Books[i]->r_count, sizeof(int), 1, ptr);
+            for(int n = 0; n < lib1.Books[i]->r_count; n++){
+                lib1.Books[i]->r_list[n] = malloc(sizeof(char*));
+                for(int j = 0; j< lib1.Books[i]->r_count; j++){
+                    fread(&length, sizeof(size_t), 1, ptr);
+                    if (fread(lib1.Books[i]->r_list[j], length, 1, ptr)!= 1 ) {
+                        printf("Es gab ein Problem mit dem Laden der Sicherungsdatei.\nNotfalls muessen sie %s loeschen.\n",data);
+                        exit(0);
+                    }
+                }
+            }
         }
         fclose(ptr);
     }
@@ -110,7 +129,7 @@ void show(lib help) {
         //title
         printf("\nTitel :\t\t%s", help.Books[ i ]->title);
         //author
-        printf("\nAutor :\t\t%s", help.Books[ i ]->author);
+        printf("\nAutor :\t%s", help.Books[ i ]->author);
         //isbn_nr
         printf("\nISBN :\t\t%s", help.Books[ i ]->isbn_nr);
         //number of books
@@ -147,6 +166,7 @@ void addBookSorted() {
     lib1.registered ++;
     lib1.Books = realloc(lib1.Books, sizeof(book *) * lib1.registered);
     askForBook(title, author, isbn, &nob);
+
     int i = 0;      //enthält die richtige Stelle für das neue Buch
     if( lib1.registered == 1 ) {                 //bei einem Buch muss man nicht sortieren
         lib1.Books[ i ] = newBook(title, author, isbn, nob);
@@ -204,43 +224,35 @@ void addBookSorted() {
 
 void rentBook(book *helpPtr) {
     //Buch bereits aufgerufen und angezeigt
-    char var; //Antwortsvariable
-    int h = 0; //Hilfsvariable
-    bool b = true; //Hilfsvariable
+    int var; //Antwortsvariable
     char name[Max];
     printf("\nBuch ausleihen? \n\t(1) Ja  \n\t(2) Nein\n");
-    var = (char) getchar();//isNumber braucht 10 digits für eine korrekte Eingabe
-    switch(var) {
-        case '1':
-            printf("\nVerfuegbarkeit wird geprueft.");
-            if (helpPtr->nob > 0) {       //wenn Exemplare vorhanden sind
-                printf("\nBuch verfuegbar. ");
-                printf("\nName eingeben (Nachname, Vorname)\n");
-                isString(name);
-                helpPtr->nob --; //Exemplarzahl um 1 reduziert
-                while (b) {           //klappert Liste ab bis der Name hinzugefügt worden ist
-                    if (helpPtr->r_list[h][0] == ' ' || helpPtr->r_list[h][0] == '\0') {
-                        for (int i = 0; i < sizeof(name); i++) {
-                            helpPtr->r_list[h][i] = name[i];  //Name wird in Liste eingetragen
-                        }
-                        printf("\nName wurde in Ausleihliste eingetragen. Vielen Dank.");
-                        b = false; //Name wurde eingetragen und die Schleife wird verlassen
-                    }
-                    h++;
+    var = isNumber();       //isNumber braucht 10 digits für eine korrekte Eingabe
+        switch(var) {
+            case 1:
+                printf("\nVerfuegbarkeit wird geprueft.");
+                if (helpPtr->nob > 0) {       //wenn Exemplare vorhanden sind
+                    printf("\nBuch verfuegbar. ");
+                    printf("\nName eingeben (Nachname Vorname)\n");
+                    isString(name);
+                    stringCut(name);
+                    helpPtr->nob --; //Exemplarzahl um 1 reduziert
+                    helpPtr->r_count++;
+                    helpPtr->r_list[helpPtr->r_count-1] = malloc(sizeof(char*));
+                    strcpy(helpPtr->r_list[helpPtr->r_count-1], name);
+                    printf("Ausleiher wurde hinzugefuegt.");
+                    printf("\nAusleiherliste :\t\t%s", helpPtr->r_list[helpPtr->r_count-1]);  //Liste muss noch ordnungsgemäß abgespeichert werden
                 }
-                printf("\nAusleiherliste :\t\t%s", helpPtr->r_list);  //Liste muss noch ordnungsgemäß abgespeichert werden
-                bookMenu(helpPtr); //zurück zum Menü -> lieber ins main menu aber das können wir ändern
-            }
-            else{
-                printf("\nKeine Exemplare momentan vorhanden.\n");
-            }
-            break;
-        case '2':
-            break;
-        default:
-            printf("Ungueltige Eingabe");
-            rentBook(helpPtr);
-    }
+                else{
+                    printf("\nKeine Exemplare momentan vorhanden.\n");
+                }
+                return;
+            case 2:
+                return;
+            default:
+                printf("Ungueltige Eingabe");
+                break;
+        }
 }
 
 void returnBook(book *helpPtr){
