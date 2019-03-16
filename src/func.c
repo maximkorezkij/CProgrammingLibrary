@@ -228,31 +228,32 @@ void rentBook(book *helpPtr) {
     char name[Max];
     printf("\nBuch ausleihen? \n\t(1) Ja  \n\t(2) Nein\n");
     var = isNumber();       //isNumber braucht 10 digits für eine korrekte Eingabe
-        switch(var) {
-            case 1:
-                printf("\nVerfuegbarkeit wird geprueft.");
-                if (helpPtr->nob > 0) {       //wenn Exemplare vorhanden sind
-                    printf("\nBuch verfuegbar. ");
-                    printf("\nName eingeben (Nachname Vorname)\n");
-                    isString(name);
-                    stringCut(name);
-                    helpPtr->nob --; //Exemplarzahl um 1 reduziert
-                    helpPtr->r_count++;
-                    helpPtr->r_list[helpPtr->r_count-1] = malloc(sizeof(char*));
-                    strcpy(helpPtr->r_list[helpPtr->r_count-1], name);
-                    printf("Ausleiher wurde hinzugefuegt.");
-                    printf("\nAusleiherliste :\t\t%s", helpPtr->r_list[helpPtr->r_count-1]);  //Liste muss noch ordnungsgemäß abgespeichert werden
-                }
-                else{
-                    printf("\nKeine Exemplare momentan vorhanden.\n");
-                }
-                return;
-            case 2:
-                return;
-            default:
-                printf("Ungueltige Eingabe");
-                break;
-        }
+    switch(var) {
+        case 1:
+            printf("\nVerfuegbarkeit wird geprueft.");
+            if (helpPtr->nob > 0) {       //wenn Exemplare vorhanden sind
+                printf("\nBuch verfuegbar. ");
+                printf("\nName eingeben (Nachname Vorname)\n");
+                isString(name);
+                stringCut(name);
+                helpPtr->nob --; //Exemplarzahl um 1 reduziert
+                helpPtr->r_count++;
+                helpPtr->r_list[helpPtr->r_count-1] = malloc(sizeof(char*));
+                strcpy(helpPtr->r_list[helpPtr->r_count-1], name);
+                printf("Ausleiher wurde hinzugefuegt.");
+                printf("\nAusleiherliste :\t\t%s", helpPtr->r_list[helpPtr->r_count-1]);  //Liste muss noch ordnungsgemäß abgespeichert werden
+            }
+            else{
+                printf("\nKeine Exemplare momentan vorhanden.\n");
+            }
+            break;
+        case 2:
+            break;
+        default:
+            printf("Ungueltige Eingabe");
+            break;
+    }
+    return;
 }
 
 void returnBook(book *helpPtr){
