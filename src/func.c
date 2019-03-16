@@ -19,7 +19,7 @@ book *newBook(char *newtitle, char *newauthor, char *newisbn, int newnob) {
     //author
     bookPtr->author = malloc(strlen(newauthor) + 1);
     strcpy(bookPtr->author, newauthor);
-    //isbn nr
+    //isbn_nr
     bookPtr->isbn_nr = malloc(strlen(newisbn) + 1);
     strcpy(bookPtr->isbn_nr, newisbn);
     //number of books
@@ -107,13 +107,13 @@ void show(lib help) {
     printf("\nAnzahl Buecher : \t%d\n", help.registered);
     printf("- - - - - - - - - - -");
     for ( int i = 0; i < help.registered; i++ ) {
-        //Titel
+        //title
         printf("\nTitel :\t\t%s", help.Books[ i ]->title);
-        //Author
-        printf("\nAuthor :\t%s", help.Books[ i ]->author);
-        //ISBN
+        //author
+        printf("\nAutor :\t%s", help.Books[ i ]->author);
+        //isbn_nr
         printf("\nISBN :\t\t%s", help.Books[ i ]->isbn_nr);
-        //Number of Books
+        //number of books
         printf("\nExemplare :\t%d\n", help.Books[ i ]->nob);
         printf("- - - - - - - - - - -");
     }
@@ -155,12 +155,12 @@ void addBookSorted() {
     if( lib1.registered > 1 ) {        //bei mehreren Büchern vergleicht man
         for ( int j = i; j < lib1.registered - 1; j ++ ) {
             if( strncasecmp(title, lib1.Books[ j ]->title, Max) ==
-                    0 ) {       //eingegebener Titel = titel aus einem Buch
+                    0 ) {       //eingegebener Titel = Titel aus einem Buch
                 if( strncasecmp(author, lib1.Books[ j ]->author, Max) ==
-                        0 ) {    //eingegebener Author = author aus einem buch
+                        0 ) {    //eingegebener Autor = Autor aus einem Buch
                     if( strcasecmp(isbn, lib1.Books[ j ]->isbn_nr) ==
                             0 ) {            //eingegebene isbn = isbn aus einem Buch
-                        printf("Dieses Buch existiert schon. Probieren Sie es erneut:\n");  //fehler weil 2 identische bücher
+                        printf("Dieses Buch existiert schon. Probieren Sie es erneut:\n");  //Fehler weil 2 identische Bücher
                         lib1.registered --;
                         addBookSorted();
                     }
@@ -197,7 +197,7 @@ void addBookSorted() {
             }
         }
         moveBooks(
-                i);       //schiebt alle Bücher weiter, sodass das neue buch seinen richtig sortierten Platz einnehmen kann
+                i);       //schiebt alle Bücher weiter, sodass das neue Buch seinen richtig sortierten Platz einnehmen kann
         lib1.Books[ i ] = newBook(title, author, isbn, nob);    //belegt den richtigen Platz mit dem Buch
     }
     printf("\n Das Buch wurde hinzugefuegt.");
@@ -219,17 +219,17 @@ void rentBook(book *helpPtr) {
                 printf("\nName eingeben (Nachname, Vorname)\n");
                 isString(name);
                 helpPtr->nob --; //Exemplarzahl um 1 reduziert
-                while (b) {           //klappert liste ab bis der name hinzugefügt worden ist
+                while (b) {           //klappert Liste ab bis der Name hinzugefügt worden ist
                     if (helpPtr->r_list[h][0] == ' ' || helpPtr->r_list[h][0] == '\0') {
                         for (int i = 0; i < sizeof(name); i++) {
                             helpPtr->r_list[h][i] = name[i];  //Name wird in Liste eingetragen
                         }
                         printf("\nName wurde in Ausleihliste eingetragen. Vielen Dank.");
-                        b = false; //name wurde eingetragen und die schleife wird verlassen
+                        b = false; //Name wurde eingetragen und die Schleife wird verlassen
                     }
                     h++;
                 }
-                printf("\nAusleiherliste :\t\t%s", helpPtr->r_list);  //liste muss noch ordnungsgemäß abgespeichert werden
+                printf("\nAusleiherliste :\t\t%s", helpPtr->r_list);  //Liste muss noch ordnungsgemäß abgespeichert werden
                 bookMenu(helpPtr); //zurück zum Menü -> lieber ins main menu aber das können wir ändern
             }
             else{
@@ -245,7 +245,7 @@ void rentBook(book *helpPtr) {
 }
 
 void returnBook(book *helpPtr){
-    if(helpPtr->r_list[0][0] == ' ' || helpPtr->r_list[0][0] == '\0'){ //Überprüft, ob überhaupt was in der Ausleiherliste ist
+    if(helpPtr->r_list[0][0] == ' ' || helpPtr->r_list[0][0] == '\0'){ //überprüft, ob überhaupt was in der Ausleiherliste ist
         printf("\nKein Exemplar momentan verliehen.");
     }
     else{
@@ -258,7 +258,7 @@ void returnBook(book *helpPtr){
         printf("\nNamen des Ausleihers eingeben (Nachname, Vorname)\n");
         char e = (char) getchar();      //das wird nur einen Buchstaben ausgeben
         printf("\nListe wird durchsucht...");
-        for(int i = 0; i<length; i++){      //Untersucht jeden eingetragenen in der liste
+        for(int i = 0; i<length; i++){      //untersucht jeden eingetragenen in der Liste
             if(strcasecmp(e, helpPtr->r_list[i]) == 0){         //String wird rausgefiltert     //du hast keinen String-> des wird iwann schief gehen
                 continue;
             }
@@ -293,10 +293,10 @@ void searchByTitle(lib help) {
     lib tmplib = {};
     printf("\n\nFiltern nach Titel:\n");
     printf("Auswahl: \n");
-    isString(filter);   //filter wird durch isString ein valider String mitgegeben -> möglich : ein ISBN filter
+    isString(filter);   //Filter wird durch isString ein valider String mitgegeben -> möglich : ein ISBN Filter
     stringCut(filter);  //entfernt '\n' vom String damit der compare richtig läuft
     printf("- - - - - - - - - - -\n");
-    //bei zu vielen ergebnissen -> keine ausgabe
+    //bei zu vielen Ergebnissen -> keine Ausgabe
     for (int i = 0;i < help.registered;i++ ) {                                  //Bücher mit gleichen Titel rausfiltern
         if(strncasecmp(filter, help.Books[i]->title,strlen(filter)) == 0) {
         tmplib.registered++;
@@ -312,13 +312,13 @@ void searchByTitle(lib help) {
     if( count > 0 ) {
         for ( int k = 0; k < tmplib.registered; k ++ ) {                 //print alle zutreffenden Bücher
             printf("Buch Nr. (%d) \n", k+1);
-            //Titel
+            //title
             printf("Titel :\t\t%s\n", tmplib.Books[k]->title);
-            //Author
+            //author
             printf("Author :\t%s\n", tmplib.Books[k]->author);
-            //ISBN
+            //isbn_nr
             printf("ISBN :\t\t%s\n", tmplib.Books[k]->isbn_nr);
-            //Number of Books
+            //number of books
             printf("Exemplare :\t%d\n", tmplib.Books[k]->nob);
             printf("- - - - - - - - - - -\n");
         }
@@ -336,11 +336,11 @@ void searchByIsbn(lib help) {
     lib tmplib = {};
     printf("\n\nFiltern nach ISBN-Nr:\n");
     printf("Auswahl: \n");
-    isString(filter);   //filter wird durch isString ein valider String mitgegeben -> möglich : ein ISBN filter
+    isString(filter);   //Filter wird durch isString ein valider String mitgegeben -> möglich : ein ISBN filter
     stringCut(filter);  //entfernt '\n' vom String damit der compare richtig läuft
     printf("- - - - - - - - - - -\n");
-    //bei zu vielen ergebnissen -> keine ausgabe
-    for (int i = 0;i < help.registered;i++ ) {                                  //Bücher mit gleichen Titel rausfiltern
+    //bei zu vielen Ergebnissen -> keine Ausgabe
+    for (int i = 0;i < help.registered;i++ ) {                                  //Bücher mit gleichem Titel rausfiltern
         if(strncasecmp(filter, help.Books[i]->isbn_nr,strlen(filter)) == 0) {
             tmplib.registered++;
             tmplib.Books = realloc(tmplib.Books, sizeof(book *) * tmplib.registered);
@@ -355,13 +355,13 @@ void searchByIsbn(lib help) {
     if( count > 0 ) {
         for ( int k = 0; k < tmplib.registered; k ++ ) {                 //print alle zutreffenden Bücher
             printf("Buch Nr. (%d) \n", k+1);
-            //Titel
+            //title
             printf("Titel :\t\t%s\n", tmplib.Books[k]->title);
-            //Author
+            //author
             printf("Author :\t%s\n", tmplib.Books[k]->author);
-            //ISBN
+            //isbn_nr
             printf("ISBN :\t\t%s\n", tmplib.Books[k]->isbn_nr);
-            //Number of Books
+            //number of books
             printf("Exemplare :\t%d\n", tmplib.Books[k]->nob);
             printf("- - - - - - - - - - -\n");
         }
@@ -373,13 +373,13 @@ void searchByIsbn(lib help) {
 }
 
 void askForBook(char *title,char *author,char *isbn, int *nob) {
-    //titel
+    //title
     printf("\nWie ist der Titel des Buches ?\n(max.100 Zeichen)\n");
     isString(title);    //returns title string if valid
     //author
     printf("\nWer ist der Author des Buches ?\n(max.100 Zeichen)\n");
     isString(author);   //return author string if valid
-    //isbn
+    //isbn_nr
     printf("\nWas ist die ISBN-Nr ?\n(muss gueltig sein)\n");
     isbnNumber(isbn);
     //number of books
@@ -402,7 +402,7 @@ void deleteBook(book *delete) {
     }
     if( lib1.registered > 1 ) {         //bei mehreren Bücher
         int i = delete->id;
-        bookPtr1 = lib1.Books[ i ];     //bookPtr1 = das Element das gelöscht werden soll
+        bookPtr1 = lib1.Books[ i ];     //bookPtr1 = das Element, das gelöscht werden soll
         for ( int j = i; j < lib1.registered - 2; j ++ ) {      //die Pointer von den Büchern wandern vor
             bookPtr2 = lib1.Books[ j + 1 ];                     //bis sie das letzte in das vorletzte feld
             lib1.Books[ j ] = bookPtr2;                         //schieben
