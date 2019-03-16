@@ -72,3 +72,22 @@ off_t fsize(const char *filename) {     //funktion die checkt ob ein file leer i
 
     return -1;
 }
+
+void safeCalloc(size_t t,size_t b) {
+    if (calloc(t,b) == NULL) {
+        printf("Es gab ein Problem mit dem Speicher.\n");
+        exit(0);
+    }
+}
+void safeMalloc(size_t t) {
+    if (malloc(t) == NULL) {
+        printf("Es gab ein Problem mit dem Speicher.\n");
+        exit(0);
+    }
+}
+void safeRealloc(void* p,size_t t) {
+    if(realloc(p,t) == NULL) {
+        printf("Es gab ein Problem mit dem Speicher.\n");
+        exit(0);
+    }
+}

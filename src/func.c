@@ -110,7 +110,7 @@ void show(lib help) {
         //title
         printf("\nTitel :\t\t%s", help.Books[ i ]->title);
         //author
-        printf("\nAutor :\t%s", help.Books[ i ]->author);
+        printf("\nAutor :\t\t%s", help.Books[ i ]->author);
         //isbn_nr
         printf("\nISBN :\t\t%s", help.Books[ i ]->isbn_nr);
         //number of books
@@ -147,7 +147,6 @@ void addBookSorted() {
     lib1.registered ++;
     lib1.Books = realloc(lib1.Books, sizeof(book *) * lib1.registered);
     askForBook(title, author, isbn, &nob);
-
     int i = 0;      //enthält die richtige Stelle für das neue Buch
     if( lib1.registered == 1 ) {                 //bei einem Buch muss man nicht sortieren
         lib1.Books[ i ] = newBook(title, author, isbn, nob);
@@ -210,7 +209,7 @@ void rentBook(book *helpPtr) {
     bool b = true; //Hilfsvariable
     char name[Max];
     printf("\nBuch ausleihen? \n\t(1) Ja  \n\t(2) Nein\n");
-    var = (char) getchar();       //isNumber braucht 10 digits für eine korrekte Eingabe
+    var = (char) getchar();//isNumber braucht 10 digits für eine korrekte Eingabe
     switch(var) {
         case '1':
             printf("\nVerfuegbarkeit wird geprueft.");
