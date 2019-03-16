@@ -24,6 +24,7 @@ book *newBook(char *newtitle, char *newauthor, char *newisbn, int newnob) {
     strcpy(bookPtr->isbn_nr, newisbn);
     //number of books
     bookPtr->nob = newnob;
+    //Ausleiherliste
     //bookPtr->r_list;
     return bookPtr;
 }
@@ -80,21 +81,21 @@ void loadBooks() {
             fread(&length, sizeof(size_t), 1, ptr);
             lib1.Books[ i ]->isbn_nr = malloc(length);
             if(fread(lib1.Books[ i ]->isbn_nr, length, 1, ptr) != 1 ) {
-                printf("Es gab ein Problem mit dem Laden der Sicherungsdatei.\nNotfalls müssen sie %s löschen.\n",data);
+                printf("Es gab ein Problem mit dem Laden der Sicherungsdatei.\nNotfalls muessen sie %s loeschen.\n",data);
                 exit(0);
             }
             //load title
             fread(&length, sizeof(size_t), 1, ptr);
             lib1.Books[ i ]->title = malloc(length);
             if (fread(lib1.Books[ i ]->title, length, 1, ptr) != 1 ) {
-                printf("Es gab ein Problem mit dem Laden der Sicherungsdatei.\nNotfalls müssen sie %s löschen.\n",data);
+                printf("Es gab ein Problem mit dem Laden der Sicherungsdatei.\nNotfalls muessen sie %s loeschen.\n",data);
                 exit(0);
             }
             //load author
             fread(&length, sizeof(size_t), 1, ptr);
             lib1.Books[ i ]->author = malloc(length);
             if (fread(lib1.Books[ i ]->author, length, 1, ptr)!= 1 ) {
-                printf("Es gab ein Problem mit dem Laden der Sicherungsdatei.\nNotfalls müssen sie %s löschen.\n",data);
+                printf("Es gab ein Problem mit dem Laden der Sicherungsdatei.\nNotfalls muessen sie %s loeschen.\n",data);
                 exit(0);
             }
         }
@@ -207,17 +208,17 @@ void rentBook(book *helpPtr) {
     char var; //Antwortsvariable
     int h = 0; //Hilfsvariable
     bool b = true; //Hilfsvariable
-    char name[Max] = {};
-    printf("\nBuch ausleihen? \n\t(1) Ja  \n\t(2) Nein");
+    char name[Max];
+    printf("\nBuch ausleihen? \n\t(1) Ja  \n\t(2) Nein\n");
     var = (char) getchar();       //isNumber braucht 10 digits für eine korrekte Eingabe
     switch(var) {
         case '1':
-            printf("\n Verfügbarkeit wird geprueft.");
+            printf("\nVerfuegbarkeit wird geprueft.");
             if (helpPtr->nob > 0) {       //wenn Exemplare vorhanden sind
                 printf("\nBuch verfuegbar. ");
-                printf("\nName eingeben (Nachname, Vorname)");
+                printf("\nName eingeben (Nachname, Vorname)\n");
                 isString(name);
-                helpPtr->nob -= 1; //Exemplarzahl um 1 reduziert
+                helpPtr->nob --; //Exemplarzahl um 1 reduziert
                 while (b) {           //klappert liste ab bis der name hinzugefügt worden ist
                     if (helpPtr->r_list[h][0] == ' ' || helpPtr->r_list[h][0] == '\0') {
                         for (int i = 0; i < sizeof(name); i++) {
@@ -233,11 +234,9 @@ void rentBook(book *helpPtr) {
             }
             else{
                 printf("\nKeine Exemplare momentan vorhanden.\n");
-                bookMenu(helpPtr);
             }
             break;
         case '2':
-            mainMenu();
             break;
         default:
             printf("Ungueltige Eingabe");
