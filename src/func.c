@@ -107,8 +107,9 @@ void loadBooks() {
                 printf("Es gab ein Problem mit dem Laden der Sicherungsdatei.\nNotfalls muessen sie %s loeschen.\n",data);
                 exit(0);
             }
-            //load r_List
+            //load r_count
             fread(&lib1.Books[i]->r_count, sizeof(int), 1, ptr);
+            //load r_list
             lib1.Books[i]->r_list = malloc(sizeof(char *) * lib1.Books[i]->r_count);
             for(int n = 0; n < lib1.Books[i]->r_count; n++){
                 fread(&length, sizeof(size_t), 1, ptr);
