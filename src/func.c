@@ -268,7 +268,7 @@ void returnBook(book *helpPtr) {
         isString(name);
         stringCut(name);
         for(int i = 0; i < helpPtr->r_count; i++){                    //Namen werden verglichen
-            if(strcasecmp(name, helpPtr->r_list[i]) == 0){                //Eintrag gefunden
+            if(strncasecmp(name, helpPtr->r_list[i],strlen(name)) == 0){                //Eintrag gefunden
                 printf("\nEingegebene Person im Verzeichnis gefunden. Buch wird nun zurueckgegeben...\n");
                 helpPtr->nob++;
                 helpPtr->r_count--;
