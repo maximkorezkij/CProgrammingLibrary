@@ -19,7 +19,6 @@ void addBookSorted();
 void mainMenu();
 void rentBook(book *helpPtr);
 void returnBook(book *helpPtr);
-void showList(book *helpPtr);
 void searchMenu();
 void goOn();
 void bye();

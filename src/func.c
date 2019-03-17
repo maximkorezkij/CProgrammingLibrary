@@ -239,10 +239,6 @@ void rentBook(book *helpPtr) {
                 helpPtr->r_list[helpPtr->r_count-1] = malloc(sizeof(name));
                 strcpy(helpPtr->r_list[helpPtr->r_count-1], name);
                 printf("Ausleiher wurde hinzugefuegt.");
-                printf("\nAusleiherliste:");  //zu Testzwecken wird gesamte Liste gedruckt
-                for(int i = 0; i<helpPtr->r_count; i++){
-                    printf("\t\t%s", helpPtr->r_list[i]);
-                }
             }
             else{
                 printf("\nKeine Exemplare momentan vorhanden.\n");
@@ -279,20 +275,9 @@ void returnBook(book *helpPtr) {
                 }
                 free(helpPtr->r_list[helpPtr->r_count]);                //letzer Platz wird gefreed
                 printf("\nVorgang erfolgreich. Name des Entleihers wurde aus der Ausleiherliste entfernt.\n");
-                printf("\nAusleiherliste:");  //zu Testzwecken wird gesamte Liste gedruckt
-                for(int j = 0; j<helpPtr->r_count; j++){
-                    printf("\nt%s", helpPtr->r_list[j]);
-                }
                 break;
             }
         }
-    }
-}
-
-void showList(book *helpPtr){
-    printf("\nListe der Personen, die dieses Buch geliehen haben:");
-    for(int i = 0; i<helpPtr->r_count; i++){
-        printf("\n%s", helpPtr->r_list[1]);
     }
 }
 
@@ -376,7 +361,7 @@ void searchByIsbn(lib help) {
         searchAgain();
     }
 
-    if ( count == 1) {
+    if ( count == 1 ) {
         printf("Buch Nr. (1) \n");
         //title
         printf("Titel :\t\t%s\n", tmplib.Books[0]->title);
