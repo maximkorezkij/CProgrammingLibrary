@@ -133,8 +133,11 @@ void show(lib help) {
         //isbn_nr
         printf("\nISBN :\t\t%s", help.Books[ i ]->isbn_nr);
         //number of books
-        printf("\nExemplare :\t%d\n", help.Books[ i ]->nob);
-        printf("- - - - - - - - - - -");
+        printf("\nExemplare :\t%d", help.Books[ i ]->nob);
+        for ( int j = 0; j < help.Books[i]->r_count-1 ; j++ ) {
+            printf("Ausleiher : \n \t %s", help.Books[i]->r_list[j]);
+        }
+        printf("\n- - - - - - - - - - -");
     }
 }
 
@@ -237,7 +240,7 @@ void rentBook(book *helpPtr) {
                 isString(name);
                 stringCut(name);
                 for(int i = 0; i < helpPtr->r_count; i++){                    //Überprüft, ob eingegebene person nicht schon ein exemplar geliehen hat
-                    if(stricmp(name, helpPtr->r_list[i]) == 0){                //Eintrag gefunden
+                    if(strcasecmp(name, helpPtr->r_list[i]) == 0){                //Eintrag gefunden
                         printf("\n%s hat das Buch bereits einmal ausgeliehen.\n", name);
                         rentBook(helpPtr);
                     }
@@ -262,9 +265,6 @@ void rentBook(book *helpPtr) {
             printf("Ungueltige Eingabe");
             break;
     }
-    //saveBooks();
-    //loadBooks();
-    goOn();
 }
 
 void returnBook(book *helpPtr) {
@@ -278,7 +278,7 @@ void returnBook(book *helpPtr) {
         isString(name);
         stringCut(name);
         for(int i = 0; i < helpPtr->r_count; i++){                    //Namen werden verglichen
-            if(stricmp(name, helpPtr->r_list[i]) == 0){                //Eintrag gefunden
+            if(strcasecmp(name, helpPtr->r_list[i]) == 0){                //Eintrag gefunden
                 printf("\nEingegebene Person im Verzeichnis gefunden. Buch wird nun zurueckgegeben...\n");
                 helpPtr->nob++;
                 helpPtr->r_count--;
@@ -291,8 +291,8 @@ void returnBook(book *helpPtr) {
                 free(helpPtr->r_list[helpPtr->r_count]);                //letzer platz wird gefreed
                 printf("\nVorgang erfolgreich. Name des Entleihers wurde aus der Ausleiherliste entfernt.\n");
                 printf("\nAusleiherliste:");  //zu testzwecken wird gesamte liste gedruckt
-                for(int i = 0; i<helpPtr->r_count; i++){
-                    printf("\nt%s", helpPtr->r_list[i]);
+                for(int j = 0; j<helpPtr->r_count; j++){
+                    printf("\nt%s", helpPtr->r_list[j]);
                 }
                 break;
             }
