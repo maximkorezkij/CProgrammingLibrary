@@ -10,7 +10,7 @@ typedef struct Book {       //ausleihliste fehlt noch
     int nob;
     int id;
     int r_count;
-    char *r_list[];
+    char **r_list;
 }book;
 
 typedef struct Lib {
