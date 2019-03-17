@@ -129,7 +129,7 @@ void show(lib help) {
         //title
         printf("\nTitel :\t\t%s", help.Books[ i ]->title);
         //author
-        printf("\nAutor :\t%s", help.Books[ i ]->author);
+        printf("\nAutor :\t\t%s", help.Books[ i ]->author);
         //isbn_nr
         printf("\nISBN :\t\t%s", help.Books[ i ]->isbn_nr);
         //number of books
@@ -241,7 +241,10 @@ void rentBook(book *helpPtr) {
                 helpPtr->r_list[helpPtr->r_count-1] = malloc(sizeof(char*));
                 strcpy(helpPtr->r_list[helpPtr->r_count-1], name);
                 printf("Ausleiher wurde hinzugefuegt.");
-                printf("\nAusleiherliste :\t\t%s", helpPtr->r_list[helpPtr->r_count-1]);  //Liste muss noch ordnungsgemäß abgespeichert werden
+                printf("\nAusleiherliste:");  //zu testzwecken wird gesamte liste gedruckt
+                for(int i = 0; i<helpPtr->r_count; i++){
+                    printf("\t\t%s", helpPtr->r_list[i]);
+                }
             }
             else{
                 printf("\nKeine Exemplare momentan vorhanden.\n");
@@ -253,7 +256,7 @@ void rentBook(book *helpPtr) {
             printf("Ungueltige Eingabe");
             break;
     }
-    return; //ausstehend
+    goOn(); //ausstehend
 }
 
 void returnBook(book *helpPtr) {
@@ -261,7 +264,7 @@ void returnBook(book *helpPtr) {
     int pos = 0;                   //zählt bis zur position des gesuchten elements hoch
     if(helpPtr->r_count == 0){      //überprüft, ob Buch überhaupt ausgeliehen wurde
         printf("\nBuch ist momentan nicht verliehen.\n");
-        return;
+        goOn();
     }
     else{
         printf("\nName des Ausleihers angeben (Nachname Vorname)\n"); //name des Ausleihers wird eingegeben
@@ -274,16 +277,21 @@ void returnBook(book *helpPtr) {
                 helpPtr->r_count--;
                 pos = i;                                                //pos merkt sich aktuelle position in der liste
                 for(int j = i+1; j<helpPtr->r_count; j++){                //name wird aus liste entfernt und alle folgenden namen um 1 verschoben
+                    helpPtr->r_list[pos] = realloc(helpPtr->r_list[pos], sizeof(helpPtr->r_list[j]));
                     strcpy(helpPtr->r_list[pos], helpPtr->r_list[j]);
                     pos++;
                 }
                 free(helpPtr->r_list[helpPtr->r_count]);                //letzer platz wird gefreed
                 printf("\nVorgang erfolgreich. Name des Entleihers wurde aus der Ausleiherliste entfernt.\n");
-                return;
+                printf("\nAusleiherliste:");  //zu testzwecken wird gesamte liste gedruckt
+                for(int i = 0; i<helpPtr->r_count; i++){
+                    printf("\nt%s", helpPtr->r_list[i]);
+                }
+                break;
             }
         }
         printf("\nKein Eintrag zu eingegebenen Namen gefunden.\n");
-        return;
+        goOn();
     }
 }
 

@@ -133,16 +133,10 @@ void bookMenu(book *help) {
         switch (e) {
             case 1:
                 rentBook(help);
-                saveBooks();
-                loadBooks();
-                goOn();
-                break;
+                return;
             case 2:
                 returnBook(help);
-                saveBooks();
-                loadBooks();
-                goOn();
-                break;
+                return;
             case 3:
                 deleteRequest(help);
                 return;
