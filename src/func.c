@@ -283,7 +283,7 @@ void returnBook(book *helpPtr) {
                 return;
             }
         }
-        printf("Kein Eintrag gefunden...");
+        printf("Kein Eintrag gefunden...\n");
         return;
     }
 }
