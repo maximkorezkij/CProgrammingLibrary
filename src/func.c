@@ -109,12 +109,10 @@ void loadBooks() {
             }
             //load r_count
             fread(&lib1.Books[i]->r_count, sizeof(int), 1, ptr);
-<<<<<<< HEAD
+
             //load r_list
             lib1.Books[i]->r_list = malloc(sizeof(char *) * lib1.Books[i]->r_count);
-=======
             lib1.Books[i]->r_list = safeMalloc(sizeof(char *) * lib1.Books[i]->r_count);
->>>>>>> 5239d2eaa2ed15f06d1b0a5b2eca65b71a030ad8
             for(int n = 0; n < lib1.Books[i]->r_count; n++){
                 fread(&length, sizeof(size_t), 1, ptr);
                 lib1.Books[i]->r_list[n] = safeMalloc(length);
