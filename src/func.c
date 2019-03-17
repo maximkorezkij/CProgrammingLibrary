@@ -274,9 +274,11 @@ void returnBook(book *helpPtr) {
                 }
                 free(helpPtr->r_list[helpPtr->r_count]);                //letzer platz wird gefreed
                 printf("\nVorgang erfolgreich. Name des Entleihers wurde aus der Ausleiherliste entfernt.\n");
-                break;
+                return;
             }
         }
+        printf("Kein Eintrag gefunden...");
+        return;
     }
 }
 
@@ -379,7 +381,7 @@ void searchByIsbn(lib help) {
             //title
             printf("Titel :\t\t%s\n", tmplib.Books[k]->title);
             //author
-            printf("Autor :\t%s\n", tmplib.Books[k]->author);
+            printf("Autor :\t\t%s\n", tmplib.Books[k]->author);
             //isbn_nr
             printf("ISBN :\t\t%s\n", tmplib.Books[k]->isbn_nr);
             //number of books
