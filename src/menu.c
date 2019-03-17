@@ -49,6 +49,7 @@ void goOn() {
         case 1:
             return;
         case 2:
+            bye();
             exit(0);
         default:
             printf("Eingabe ungueltig.\n");

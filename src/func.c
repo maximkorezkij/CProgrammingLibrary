@@ -236,6 +236,12 @@ void rentBook(book *helpPtr) {
                 printf("\nName eingeben (Nachname Vorname)\n");
                 isString(name);
                 stringCut(name);
+                for(int i = 0; i < helpPtr->r_count; i++){                    //Überprüft, ob eingegebene person nicht schon ein exemplar geliehen hat
+                    if(stricmp(name, helpPtr->r_list[i]) == 0){                //Eintrag gefunden
+                        printf("\n%s hat das Buch bereits einmal ausgeliehen.\n", name);
+                        rentBook(helpPtr);
+                    }
+                }
                 helpPtr->nob --; //Exemplarzahl um 1 reduziert
                 helpPtr->r_count++;
                 helpPtr->r_list[helpPtr->r_count-1] = malloc(sizeof(char*));
@@ -256,7 +262,9 @@ void rentBook(book *helpPtr) {
             printf("Ungueltige Eingabe");
             break;
     }
-    goOn(); //ausstehend
+    //saveBooks();
+    //loadBooks();
+    goOn();
 }
 
 void returnBook(book *helpPtr) {
@@ -264,7 +272,6 @@ void returnBook(book *helpPtr) {
     int pos = 0;                   //zählt bis zur position des gesuchten elements hoch
     if(helpPtr->r_count == 0){      //überprüft, ob Buch überhaupt ausgeliehen wurde
         printf("\nBuch ist momentan nicht verliehen.\n");
-        goOn();
     }
     else{
         printf("\nName des Ausleihers angeben (Nachname Vorname)\n"); //name des Ausleihers wird eingegeben
@@ -291,8 +298,8 @@ void returnBook(book *helpPtr) {
             }
         }
         printf("\nKein Eintrag zu eingegebenen Namen gefunden.\n");
-        goOn();
     }
+    goOn();
 }
 
 void searchByTitle(lib help) {
