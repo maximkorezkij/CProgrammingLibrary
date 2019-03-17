@@ -341,7 +341,7 @@ void searchByTitle(lib help) {
         printf("- - - - - - - - - - -\n");
         bookMenu(tmplib.Books[0]);
     }
-    if( count > 0 ) {
+    if( count > 1 ) {
         for ( int k = 0; k < tmplib.registered; k ++ ) {                 //print alle zutreffenden Bücher
             printf("Buch Nr. (%d) \n", k+1);
             //title
@@ -384,7 +384,21 @@ void searchByIsbn(lib help) {
     if (count == 0) {
         searchAgain();
     }
-    if( count > 0 ) {
+
+    if ( count == 1) {
+        printf("Buch Nr. (1) \n");
+        //title
+        printf("Titel :\t\t%s\n", tmplib.Books[0]->title);
+        //author
+        printf("Autor :\t\t%s\n", tmplib.Books[0]->author);
+        //isbn_nr
+        printf("ISBN :\t\t%s\n", tmplib.Books[0]->isbn_nr);
+        //number of books
+        printf("Exemplare :\t%d\n", tmplib.Books[0]->nob);
+        printf("- - - - - - - - - - -\n");
+        bookMenu(tmplib.Books[0]);
+    }
+    if( count > 1 ) {
         for ( int k = 0; k < tmplib.registered; k ++ ) {                 //print alle zutreffenden Bücher
             printf("Buch Nr. (%d) \n", k+1);
             //title

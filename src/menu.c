@@ -119,7 +119,7 @@ void bookMenu(book *help) {
     printf(" |   |  |  \n");
     printf(" |   |  |  ISBN :\t\t%s\n", help->isbn_nr);
     printf(" |   | /   \n");
-    printf(" |===|/    Exemplare :\t\t%d\n", help->nob);
+    printf(" |===|/    Exemplare :\t%d\n", help->nob);
     printf(" '---'     \n");
     printf("- - - - - - - - - - - - - - - -\n");
     printf("Was wollen Sie machen?\n");
