@@ -12,15 +12,15 @@
 
 book *newBook(char *newtitle, char *newauthor, char *newisbn, int newnob) {
     //rückgabe als pointer
-    book *bookPtr = malloc(sizeof(book));
+    book *bookPtr = safeMalloc(sizeof(book));
     //title
-    bookPtr->title = malloc(strlen(newtitle) + 1);
+    bookPtr->title = safeMalloc(strlen(newtitle) + 1);
     strcpy(bookPtr->title, newtitle);
     //author
-    bookPtr->author = malloc(strlen(newauthor) + 1);
+    bookPtr->author = safeMalloc(strlen(newauthor) + 1);
     strcpy(bookPtr->author, newauthor);
     //isbn_nr
-    bookPtr->isbn_nr = malloc(strlen(newisbn) + 1);
+    bookPtr->isbn_nr = safeMalloc(strlen(newisbn) + 1);
     strcpy(bookPtr->isbn_nr, newisbn);
     //number of books
     bookPtr->nob = newnob;
@@ -79,41 +79,45 @@ void loadBooks() {
     }else {
         fseek(ptr, 0, SEEK_SET);
         fread(&lib1.registered, sizeof(int), 1, ptr);
-        lib1.Books = calloc((size_t) lib1.registered, sizeof(book *));
+        lib1.Books = safeCalloc((size_t) lib1.registered, sizeof(book *));
         for ( int i = 0; i < lib1.registered; i++ ) {
-            lib1.Books[ i ] = malloc(sizeof(book));
+            lib1.Books[ i ] = safeMalloc(sizeof(book));
             //load id
             fread(&lib1.Books[i]->id, sizeof(int),1,ptr);
             //load number of books
             fread(&lib1.Books[ i ]->nob, sizeof(int), 1, ptr);
             //load isbn_nr
             fread(&length, sizeof(size_t), 1, ptr);
-            lib1.Books[ i ]->isbn_nr = malloc(length);
+            lib1.Books[ i ]->isbn_nr = safeMalloc(length);
             if(fread(lib1.Books[ i ]->isbn_nr, length, 1, ptr) != 1 ) {
                 printf("Es gab ein Problem mit dem Laden der Sicherungsdatei.\nNotfalls muessen sie %s loeschen.\n",data);
                 exit(0);
             }
             //load title
             fread(&length, sizeof(size_t), 1, ptr);
-            lib1.Books[ i ]->title = malloc(length);
+            lib1.Books[ i ]->title = safeMalloc(length);
             if (fread(lib1.Books[ i ]->title, length, 1, ptr) != 1 ) {
                 printf("Es gab ein Problem mit dem Laden der Sicherungsdatei.\nNotfalls muessen sie %s loeschen.\n",data);
                 exit(0);
             }
             //load author
             fread(&length, sizeof(size_t), 1, ptr);
-            lib1.Books[ i ]->author = malloc(length);
+            lib1.Books[ i ]->author = safeMalloc(length);
             if (fread(lib1.Books[ i ]->author, length, 1, ptr)!= 1 ) {
                 printf("Es gab ein Problem mit dem Laden der Sicherungsdatei.\nNotfalls muessen sie %s loeschen.\n",data);
                 exit(0);
             }
             //load r_count
             fread(&lib1.Books[i]->r_count, sizeof(int), 1, ptr);
+<<<<<<< HEAD
             //load r_list
             lib1.Books[i]->r_list = malloc(sizeof(char *) * lib1.Books[i]->r_count);
+=======
+            lib1.Books[i]->r_list = safeMalloc(sizeof(char *) * lib1.Books[i]->r_count);
+>>>>>>> 5239d2eaa2ed15f06d1b0a5b2eca65b71a030ad8
             for(int n = 0; n < lib1.Books[i]->r_count; n++){
                 fread(&length, sizeof(size_t), 1, ptr);
-                lib1.Books[i]->r_list[n] = malloc(length);
+                lib1.Books[i]->r_list[n] = safeMalloc(length);
                 if (fread(lib1.Books[i]->r_list[n], length, 1, ptr)!= 1 ) {
                     printf("Es gab ein Problem mit dem Laden der Sicherungsdatei.\nNotfalls muessen sie %s loeschen.\n",data);
                     exit(0);
@@ -171,7 +175,7 @@ void addBookSorted() {
     char isbn[Max] = {};
     int nob;
     lib1.registered ++;
-    lib1.Books = realloc(lib1.Books, sizeof(book *) * lib1.registered);
+    lib1.Books = safeRealloc(lib1.Books, sizeof(book *) * lib1.registered);
     askForBook(title, author, isbn, &nob);
 
     int i = 0;      //enthält die richtige Stelle für das neue Buch
@@ -237,8 +241,8 @@ void rentBook(book *helpPtr) {
                 }
                 helpPtr->nob--; //Exemplarzahl um 1 reduziert
                 helpPtr->r_count++;
-                helpPtr->r_list = realloc(helpPtr->r_list, sizeof(char *) * helpPtr->r_count);
-                helpPtr->r_list[helpPtr->r_count-1] = malloc(strlen(name));
+                helpPtr->r_list = safeRealloc(helpPtr->r_list, sizeof(char *) * helpPtr->r_count);
+                helpPtr->r_list[helpPtr->r_count-1] = safeMalloc(strlen(name));
                 strcpy(helpPtr->r_list[helpPtr->r_count-1], name);
                 printf("Ausleiher wurde hinzugefuegt.");
             }
@@ -271,7 +275,7 @@ void returnBook(book *helpPtr) {
                 helpPtr->r_count--;
                 pos = i;                                                //pos merkt sich aktuelle Position in der Liste
                 for(int j = i+1; j<helpPtr->r_count; j++){                //Name wird aus Liste entfernt und alle folgenden Namen um 1 verschoben
-                    helpPtr->r_list[pos] = realloc(helpPtr->r_list[pos], sizeof(helpPtr->r_list[j]));
+                    helpPtr->r_list[pos] = safeRealloc(helpPtr->r_list[pos], sizeof(helpPtr->r_list[j]));
                     strcpy(helpPtr->r_list[pos], helpPtr->r_list[j]);
                     pos++;
                 }
@@ -299,7 +303,7 @@ void searchByTitle(lib help) {
     for (int i = 0;i < help.registered;i++ ) {                                  //Bücher mit gleichem Titel rausfiltern
         if(strncasecmp(filter, help.Books[i]->title,strlen(filter)) == 0) {
         tmplib.registered++;
-        tmplib.Books = realloc(tmplib.Books, sizeof(book *) * tmplib.registered);
+        tmplib.Books = safeRealloc(tmplib.Books, sizeof(book *) * tmplib.registered);
         tmplib.Books[j] = help.Books[i];
         count++;
         j++;
@@ -355,7 +359,7 @@ void searchByIsbn(lib help) {
     for (int i = 0;i < help.registered;i++ ) {                                  //Bücher mit gleichem Titel rausfiltern
         if(strncasecmp(filter, help.Books[i]->isbn_nr,strlen(filter)) == 0) {
             tmplib.registered++;
-            tmplib.Books = realloc(tmplib.Books, sizeof(book *) * tmplib.registered);
+            tmplib.Books = safeRealloc(tmplib.Books, sizeof(book *) * tmplib.registered);
             tmplib.Books[j] = help.Books[i];
             count++;
             j++;
@@ -424,20 +428,20 @@ void deleteBook(book *delete) {
     if( lib1.registered == 1 ) {        //bei einem Buch löscht es das erste
         free(lib1.Books[ 0 ]);
         lib1.registered --;
-        lib1.Books = realloc(lib1.Books, 0);
+        lib1.Books = safeRealloc(lib1.Books, 0);
     }
     if (lib1.registered == 2 ) {
         int i = delete->id;
         if ( i == lib1.registered-1 ) {
             lib1.registered--;
-            lib1.Books = realloc(lib1.Books, sizeof(book *) * lib1.registered);
+            lib1.Books = safeRealloc(lib1.Books, sizeof(book *) * lib1.registered);
         }
         else {
             bookPtr1 = lib1.Books[i];
             bookPtr2 = lib1.Books[i+1];
             lib1.Books[i] = bookPtr2;
             lib1.registered--;
-            lib1.Books = realloc(lib1.Books, sizeof(book *) * lib1.registered);
+            lib1.Books = safeRealloc(lib1.Books, sizeof(book *) * lib1.registered);
             free(bookPtr1);
         }
     }
@@ -445,7 +449,7 @@ void deleteBook(book *delete) {
         int i = delete->id;
         if (i == lib1.registered-1) {
             lib1.registered--;
-            lib1.Books = realloc(lib1.Books, sizeof(book *) * lib1.registered);
+            lib1.Books = safeRealloc(lib1.Books, sizeof(book *) * lib1.registered);
         }
         else {
             bookPtr1 = lib1.Books[ i ];     //bookPtr1 = das Element, das gelöscht werden soll
@@ -457,7 +461,7 @@ void deleteBook(book *delete) {
             lib1.Books[ lib1.registered - 2 ] = bookPtr2;
             free(bookPtr1);                     //das zu löschende Element wird gefreed
             lib1.registered --;                      // Ein buch weniger
-            lib1.Books = realloc(lib1.Books, sizeof(book *) * lib1.registered);     //Speicher der lib anpassen
+            lib1.Books = safeRealloc(lib1.Books, sizeof(book *) * lib1.registered);     //Speicher der lib anpassen
         }
     }
     printf("Das Buch wurde erfolgreich geloescht.\n\n");
