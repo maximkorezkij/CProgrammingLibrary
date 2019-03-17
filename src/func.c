@@ -24,8 +24,9 @@ book *newBook(char *newtitle, char *newauthor, char *newisbn, int newnob) {
     strcpy(bookPtr->isbn_nr, newisbn);
     //number of books
     bookPtr->nob = newnob;
-    //Ausleiherliste
+    //r_count
     bookPtr->r_count = 0;
+    //r_list
     bookPtr->r_list = NULL;
     return bookPtr;
 }
@@ -53,8 +54,9 @@ void saveBooks() {
         length = strlen(lib1.Books[ i ]->author) + 1;
         fwrite(&length, sizeof(size_t), 1, ptr);
         fwrite(lib1.Books[ i ]->author, length, 1, ptr);
-        //save r_list
+        //save r_count
         fwrite(&lib1.Books[i]->r_count, sizeof(int), 1, ptr);
+        //save r_list
         for(int j = 0; j< lib1.Books[i]->r_count; j++){
             length = strlen(lib1.Books[i]->r_list[j]+1);
             fwrite(&length, sizeof(size_t), 1, ptr);
