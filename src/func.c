@@ -261,6 +261,7 @@ void returnBook(book *helpPtr) {
     int pos = 0;                   //zählt bis zur Position des gesuchten Elements hoch
     if(helpPtr->r_count == 0){      //überprüft, ob Buch überhaupt ausgeliehen wurde
         printf("\nBuch ist momentan nicht verliehen.\n");
+        return;
     }
     else{
         printf("\nName des Ausleihers angeben (Nachname Vorname)\n"); //Name des Ausleihers wird eingegeben
