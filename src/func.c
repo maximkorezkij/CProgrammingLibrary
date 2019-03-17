@@ -143,21 +143,21 @@ void show(lib help) {
 }
 
 void moveBooks(int i) {
-    book *bookPtr1; //hilfspointer
-    book *bookPtr2; //hilfspointer
-    if ( lib1.registered == 2 ) {   //bei 2 Büchern muss man nur 1 element schieben
+    book *bookPtr1; //Hilfspointer
+    book *bookPtr2; //Hilfspointer
+    if ( lib1.registered == 2 ) {   //bei 2 Büchern muss man nur 1 Element schieben
         bookPtr1 = lib1.Books[ 0 ];
         lib1.Books[ 1 ] = bookPtr1;
     }
     if ( lib1.registered > 2 ) {    //bei mehr als 2 Büchern muss man die weiteren schieben
-        if ( i < lib1.registered - 1 ) {    //wenn dass Buch nicht an die letzte stelle musst, schiebt er
+        if ( i < lib1.registered - 1 ) {    //wenn das Buch nicht an die letzte Stelle muss, schiebt er
             bookPtr1 = lib1.Books[ i ];
             for ( int j = i; j < lib1.registered - 2; j ++ ) {
-                bookPtr2 = lib1.Books[ j +1]; //bookptr2 ist ein hilfsplatz für das nächste zu haltende element
-                lib1.Books[ j + 1 ] = bookPtr1; //bookptr1 ist das verschobene element
+                bookPtr2 = lib1.Books[ j +1]; //bookptr2 ist ein Hilfsplatz für das nächste zu haltende Element
+                lib1.Books[ j + 1 ] = bookPtr1; //bookptr1 ist das verschobene Element
                 bookPtr1 = bookPtr2;
             }
-            lib1.Books[ lib1.registered - 1 ] = bookPtr1;   //belegt noch den letzten Platz, der in der schleife nicht belegt wird
+            lib1.Books[ lib1.registered - 1 ] = bookPtr1;   //belegt noch den letzten Platz, der in der Schleife nicht belegt wird
         }
     }
 }
@@ -226,7 +226,7 @@ void rentBook(book *helpPtr) {
                 printf("\nName eingeben (Nachname Vorname)\n");
                 isString(name);
                 stringCut(name);
-                for(int i = 0; i < helpPtr->r_count; i++){                    //Überprüft, ob eingegebene person nicht schon ein exemplar geliehen hat
+                for(int i = 0; i < helpPtr->r_count; i++){                    //Überprüft, ob eingegebene Person nicht schon ein Exemplar geliehen hat
                     if(strcasecmp(name, helpPtr->r_list[i]) == 0){                //Eintrag gefunden
                         printf("\n%s hat das Buch bereits einmal ausgeliehen.\n", name);
                         rentBook(helpPtr);
@@ -237,6 +237,7 @@ void rentBook(book *helpPtr) {
                 helpPtr->r_list = realloc(helpPtr->r_list, sizeof(char *) * helpPtr->r_count);
                 helpPtr->r_list[helpPtr->r_count-1] = malloc(strlen(name));
                 strcpy(helpPtr->r_list[helpPtr->r_count-1], name);
+                printf("Ausleiher wurde hinzugefuegt.");
             }
             else{
                 printf("\nKeine Exemplare momentan vorhanden.\n");
@@ -252,12 +253,12 @@ void rentBook(book *helpPtr) {
 
 void returnBook(book *helpPtr) {
     char name[Max];
-    int pos = 0;                   //zählt bis zur position des gesuchten elements hoch
+    int pos = 0;                   //zählt bis zur Position des gesuchten Elements hoch
     if(helpPtr->r_count == 0){      //überprüft, ob Buch überhaupt ausgeliehen wurde
         printf("\nBuch ist momentan nicht verliehen.\n");
     }
     else{
-        printf("\nName des Ausleihers angeben (Nachname Vorname)\n"); //name des Ausleihers wird eingegeben
+        printf("\nName des Ausleihers angeben (Nachname Vorname)\n"); //Name des Ausleihers wird eingegeben
         isString(name);
         stringCut(name);
         for(int i = 0; i < helpPtr->r_count; i++){                    //Namen werden verglichen
@@ -265,8 +266,8 @@ void returnBook(book *helpPtr) {
                 printf("\nEingegebene Person im Verzeichnis gefunden. Buch wird nun zurueckgegeben...\n");
                 helpPtr->nob++;
                 helpPtr->r_count--;
-                pos = i;                                                //pos merkt sich aktuelle position in der liste
-                for(int j = i+1; j<helpPtr->r_count; j++){                //name wird aus liste entfernt und alle folgenden namen um 1 verschoben
+                pos = i;                                                //pos merkt sich aktuelle Position in der Liste
+                for(int j = i+1; j<helpPtr->r_count; j++){                //Name wird aus Liste entfernt und alle folgenden Namen um 1 verschoben
                     helpPtr->r_list[pos] = realloc(helpPtr->r_list[pos], sizeof(helpPtr->r_list[j]));
                     strcpy(helpPtr->r_list[pos], helpPtr->r_list[j]);
                     pos++;
@@ -276,13 +277,6 @@ void returnBook(book *helpPtr) {
                 break;
             }
         }
-    }
-}
-
-void showList(book *helpPtr){
-    printf("\nListe der Personen, die dieses Buch geliehen haben:");
-    for(int i = 0; i<helpPtr->r_count; i++){
-        printf("\n%s", helpPtr->r_list[1]);
     }
 }
 
@@ -297,7 +291,7 @@ void searchByTitle(lib help) {
     stringCut(filter);  //entfernt '\n' vom String damit der compare richtig läuft
     printf("- - - - - - - - - - -\n");
     //bei zu vielen Ergebnissen -> keine Ausgabe
-    for (int i = 0;i < help.registered;i++ ) {                                  //Bücher mit gleichen Titel rausfiltern
+    for (int i = 0;i < help.registered;i++ ) {                                  //Bücher mit gleichem Titel rausfiltern
         if(strncasecmp(filter, help.Books[i]->title,strlen(filter)) == 0) {
         tmplib.registered++;
         tmplib.Books = realloc(tmplib.Books, sizeof(book *) * tmplib.registered);
@@ -366,7 +360,7 @@ void searchByIsbn(lib help) {
         searchAgain();
     }
 
-    if ( count == 1) {
+    if ( count == 1 ) {
         printf("Buch Nr. (1) \n");
         //title
         printf("Titel :\t\t%s\n", tmplib.Books[0]->title);
@@ -420,8 +414,8 @@ void askForBook(char *title,char *author,char *isbn, int *nob) {
 }
 
 void deleteBook(book *delete) {
-    book *bookPtr1; //hilfspointer
-    book *bookPtr2; //hilfspointer
+    book *bookPtr1; //Hilfspointer
+    book *bookPtr2; //Hilfspointer
     if( lib1.registered == 1 ) {        //bei einem Buch löscht es das erste
         free(lib1.Books[ 0 ]);
         lib1.registered --;
@@ -451,7 +445,7 @@ void deleteBook(book *delete) {
         else {
             bookPtr1 = lib1.Books[ i ];     //bookPtr1 = das Element, das gelöscht werden soll
             for ( int j = i; j < lib1.registered - 2; j ++ ) {      //die Pointer von den Büchern wandern vor
-                bookPtr2 = lib1.Books[ j + 1 ];                     //bis sie das letzte in das vorletzte feld
+                bookPtr2 = lib1.Books[ j + 1 ];                     //bis sie das letzte in das vorletzte Feld
                 lib1.Books[ j ] = bookPtr2;                         //schieben
             }
             bookPtr2 = lib1.Books[ lib1.registered - 1 ];

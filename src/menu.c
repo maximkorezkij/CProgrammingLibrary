@@ -83,7 +83,7 @@ void mainMenu() {
         e = isNumber();
 
         switch (e) {
-            case 1: //buch hinzufuegen
+            case 1: //Buch hinzufuegen
                 printf(" - - - - - - - - - - - - - - - - -\n");
                 printf("| Sie wollen ein Buch hinzufuegen |\n");
                 printf(" - - - - - - - - - - - - - - - - -\n");
@@ -91,7 +91,7 @@ void mainMenu() {
                 saveBooks();
                 loadBooks();
                 break;
-            case 2: //buch suchen
+            case 2: //Buch suchen
                 searchMenu();
                 break;
             case 3: //alle anzeigen
@@ -125,8 +125,7 @@ void bookMenu(book *help) {
     printf("\t(1) Buch ausleihen\n");
     printf("\t(2) Buch zurueckgeben\n");
     printf("\t(3) Buch loeschen\n");
-    printf("\t(4) Ausleiherliste anzeigen\n");
-    printf("\t(5) Zurueck zum Hauptmenue\n");
+    printf("\t(4) Zurueck zum Hauptmenue\n");
     while (1) {
         int e;
         e = isNumber();
@@ -149,9 +148,6 @@ void bookMenu(book *help) {
                 goOn();
                 return;
             case 4:
-                showList(help);
-                goOn();
-            case 5:
                 return;
             default:
                 printf("Eingabe ungueltig.\n");
@@ -190,7 +186,7 @@ void bye() {
     printf("|  _ \\  / _ \\  / _ \\ | |/ // __|   \n");
     printf("| |_) || (_) || (_) ||   < \\__ \\    \n");
     printf("|____/  \\___/  \\___/ |_|\\_\\\\___/ \n");
-    //Ausgabe "books" in ASCII Art
+    //Ausgabe "books" in ASCII-Art
 
     printf("\n");
     printf("Danke fuer Ihren Besuch!");
