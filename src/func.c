@@ -390,13 +390,13 @@ void searchByIsbn(lib help) {
 
 void askForBook(char *title,char *author,char *isbn, int *nob) {
     //title
-    printf("\nWie ist der Titel des Buches ?\n(max.100 Zeichen)\n");
+    printf("\nWie ist der Titel des Buches?\n(max.100 Zeichen)\n");
     isString(title);    //returns title string if valid
     //author
-    printf("\nWer ist der Autor des Buches ?\n(max.100 Zeichen)\n");
+    printf("\nWer ist der Autor des Buches?\n(max.100 Zeichen)\n");
     isString(author);   //return author string if valid
     //isbn_nr
-    printf("\nWas ist die ISBN-Nr ?\n(muss gueltig sein)\n");
+    printf("\nWas ist die ISBN-Nr?\n(muss gueltig sein)\n");
     isbnNumber(isbn);
     //number of books
     printf("\nWie viele Exemplare gibt es?\n(Nur Zahlen)\n");
