@@ -58,7 +58,7 @@ void saveBooks() {
         fwrite(&lib1.Books[i]->r_count, sizeof(int), 1, ptr);
         //save r_list
         for(int j = 0; j< lib1.Books[i]->r_count; j++){
-            length = strlen(lib1.Books[i]->r_list[j]+1);
+            length = strlen(lib1.Books[i]->r_list[j] + 1);
             fwrite(&length, sizeof(size_t), 1, ptr);
             fwrite(lib1.Books[i]->r_list[j], length, 1 ,ptr);
         }
@@ -240,7 +240,7 @@ void rentBook(book *helpPtr) {
                 helpPtr->nob--; //Exemplarzahl um 1 reduziert
                 helpPtr->r_count++;
                 helpPtr->r_list = safeRealloc(helpPtr->r_list, sizeof(char *) * helpPtr->r_count);
-                helpPtr->r_list[helpPtr->r_count-1] = safeMalloc(strlen(name));
+                helpPtr->r_list[helpPtr->r_count-1] = safeMalloc(strlen(name) + 1);
                 strcpy(helpPtr->r_list[helpPtr->r_count-1], name);
                 printf("Ausleiher wurde hinzugefuegt.");
             }
@@ -267,7 +267,7 @@ void returnBook(book *helpPtr) {
         isString(name);
         stringCut(name);
         for(int i = 0; i < helpPtr->r_count; i++){                    //Namen werden verglichen
-            if(strncasecmp(name, helpPtr->r_list[i],strlen(name)) == 0){                //Eintrag gefunden
+            if(strcasecmp(name, helpPtr->r_list[i]) == 0){                //Eintrag gefunden
                 printf("\nEingegebene Person im Verzeichnis gefunden. Buch wird nun zurueckgegeben...\n");
                 helpPtr->nob++;
                 helpPtr->r_count--;
