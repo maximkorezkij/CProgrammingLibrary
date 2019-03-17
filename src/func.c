@@ -253,7 +253,7 @@ void rentBook(book *helpPtr) {
             printf("Ungueltige Eingabe");
             break;
     }
-    return;
+    return; //ausstehend
 }
 
 void returnBook(book *helpPtr) {
