@@ -125,7 +125,8 @@ void bookMenu(book *help) {
     printf("\t(1) Buch ausleihen\n");
     printf("\t(2) Buch zurueckgeben\n");
     printf("\t(3) Buch loeschen\n");
-    printf("\t(4) Zurueck zum Hauptmenue\n");
+    printf("\t(4) Ausleiherliste anzeigen\n");
+    printf("\t(5) Zurueck zum Hauptmenue\n");
     while (1) {
         int e;
         e = isNumber();
@@ -145,8 +146,12 @@ void bookMenu(book *help) {
                 return;
             case 3:
                 deleteRequest(help);
+                goOn();
                 return;
             case 4:
+                showList(help);
+                goOn();
+            case 5:
                 return;
             default:
                 printf("Eingabe ungueltig.\n");

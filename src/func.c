@@ -289,6 +289,13 @@ void returnBook(book *helpPtr) {
     }
 }
 
+void showList(book *helpPtr){
+    printf("\nListe der Personen, die dieses Buch geliehen haben:");
+    for(int i = 0; i<helpPtr->r_count; i++){
+        printf("\n%s", helpPtr->r_list[1]);
+    }
+}
+
 void searchByTitle(lib help) {
     char filter[Max] = {};
     int count = 0;      //zeigt an wie viele Treffer es gab
