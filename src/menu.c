@@ -139,6 +139,8 @@ void bookMenu(book *help) {
                 break;
             case 2:
                 returnBook(help);
+                saveBooks();
+                loadBooks();
                 goOn();
                 break;
             case 3:

@@ -219,7 +219,7 @@ void addBookSorted() {
                 i);       //schiebt alle Bücher weiter, sodass das neue Buch seinen richtig sortierten Platz einnehmen kann
         lib1.Books[ i ] = newBook(title, author, isbn, nob);    //belegt den richtigen Platz mit dem Buch
     }
-    printf("\n Das Buch wurde hinzugefuegt.");
+    printf("\nDas Buch wurde hinzugefuegt.");
 }
 
 void rentBook(book *helpPtr) {
@@ -256,45 +256,34 @@ void rentBook(book *helpPtr) {
     return;
 }
 
-void returnBook(book *helpPtr){
-    if(helpPtr->r_list[0][0] == ' ' || helpPtr->r_list[0][0] == '\0'){ //überprüft, ob überhaupt was in der Ausleiherliste ist
-        printf("\nKein Exemplar momentan verliehen.");
+void returnBook(book *helpPtr) {
+    char name[Max];
+    int pos = 0;                   //zählt bis zur position des gesuchten elements hoch
+    if(helpPtr->r_count == 0){      //überprüft, ob Buch überhaupt ausgeliehen wurde
+        printf("\nBuch ist momentan nicht verliehen.\n");
+        return;
     }
     else{
-        char h_list[][Max] = {}; //Hilfsliste
-        int length = 0; //Hilfsvariable, die Länge der ursprünglichen Liste speichert
-        while(true){
-            if(helpPtr->r_list[length][0] == ' ' || helpPtr->r_list[length][0] == '\0')break;
-            length++;
-        }
-        printf("\nNamen des Ausleihers eingeben (Nachname, Vorname)\n");
-        char e = (char) getchar();      //das wird nur einen Buchstaben ausgeben
-        printf("\nListe wird durchsucht...");
-        for(int i = 0; i<length; i++){      //untersucht jeden eingetragenen in der Liste
-            if(strcasecmp(e, helpPtr->r_list[i]) == 0){         //String wird rausgefiltert     //du hast keinen String-> des wird iwann schief gehen
-                continue;
-            }
-            for(int j = 0; j < sizeof(helpPtr->r_list[i]); j++){         //Listenelemente, die nicht übereinstimmen werden in eine Hilfsliste gelegt
-                h_list[i][j] = helpPtr->r_list[i][j];
-            }
-        }
-        int h_length = 0; //Hilfsvariable, die Länge der Hilfsliste speichert
-        while(true){
-            if(h_list[h_length][0] == ' ' || h_list[length][0] == '\0')break;
-            h_length++;
-        }
-        if(h_length != length-1){
-            printf("\nKein Eintrag zu eingegebenen Ausleiher gefunden");
-        }
-        else{
-            printf("\nBuch erfolgreich zuruekgegeben");
-            for(int i = 0; i<sizeof(h_list); i++){
-                for(int j = 0; j < sizeof(helpPtr->r_list[i]); j++){         //Listenelemente aus der Hilfslliste wieder in die ursprüngliche übertragen
-                    h_list[i][j] = helpPtr->r_list[i][j];
+        printf("\nName des Ausleihers angeben (Nachname Vorname)\n"); //name des Ausleihers wird eingegeben
+        isString(name);
+        stringCut(name);
+        for(int i = 0; i < helpPtr->r_count; i++){                    //Namen werden verglichen
+            if(stricmp(name, helpPtr->r_list[i]) == 0){                //Eintrag gefunden
+                printf("\nEingegebene Person im Verzeichnis gefunden. Buch wird nun zurueckgegeben...\n");
+                helpPtr->nob++;
+                helpPtr->r_count--;
+                pos = i;                                                //pos merkt sich aktuelle position in der liste
+                for(int j = i+1; j<helpPtr->r_count; j++){                //name wird aus liste entfernt und alle folgenden namen um 1 verschoben
+                    strcpy(helpPtr->r_list[pos], helpPtr->r_list[j]);
+                    pos++;
                 }
+                free(helpPtr->r_list[helpPtr->r_count]);                //letzer platz wird gefreed
+                printf("\nVorgang erfolgreich. Name des Entleihers wurde aus der Ausleiherliste entfernt.\n");
+                return;
             }
-            mainMenu(); //zurück zum Menü
         }
+        printf("\nKein Eintrag zu eingegebenen Namen gefunden.\n");
+        return;
     }
 }
 
@@ -327,7 +316,7 @@ void searchByTitle(lib help) {
             //title
             printf("Titel :\t\t%s\n", tmplib.Books[k]->title);
             //author
-            printf("Autor :\t%s\n", tmplib.Books[k]->author);
+            printf("Autor :\t\t%s\n", tmplib.Books[k]->author);
             //isbn_nr
             printf("ISBN :\t\t%s\n", tmplib.Books[k]->isbn_nr);
             //number of books
