@@ -15,9 +15,9 @@ const char *stringCut(char *buffer) {
 
 bool validISBN(char *isbn) {
     size_t n = strlen(isbn);
-    if ( n != 10 )          //länge einer isbn nr muss 10 sein
+    if ( n != 10 )          //Länge einer ISBN-Nummer muss 10 sein
         return false;
-    int sum = 0;            //summer der ersten 9 ziffern mal 10 minus anzahl der gezählten ziffer
+    int sum = 0;            //Summe der ersten 9 Ziffern mal 10 minus Anzahl der gezählten Ziffer
     for ( int i = 0; i < 9; i++ ) {
         int digit = isbn[ i ] - '0';
         if ( 0 > digit || 9 < digit )
@@ -27,8 +27,8 @@ bool validISBN(char *isbn) {
     char last = isbn[ 9 ];
     if ( last != 'X' && (last < '0' || last > '9'))     //letze Ziffer darf auch 'X' sein
         return false;
-    sum += ((last == 'X') ? 10 : (last - '0'));     //addiere für X 10 und sonst die ziffer
-    return (sum % 11 == 0);         //valide Isbn wenn alles durch 11 teilbar ist
+    sum += ((last == 'X') ? 10 : (last - '0'));     //addiere für X 10 und sonst die Ziffer
+    return (sum % 11 == 0);         //valide ISBN, wenn alles durch 11 teilbar ist
 }
 
 int isNumber() {
@@ -43,7 +43,7 @@ int isNumber() {
 }
 
 const char *isbnNumber(char *isbn) {
-    fgets(isbn, Max, stdin);    //get ISBN string
+    fgets(isbn, Max, stdin);    //get isbn string
     stringCut(isbn);            //cut \n from string
     if ( validISBN(isbn) == false ) {
         printf("Diese ISBN-Nr ist ungueltig. Versuchen Sie es erneut:\n");
@@ -64,7 +64,7 @@ const char *isString(char *string) {
     }
 }
 
-off_t fsize(const char *filename) {     //funktion die checkt ob ein file leer ist
+off_t fsize(const char *filename) {     //Funktion die checkt ob ein file leer ist
     struct stat st;
 
     if ( stat(filename, &st) == 0 )
