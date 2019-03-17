@@ -83,7 +83,7 @@ void mainMenu() {
         e = isNumber();
 
         switch (e) {
-            case 1: //buch hinzufuegen
+            case 1: //Buch hinzufuegen
                 printf(" - - - - - - - - - - - - - - - - -\n");
                 printf("| Sie wollen ein Buch hinzufuegen |\n");
                 printf(" - - - - - - - - - - - - - - - - -\n");
@@ -91,7 +91,7 @@ void mainMenu() {
                 saveBooks();
                 loadBooks();
                 break;
-            case 2: //buch suchen
+            case 2: //Buch suchen
                 searchMenu();
                 break;
             case 3: //alle anzeigen
@@ -190,7 +190,7 @@ void bye() {
     printf("|  _ \\  / _ \\  / _ \\ | |/ // __|   \n");
     printf("| |_) || (_) || (_) ||   < \\__ \\    \n");
     printf("|____/  \\___/  \\___/ |_|\\_\\\\___/ \n");
-    //Ausgabe "books" in ASCII Art
+    //Ausgabe "books" in ASCII-Art
 
     printf("\n");
     printf("Danke fuer Ihren Besuch!");
