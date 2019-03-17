@@ -123,21 +123,26 @@ void loadBooks() {
 }
 
 void show(lib help) {
-    printf("\nAnzahl Buecher : \t%d\n", help.registered);
-    printf("- - - - - - - - - - -");
-    for ( int i = 0; i < help.registered; i++ ) {
-        //title
-        printf("\nTitel :\t\t%s", help.Books[ i ]->title);
-        //author
-        printf("\nAutor :\t\t%s", help.Books[ i ]->author);
-        //isbn_nr
-        printf("\nISBN :\t\t%s", help.Books[ i ]->isbn_nr);
-        //number of books
-        printf("\nExemplare :\t%d", help.Books[ i ]->nob);
-        for ( int j = 0; j < help.Books[i]->r_count-1 ; j++ ) {
-            printf("Ausleiher : \n \t %s", help.Books[i]->r_list[j]);
+    if (lib1.registered == 0) {
+        printf("Es gibt keine Bücher zum anzeigen.");
+    }
+    else {
+        printf("\nAnzahl Buecher : \t%d\n", help.registered);
+        printf("- - - - - - - - - - -");
+        for ( int i = 0; i < help.registered; i ++ ) {
+            //title
+            printf("\nTitel :\t\t%s", help.Books[ i ]->title);
+            //author
+            printf("\nAutor :\t\t%s", help.Books[ i ]->author);
+            //isbn_nr
+            printf("\nISBN :\t\t%s", help.Books[ i ]->isbn_nr);
+            //number of books
+            printf("\nExemplare :\t%d", help.Books[ i ]->nob);
+            for ( int j = 0; j < help.Books[ i ]->r_count - 1; j ++ ) {
+                printf("Ausleiher : \n \t %s", help.Books[ i ]->r_list[ j ]);
+            }
+            printf("\n- - - - - - - - - - -");
         }
-        printf("\n- - - - - - - - - - -");
     }
 }
 
@@ -297,9 +302,7 @@ void returnBook(book *helpPtr) {
                 break;
             }
         }
-        printf("\nKein Eintrag zu eingegebenen Namen gefunden.\n");
     }
-    goOn();
 }
 
 void searchByTitle(lib help) {
@@ -324,6 +327,19 @@ void searchByTitle(lib help) {
     }
     if (count == 0) {
         searchAgain();
+    }
+    if ( count == 1) {
+        printf("Buch Nr. (1) \n");
+        //title
+        printf("Titel :\t\t%s\n", tmplib.Books[0]->title);
+        //author
+        printf("Autor :\t\t%s\n", tmplib.Books[0]->author);
+        //isbn_nr
+        printf("ISBN :\t\t%s\n", tmplib.Books[0]->isbn_nr);
+        //number of books
+        printf("Exemplare :\t%d\n", tmplib.Books[0]->nob);
+        printf("- - - - - - - - - - -\n");
+        bookMenu(tmplib.Books[0]);
     }
     if( count > 0 ) {
         for ( int k = 0; k < tmplib.registered; k ++ ) {                 //print alle zutreffenden Bücher

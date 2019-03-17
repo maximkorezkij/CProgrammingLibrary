@@ -140,6 +140,9 @@ void bookMenu(book *help) {
                 return;
             case 2:
                 returnBook(help);
+                saveBooks();
+                loadBooks();
+                goOn();
                 return;
             case 3:
                 deleteRequest(help);
