@@ -109,17 +109,15 @@ void loadBooks() {
             fread(&lib1.Books[i]->r_count, sizeof(int), 1, ptr);
             for(int n = 0; n < lib1.Books[i]->r_count; n++){
                 lib1.Books[i]->r_list[n] = malloc(sizeof(char*));
-                for(int j = 0; j< lib1.Books[i]->r_count; j++){
-                    fread(&length, sizeof(size_t), 1, ptr);
-                    if (fread(lib1.Books[i]->r_list[j], length, 1, ptr)!= 1 ) {
-                        printf("Es gab ein Problem mit dem Laden der Sicherungsdatei.\nNotfalls muessen sie %s loeschen.\n",data);
-                        exit(0);
-                    }
+                fread(&length, sizeof(size_t), 1, ptr);
+                if (fread(lib1.Books[i]->r_list[n], length, 1, ptr)!= 1 ) {
+                    printf("Es gab ein Problem mit dem Laden der Sicherungsdatei.\nNotfalls muessen sie %s loeschen.\n",data);
+                    exit(0);
                 }
             }
         }
-        fclose(ptr);
     }
+    fclose(ptr);
 }
 
 void show(lib help) {
@@ -312,7 +310,7 @@ void searchByTitle(lib help) {
         }
     }
     if (count == 0) {
-        searchAgain();
+        printf("Dieses Buch haben wir nicht. Gehe ins Hauptmenue...\n");
     }
     if ( count == 1) {
         printf("Buch Nr. (1) \n");
@@ -432,18 +430,39 @@ void deleteBook(book *delete) {
         lib1.registered --;
         lib1.Books = realloc(lib1.Books, 0);
     }
-    if( lib1.registered > 1 ) {         //bei mehreren Bücher
+    if (lib1.registered == 2 ) {
         int i = delete->id;
-        bookPtr1 = lib1.Books[ i ];     //bookPtr1 = das Element, das gelöscht werden soll
-        for ( int j = i; j < lib1.registered - 2; j ++ ) {      //die Pointer von den Büchern wandern vor
-            bookPtr2 = lib1.Books[ j + 1 ];                     //bis sie das letzte in das vorletzte feld
-            lib1.Books[ j ] = bookPtr2;                         //schieben
+        if ( i == lib1.registered-1 ) {
+            lib1.registered--;
+            lib1.Books = realloc(lib1.Books, sizeof(book *) * lib1.registered);
         }
-        bookPtr2 = lib1.Books[lib1.registered-1];
-        lib1.Books[lib1.registered-2] = bookPtr2;
-        free(bookPtr1);                     //das zu löschende Element wird gefreed
-        lib1.registered--;                      // Ein buch weniger
-        lib1.Books = realloc(lib1.Books, sizeof(book *) * lib1.registered);     //Speicher der lib anpassen
+        else {
+            bookPtr1 = lib1.Books[i];
+            bookPtr2 = lib1.Books[i+1];
+            lib1.Books[i] = bookPtr2;
+            lib1.registered--;
+            lib1.Books = realloc(lib1.Books, sizeof(book *) * lib1.registered);
+            free(bookPtr1);
+        }
+    }
+    if( lib1.registered > 2 ) {         //bei mehreren Bücher
+        int i = delete->id;
+        if (i == lib1.registered-1) {
+            lib1.registered--;
+            lib1.Books = realloc(lib1.Books, sizeof(book *) * lib1.registered);
+        }
+        else {
+            bookPtr1 = lib1.Books[ i ];     //bookPtr1 = das Element, das gelöscht werden soll
+            for ( int j = i; j < lib1.registered - 2; j ++ ) {      //die Pointer von den Büchern wandern vor
+                bookPtr2 = lib1.Books[ j + 1 ];                     //bis sie das letzte in das vorletzte feld
+                lib1.Books[ j ] = bookPtr2;                         //schieben
+            }
+            bookPtr2 = lib1.Books[ lib1.registered - 1 ];
+            lib1.Books[ lib1.registered - 2 ] = bookPtr2;
+            free(bookPtr1);                     //das zu löschende Element wird gefreed
+            lib1.registered --;                      // Ein buch weniger
+            lib1.Books = realloc(lib1.Books, sizeof(book *) * lib1.registered);     //Speicher der lib anpassen
+        }
     }
     printf("Das Buch wurde erfolgreich geloescht.\n\n");
 }
