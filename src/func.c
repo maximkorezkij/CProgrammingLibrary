@@ -181,27 +181,14 @@ void addBookSorted() {
     }
     if( lib1.registered > 1 ) {        //bei mehreren Büchern vergleicht man
         for ( int j = i; j < lib1.registered - 1; j ++ ) {
-            if( strncasecmp(title, lib1.Books[ j ]->title, Max) ==
-                    0 ) {       //eingegebener Titel = Titel aus einem Buch
+            if( strncasecmp(isbn, lib1.Books[ j ]->isbn_nr, Max) == 0 ) {
+                printf("Dieses Buch existiert schon. Vorgang wird abgebrochen... \n");
+                lib1.registered --;
+            }
+            if ( strncasecmp(title, lib1.Books[ j ]->title, Max) == 0 ) {       //eingegebener Titel = Titel aus einem Buch
                 if( strncasecmp(author, lib1.Books[ j ]->author, Max) ==
                         0 ) {    //eingegebener Autor = Autor aus einem Buch
-                    if( strcasecmp(isbn, lib1.Books[ j ]->isbn_nr) ==
-                            0 ) {            //eingegebene isbn = isbn aus einem Buch
-                        printf("Dieses Buch existiert schon. Probieren Sie es erneut:\n");  //Fehler weil 2 identische Bücher
-                        lib1.registered --;
-                        addBookSorted();
-                    }
-                    if( strcasecmp(isbn, lib1.Books[ j ]->isbn_nr) >
-                            0 ) {         //schauen ob eingegebene isbn nach(alphabetisch) vorhandener isbn kommt
-                        if( i == lib1.registered - 1 )
-                            break;
-                        else
-                            i ++;
-                    }
-                    if( strcasecmp(isbn, lib1.Books[ j ]->isbn_nr) <
-                            0 ) {         //schauen ob eingegebene isbn vor vorhanderer isbn kommt
-                        break;
-                    }
+                    break;
                 }
                 if( strncasecmp(author, lib1.Books[ j ]->author, Max) > 0 ) {
                     if( i == lib1.registered - 1 )
@@ -213,7 +200,7 @@ void addBookSorted() {
                     break;
                 }
             }
-            if( strncasecmp(title, lib1.Books[ j ]->title, Max) > 0 ) {
+                if( strncasecmp(title, lib1.Books[ j ]->title, Max) > 0 ) {
                 if( i == lib1.registered - 1 )
                     break;
                 else
@@ -223,8 +210,7 @@ void addBookSorted() {
                 break;
             }
         }
-        moveBooks(
-                i);       //schiebt alle Bücher weiter, sodass das neue Buch seinen richtig sortierten Platz einnehmen kann
+        moveBooks(i);       //schiebt alle Bücher weiter, sodass das neue Buch seinen richtig sortierten Platz einnehmen kann
         lib1.Books[ i ] = newBook(title, author, isbn, nob);    //belegt den richtigen Platz mit dem Buch
     }
     printf("\nDas Buch wurde hinzugefuegt.");
@@ -250,9 +236,9 @@ void rentBook(book *helpPtr) {
                         rentBook(helpPtr);
                     }
                 }
-                helpPtr->nob --; //Exemplarzahl um 1 reduziert
+                helpPtr->nob--; //Exemplarzahl um 1 reduziert
                 helpPtr->r_count++;
-                helpPtr->r_list[helpPtr->r_count-1] = malloc(sizeof(char*));
+                helpPtr->r_list[helpPtr->r_count-1] = malloc(sizeof(name));
                 strcpy(helpPtr->r_list[helpPtr->r_count-1], name);
                 printf("Ausleiher wurde hinzugefuegt.");
                 printf("\nAusleiherliste:");  //zu testzwecken wird gesamte liste gedruckt
