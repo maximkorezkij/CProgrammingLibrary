@@ -90,7 +90,6 @@ void mainMenu() {
                 addBookSorted();
                 saveBooks();
                 loadBooks();
-                goOn();
                 break;
             case 2: //buch suchen
                 searchMenu();
