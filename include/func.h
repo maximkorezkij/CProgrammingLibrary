@@ -29,7 +29,7 @@ void searchByIsbn(lib help);
 void deleteRequest(book *delete);
 void askForBook(char *title, char *author,char *isbn, int *nob);
 void searchAgain();
-void safeRealloc(void* p,size_t t);
-void safeMalloc(size_t t);
-void safeCalloc(size_t t,size_t b);
+void *safeRealloc(void* p,size_t t);
+void *safeMalloc(size_t t);
+void *safeCalloc(size_t t,size_t b);
 #endif //PROJECT_FUNC_H
